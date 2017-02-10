@@ -258,18 +258,19 @@ function glz_new_custom_field($name, $table, $extra) {
     else if ( $table == PFX."txp_lang" ) {
       $query = "
         INSERT INTO
-          `".PFX."txp_lang` (`id`,`lang`,`name`,`event`,`data`,`lastmod`)
+          `".PFX."txp_lang` (`lang`,`name`,`event`,`data`,`lastmod`)
         VALUES
-          ('','{$lang}','{$custom_set}','prefs','{$name}',now())
+          ('{$lang}','{$custom_set}','prefs','{$name}',now())
       ";
     }
     else if ( $table == PFX."textpattern" ) {
       $column_type = ( $custom_set_type == "textarea" ) ? "TEXT" : "VARCHAR(255)";
+      $dflt = ( $custom_set_type == "textarea" ) ? '' : "DEFAULT ''";
       $query = "
         ALTER TABLE
           `".PFX."textpattern`
         ADD
-          `custom_{$custom_field_number}` {$column_type} NOT NULL DEFAULT ''
+          `custom_{$custom_field_number}` {$column_type} NOT NULL {$dflt}
       ";
     }
     else if ( $table == PFX."custom_fields" ) {
@@ -322,11 +323,12 @@ function glz_update_custom_field($name, $table, $extra) {
   }
   else if ( ($table == PFX."textpattern") ) {
     $column_type = ( $custom_set_type == "textarea" ) ? "TEXT" : "VARCHAR(255)";
+    $dflt = ( $custom_set_type == "textarea" ) ? '' : "DEFAULT ''";
     safe_query("
       ALTER TABLE
         `".PFX."textpattern`
       MODIFY
-        `{$custom_field}` {$column_type} NOT NULL DEFAULT ''
+        `{$custom_field}` {$column_type} NOT NULL {$dflt}
     ");
   }
 }
