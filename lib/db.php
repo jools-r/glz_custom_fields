@@ -252,7 +252,7 @@ function glz_new_custom_field($name, $table, $extra) {
         INSERT INTO
           `".PFX."txp_prefs` (`name`, `val`, `type`, `event`, `html`, `position`)
         VALUES
-          ({$custom_set}', '{$name}', '1', 'custom', '{$custom_set_type}', {$custom_set_position})
+          ('{$custom_set}', '{$name}', '1', 'custom', '{$custom_set_type}', {$custom_set_position})
       ";
     }
     else if ( $table == PFX."txp_lang" ) {
