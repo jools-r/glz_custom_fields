@@ -254,7 +254,7 @@ function glz_custom_fields_install() {
         `name` varchar(255) NOT NULL default '',
         `value` varchar(255) NOT NULL default '',
         PRIMARY KEY (id),
-        KEY (`name`)
+        KEY (`name`(50))
       ) ENGINE=MyISAM
     ");
   }
