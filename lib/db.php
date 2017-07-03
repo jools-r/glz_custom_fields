@@ -250,9 +250,9 @@ function glz_new_custom_field($name, $table, $extra) {
       if (empty($custom_set_position)) $custom_set_position = $custom_field_number;
       $query = "
         INSERT INTO
-          `".PFX."txp_prefs` (`prefs_id`, `name`, `val`, `type`, `event`, `html`, `position`)
+          `".PFX."txp_prefs` (`name`, `val`, `type`, `event`, `html`, `position`)
         VALUES
-          ('1', '{$custom_set}', '{$name}', '1', 'custom', '{$custom_set_type}', {$custom_set_position})
+          ({$custom_set}', '{$name}', '1', 'custom', '{$custom_set_type}', {$custom_set_position})
       ";
     }
     else if ( $table == PFX."txp_lang" ) {
