@@ -42,10 +42,6 @@ $(function() {
 
     // on first load
     add_reset_button();
-    // and again after asynchronous save/edit
-    $(document).ajaxSuccess(function() {
-        add_reset_button();
-    });
 
     // reset all radio buttons if "reset" is clicked (also after async save)
     $(".txp-layout-4col-alt").on("click", ".glz-custom-field-reset", function() {
@@ -76,6 +72,19 @@ $(function() {
             $("input[type=hidden][name=" + custom_field_to_reanimate + "]").remove();
             // revert disabled status of "reset" button
             $this_reset_button.removeClass("disabled");
+        }
+    });
+
+    // reinitialise after asynchronous save/edit
+    $(document).ajaxSuccess(function() {
+        add_reset_button();
+        // reinitialise datePicker after ajax
+        if ($.fn.datePicker) {
+            $(".date-picker").datePicker();
+        }
+        // reinitialise datePicker after ajax
+        if ($.fn.timePicker) {
+            $(".time-picker").timePicker();
         }
     });
 

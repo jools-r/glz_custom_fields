@@ -44,9 +44,9 @@ with instant gratification.
 - Datepicker/timepicker libraries updated (deprecated $.browser detection removed to prevent misleading error message on write tab)
 - Refactored source files: edit with [rah_blobin](https://github.com/jools-r/rah_blobin) and compile with [rah_mass_compiler](https://github.com/gocom/MassPlugCompiler)
 
-### Known errors
+### Known issues
 
-- Datepicker + timepicker functionality disappears after asynchronous saving of an article. Workaround: re-open the article / refresh page to reinitiate.
+- Datepicker + timepicker lose their settings after asynchronous saving of an article. Workaround: re-open the article / refresh page to reinitiate.
 
 
 ### License
