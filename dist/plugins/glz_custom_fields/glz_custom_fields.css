@@ -1,0 +1,96 @@
+/* - - - - - - - - - - - - - - - - - - - - -
+
+### TEXTPATTERN CUSTOM FIELDS ###
+
+Title : glz_custom_fields stylesheet
+Author : Gerhard Lazu + many contributors
+
+Last modified: 22 February 2018
+
+- - - - - - - - - - - - - - - - - - - - - */
+
+/* CUSTOM FIELDS PANEL
+-------------------------------------------------------------- */
+
+.glz-cf-setup-switch {
+    float: right;
+}
+/* table width */
+.txp-list.glz_custom_fields {
+  margin: 1em auto;
+  max-width: 60em;
+}
+/* add/edit panel width = table width minus 1em padding either side */
+.txp-edit {
+  margin: 1em auto;
+  max-width: 58em;
+  width: auto;
+}
+/* table column widths / height */
+.glz_custom_fields td {
+  vertical-align: middle;
+}
+.glz_custom_fields th.custom-set-id {
+  text-align: center;
+  width: 5%;
+}
+.glz_custom_fields td.custom-set-position {
+  text-align: center;
+  width: 10%;
+}
+.glz_custom_fields td.custom-set-name {
+  width: 40%;
+}
+.glz_custom_fields td.type {
+  width: 20%;
+}
+.glz_custom_fields td.events {
+  width: 21%;
+  text-align: left;
+}
+/* edit, delete, reset buttons */
+.action-button {
+    display: inline-block;
+}
+.action-button button {
+    font-size: 12px;
+    line-height: 14px;
+}
+.action-button .ui-icon {
+    height: 13px;
+    width: 13px;
+    background-size: 13px 13px;
+    margin-bottom: 1px;
+    margin-right: 2px;
+}
+.action-button .ui-button.ui-corner-all {
+    border-radius: .25em;
+}
+
+/* CUSTOM FIELDS PREFS PANE
+-------------------------------------------------------------- */
+
+.glz_custom_fields_prefs {
+  width: 100%;
+}
+.pref-heading .information {
+    font-weight: normal;
+    font-size: 13px;
+    padding-left: .75em;
+}
+.txp-form-field-value .select-medium,
+.txp-form-field-value .input-medium {
+    max-width: 14.46153846153846em;
+    width: 50%;
+}
+
+/* ARTICLE / WRITE PANE
+-------------------------------------------------------------- */
+
+/* reset button, make disabled state appear non-responsive */
+.glz-custom-field-reset.disabled:hover {
+    text-decoration: none;
+}
+.glz-custom-field-reset.disabled {
+    cursor: default;
+}

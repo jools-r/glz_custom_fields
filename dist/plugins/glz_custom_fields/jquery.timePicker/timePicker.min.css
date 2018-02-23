@@ -1,0 +1,1 @@
+div.time-picker{position:absolute;height:140px;width:5em;overflow:auto;background:#fff;border:1px solid #ccc;z-index:99;margin:0}div.time-picker-12hours{width:7em}div.time-picker ul{list-style-type:none;margin:0;padding:0}div.time-picker li{cursor:pointer;color:#777;padding:4px}div.time-picker li.selected{background:#fea;color:#000}

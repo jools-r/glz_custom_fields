@@ -1,0 +1,42 @@
+/* - - - - - - - - - - - - - - - - - - - - -
+
+### TEXTPATTERN CUSTOM FIELDS ###
+
+Title : glz_custom_fields stylesheet
+Author : Gerhard Lazu + many contributors
+
+Last modified: 22 February 2018
+
+- - - - - - - - - - - - - - - - - - - - - */
+
+/* TIME PICKER STYLES
+-------------------------------------------------------------- */
+
+div.time-picker {
+  position: absolute;
+  height: 140px;
+  width:5em; /* needed for IE */
+  overflow: auto;
+  background: #fff;
+  border: 1px solid #ccc;
+  z-index: 99;
+  margin: 0;
+}
+div.time-picker-12hours {
+  width:7em; /* needed for IE */
+}
+
+div.time-picker ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+div.time-picker li {
+  cursor: pointer;
+  color: #777;
+  padding: 4px 4px;
+}
+div.time-picker li.selected {
+  background: #fea;
+  color: #000;
+}
