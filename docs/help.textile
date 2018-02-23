@@ -1,0 +1,34 @@
+h1. glz_custom_fields, unlimited custom fields
+
+This plugin provides unlimited custom fields in Textpattern. You can create custom fields as selects, multi-selects, checkboxes, radio buttons and textareas - as well as the default text input fields. Predefine values can be set for custom fields and you can select a single default value (selects, multi-selects, checkboxes and radio buttons only).
+
+*If you want to submit bug reports and feature requests, please visit "glz_custom_fields on GitHub":http://github.com/bloke/glz_custom_fields*. There is also a handy section on "glz_custom_fields tips and tricks":http://wiki.github.com/gerhard/glz_custom_fields/.
+
+h2. Time and date pickers
+
+Time and date pickers are pretty straightforward to use. To set the required JavaScript and styling properly, please refer to the %(information)INSTALL% file that came with this plugin.
+
+h2. Custom scripts
+
+This is a rather complex and long sought-for piece of functionality, please refer to the %(information)my_image.php% file which contains inline explanations on how they should be used. The file came with the plugin, in the %(information)scripts/glz_custom_fields% folder.
+
+h2. Default values
+
+You can now define a single default value by adding curly brackets around a value like so: @{default value}@.
+
+h2. Ranges
+
+If you want to define ranges, create a new custom field with the following name e.g. @Price range &amp;pound;(after)@.
+
+* @range@ - this is really important and *(warning)must* be present for the range to work correctly.
+* @&amp;pound;@ - don't use straight symbols (like @€@ or @£@), instead use entity ones e.g. @&amp;euro;@ and @&amp;pound;@ are valid symbols.
+* @(after)@ - don't leave any spaces after e.g. $ and (after). This basically says where to add the measuring unit (be it a currency or something like m³ etc.) - @(before)@ is default.
+
+Ranges are defined 10-20, 21-30 etc. (no measuring units - they get pulled from the custom set name).
+
+h2. Support
+
+If anything goes wrong or you discover a bug:
+
+# report an issue on "GitHub":http://github.com/bloke/glz_custom_fields/issues.
+# look for help in the Textpattern forum, "glz_custom_fields thread":http://forum.textpattern.io/viewtopic.php?id=23996.

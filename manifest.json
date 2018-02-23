@@ -1,0 +1,22 @@
+{
+    "name"          : "glz_custom_fields",
+    "description"   : "Unlimited special custom fields",
+    "version"       : "4.7 beta",
+    "type"          : 5,
+    "author"        : "Gerhard Lazu",
+    "author_uri"    : "http://github.com/bloke/glz_custom_fields",
+    "contributors"  : "Randy Levine, Sam Weiss, Luca Botti, Manfre, Vladimir Siljkovic, Julian Reisenberger, Steve Dickinson, Stef Dawson, Jean-Pol Dupont",
+    "compatibility" : "4.7",
+    "order"         : 9,
+    "flags"         : 3,
+    "help"          : {"file" : [
+                          "./docs/help.textile"
+                      ]},
+    "code"          : {"file" : [
+                          "./src/glz/db.php",
+                          "./src/glz/helpers.php",
+                          "./src/glz/field-types.php",
+                          "./src/glz/callbacks.php",
+                          "./src/glz/main.php"
+                      ]}
+}
