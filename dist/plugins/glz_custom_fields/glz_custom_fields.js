@@ -46,7 +46,7 @@ textpattern.Relay.register('txpAsyncForm.success', glzResetRadio);
     glzResetRadio();
 
     // reset all radio buttons if "reset" is clicked (also after async save)
-    $(".txp-layout-4col-alt").on("click", ".glz-custom-field-reset", function() {
+    $(".txp-layout").on("click", ".glz-custom-field-reset", function() {
         // abort if disabled (= previously clicked)
         if ($(this).hasClass('disabled')) return false;
         // get this radio button group name
@@ -65,7 +65,7 @@ textpattern.Relay.register('txpAsyncForm.success', glzResetRadio);
     });
 
     // revert reset state if radio button subsequently clicked (also after async save)
-    $(".txp-layout-4col-alt").on("click",".glz-custom-radio-field .radio", function() {
+    $(".txp-layout").on("click",".glz-custom-radio-field .radio", function() {
         custom_field_to_reanimate = $(this).attr("name");
         $this_reset_button = $(".glz-custom-field-reset[name=" + custom_field_to_reanimate + "]");
         // if "reset" button currently disabled
