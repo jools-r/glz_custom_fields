@@ -1,4 +1,6 @@
 $(function() {
+textpattern.Relay.register('txpAsyncForm.success', glzResetRadio);
+
     // creating a global object to store variables, functions etc.
     var GLZ_CUSTOM_FIELDS;
     if (GLZ_CUSTOM_FIELDS == undefined) {
@@ -72,19 +74,6 @@ $(function() {
             $("input[type=hidden][name=" + custom_field_to_reanimate + "]").remove();
             // revert disabled status of "reset" button
             $this_reset_button.removeClass("disabled");
-        }
-    });
-
-    // reinitialise after asynchronous save/edit
-    $(document).ajaxSuccess(function() {
-        add_reset_button();
-        // reinitialise datePicker after ajax
-        if ($.fn.datePicker) {
-            $(".date-picker").datePicker();
-        }
-        // reinitialise datePicker after ajax
-        if ($.fn.timePicker) {
-            $(".time-picker").timePicker();
         }
     });
 

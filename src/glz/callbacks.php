@@ -118,22 +118,29 @@ function glz_custom_fields_inject_css_js() {
             $js .= '<script src="'.$prefs['datepicker_url']."/".$file.'"></script>'.n;
         }
     $js_datepicker_msg = '<span class="messageflash error" role="alert" aria-live="assertive"><span class="ui-icon ui-icon-alert"></span> <a href="'.$PROTOCOL.ahu.'?event=plugin_prefs.glz_custom_fields">'.gTxt('glz_cf_public_error_datepicker').'</a> <a class="close" role="button" title="Close" href="#close"><span class="ui-icon ui-icon-close">Close</span></a></span>';
-    $js .= <<<EOF
+    $js .= <<<JS
 <script>
-$(function() {
-    if ($(".date-picker").length > 0) {
-        try {
-            Date.firstDayOfWeek = {$prefs['datepicker_first_day']};
-            Date.format = '{$prefs['datepicker_format']}';
-            Date.fullYearStart = '19';
-            $(".date-picker").datePicker({startDate:'{$prefs['datepicker_start_date']}'});
-        } catch(err) {
-            $('#messagepane').html('{$js_datepicker_msg}');
+$(document).ready(function () {
+    textpattern.Relay.register('txpAsyncForm.success', glzDatePicker);
+
+    function glzDatePicker() {
+        if ($("input.date-picker").length > 0) {
+            try {
+                Date.firstDayOfWeek = {$prefs['datepicker_first_day']};
+                Date.format = '{$prefs['datepicker_format']}';
+                Date.fullYearStart = '19';
+                $(".date-picker").datePicker({startDate:'{$prefs['datepicker_start_date']}'});
+                $(".date-picker").dpSetOffset(29, -1);
+            } catch(err) {
+                $('#messagepane').html('{$js_datepicker_msg}');
+            }
         }
     }
+
+    glzDatePicker();
 });
 </script>
-EOF;
+JS;
     }
 
     // if a time picker field exists
@@ -141,32 +148,40 @@ EOF;
         $css .= '<link rel="stylesheet" type="text/css" media="all" href="'.$prefs['timepicker_url'].'/timePicker'.($use_minified ? '.min' : '').'.css" />'.n;
         $js  .= '<script src="'.$prefs['timepicker_url'].'/timePicker'.($use_minified ? '.min' : '').'.js"></script>'.n;
         $js_timepicker_msg = '<span class="messageflash error" role="alert" aria-live="assertive"><span class="ui-icon ui-icon-alert"></span> <a href="'.$PROTOCOL.ahu.'?event=plugin_prefs.glz_custom_fields">'.gTxt('glz_cf_public_error_timepicker').'</a> <a class="close" role="button" title="Close" href="#close"><span class="ui-icon ui-icon-close">Close</span></a></span>';
-        $js  .= <<<EOF
+        $js  .= <<<JS
 <script>
-$(function() {
-    if ($(".time-picker").length > 0) {
-        try {
-            $(".time-picker").timePicker({
-                startTime: '{$prefs['timepicker_start_time']}',
-                endTime: '{$prefs['timepicker_end_time']}',
-                step: {$prefs['timepicker_step']},
-                show24Hours: {$prefs['timepicker_show_24']}
-            });
-        } catch(err) {
-            $("#messagepane").html('{$js_timepicker_msg}');
+$(document).ready(function () {
+    textpattern.Relay.register('txpAsyncForm.success', glzTimePicker);
+
+    function glzTimePicker() {
+        if ($(".time-picker").length > 0) {
+            try {
+                $("input.time-picker").timePicker({
+                    startTime: '{$prefs['timepicker_start_time']}',
+                    endTime: '{$prefs['timepicker_end_time']}',
+                    step: {$prefs['timepicker_step']},
+                    show24Hours: {$prefs['timepicker_show_24']}
+                });
+                $(".glz-custom-time-picker-field .txp-form-field-value").on("click", function (){
+                    $(this).children(".time-picker").trigger("click");
+                });
+            } catch(err) {
+                $("#messagepane").html('{$js_timepicker_msg}');
+            }
         }
     }
+
+    glzTimePicker();
 });
 </script>
-EOF;
-
+JS;
     }
 
     // localisable jquery message strings for prefs pane
     $js_textarea_msg = gTxt('glz_cf_js_textarea_msg');
     $js_script_msg = gTxt('glz_cf_js_script_msg');
     $js_configure_msg = gTxt('glz_cf_js_configure_msg');
-    $js  .= <<<EOF
+    $js  .= <<<JS
 <script>
 $(function() {
     var GLZ_CUSTOM_FIELDS;
@@ -182,7 +197,7 @@ $(function() {
     }
 });
 </script>
-EOF;
+JS;
     $js .= '<script src="'.$prefs['glz_cf_js_url'].'/glz_custom_fields'.($use_minified ? '.min' : '').'.js"></script>';
 
     // displays the notices we have gathered throughout the entire plugin
