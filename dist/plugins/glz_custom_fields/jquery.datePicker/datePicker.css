@@ -5,7 +5,7 @@
 Title : glz_custom_fields stylesheet
 Author : Gerhard Lazu + many contributors
 
-Last modified: 22 February 2018
+Last modified: 24 February 2018 (jcr)
 
 - - - - - - - - - - - - - - - - - - - - - */
 
@@ -140,4 +140,37 @@ div.dp-popup td {
 }
 div.dp-popup td.disabled {
 	cursor: default;
+}
+
+/* button */
+
+.glz-custom-date-picker-field .txp-form-field-value {
+	position: relative;
+}
+input.dp-applied {
+	text-indent: 2em;
+}
+a.dp-choose-date {
+	position: absolute;
+	top: 1px;
+	left: 1px;
+	width: 16px;
+	height: 16px;
+	padding: 6px;
+	margin: 0;
+	display: block;
+	text-indent: -2000px;
+	overflow: hidden;
+	background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cg fill='%23333'%3E%3Cpath d='M4 2h3v1H4zm5 0h3v1H9zm5 12H2V3h12v11zM3 13h10V5H3v8z'/%3E%3Cpath d='M7 6L6 8h1v4h2V6z'/%3E%3C/g%3E%3C/svg%3E");
+	background-position: 6px 6px;
+	background-size: 16px 16px;
+	background-repeat: no-repeat;
+	filter: opacity(55%);
+}
+a.dp-choose-date:hover,
+a.dp-choose-date:active {
+	filter: opacity(100%);
+}
+a.dp-choose-date.dp-disabled {
+	filter: opacity(30%);
 }

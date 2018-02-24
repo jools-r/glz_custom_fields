@@ -5,7 +5,7 @@
 Title : glz_custom_fields stylesheet
 Author : Gerhard Lazu + many contributors
 
-Last modified: 22 February 2018
+Last modified: 24 February 2018 (jcr)
 
 - - - - - - - - - - - - - - - - - - - - - */
 
@@ -39,4 +39,35 @@ div.time-picker li {
 div.time-picker li.selected {
   background: #fea;
   color: #000;
+}
+
+/* button */
+
+.glz-custom-time-picker-field .txp-form-field-value {
+	position: relative;
+}
+input.time-picker {
+	text-indent: 2em;
+}
+.glz-custom-time-picker-field .txp-form-field-value::before {
+	position: absolute;
+	top: 1px;
+	left: 1px;
+	width: 16px;
+	height: 16px;
+	padding: 6px;
+	margin: 0;
+	display: block;
+	content: "";
+	text-indent: -2000px;
+	overflow: hidden;
+	background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cg fill='%23333'%3E%3Cpath d='M7 8V4h2v5l-4 1.5L4.5 9z'/%3E%3Cpath d='M1 8a7 7 0 1 1 14 0A7 7 0 0 1 1 8zm7 5c2.762 0 5-2.238 5-5s-2.238-5-5-5-5 2.238-5 5 2.238 5 5 5z'/%3E%3C/g%3E%3C/svg%3E");
+	background-position: 7px 7px;
+	background-size: 15px 15px;
+	background-repeat: no-repeat;
+	filter: opacity(45%);
+}
+.glz-custom-time-picker-field .txp-form-field-value:hover::before {
+	filter: opacity(100%);
+	cursor: pointer;
 }
