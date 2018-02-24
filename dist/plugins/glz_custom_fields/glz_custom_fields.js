@@ -20,28 +20,28 @@ $(function() {
     // init toggle custom field "value" field:
     // – disable for special custom types / types that have no_value
     // – show path field for custom scripts
-    toggle_type_link();
+    glzToggleTypeLink();
     if ( $.inArray($("select#custom_set_type :selected").attr("value"), [].concat(GLZ_CUSTOM_FIELDS.special_custom_types, GLZ_CUSTOM_FIELDS.no_value_custom_types)) != -1 ) {
-        custom_field_value_off();
+        glzCustomFieldValueOff();
     } else if ( $("select#custom_set_type :selected").attr("value") == "custom-script" ) {
-        custom_field_value_path();
+        glzCustomFieldValuePath();
     }
     // update custom field "value" field if type changed
     $("select#custom_set_type").change( function() {
-        toggle_type_link();
+        glzToggleTypeLink();
         if ( $.inArray($("select#custom_set_type :selected").attr("value"), [].concat(GLZ_CUSTOM_FIELDS.special_custom_types, GLZ_CUSTOM_FIELDS.no_value_custom_types)) != -1 ) {
-            custom_field_value_off();
+            glzCustomFieldValueOff();
         } else if ( $("select#custom_set_type :selected").attr("value") == "custom-script" ) {
-            custom_field_value_path();
+            glzCustomFieldValuePath();
         } else {
-            custom_field_value_on();
+            glzCustomFieldValueOn();
         }
     });
 
     // WRITE TAB: Add a reset link to all radio custom fields
 
-    // on first load
-    add_reset_button();
+    // add radio field reset button
+    glzResetRadio();
 
     // reset all radio buttons if "reset" is clicked (also after async save)
     $(".txp-layout-4col-alt").on("click", ".glz-custom-field-reset", function() {
@@ -91,7 +91,7 @@ $(function() {
     // ### RE-USABLE FUNCTIONS ###
 
     // add reset button to radio fields
-    function add_reset_button() {
+    function glzResetRadio() {
         // if there are radio fields
         if ($(".glz-custom-radio-field").length > 0) {
             // loop over each set
@@ -106,7 +106,7 @@ $(function() {
         }
     }
     // hide/disable custom field "value" input/textarea
-    function custom_field_value_off() {
+    function glzCustomFieldValueOff() {
     if ($("textarea#value").length) {
         GLZ_CUSTOM_FIELDS.textarea_value = $("textarea#value").html();
         $("textarea#value + br + span.information").html('');
@@ -118,7 +118,7 @@ $(function() {
         $("input#value + br + span.information").html('');
     }
     // show custom field "value" input + messages
-    function custom_field_value_on() {
+    function glzCustomFieldValueOn() {
         if ( $("input#value").length ) {
             $("input#value").remove();
         }
@@ -132,7 +132,7 @@ $(function() {
     }
     // remove custom field "value" input + messages
     // show path input + messages
-    function custom_field_value_path() {
+    function glzCustomFieldValuePath() {
         if ($("textarea#value").length) {
             $("textarea#value + br + span.information").html('');
             $("textarea#value").remove();
@@ -147,7 +147,7 @@ $(function() {
         }
     }
     // remove/show messages based on type drop-down value
-    function toggle_type_link() {
+    function glzToggleTypeLink() {
         $("select#custom_set_type").parent().find('br, span').remove();
         if ( $.inArray($("select#custom_set_type :selected").attr("value"), [].concat(GLZ_CUSTOM_FIELDS.special_custom_types, ["multi-select", "custom-script"])) != -1 ) {
             $("select#custom_set_type").after("<br><span class=\"information\"><a href=\"http://"+window.location.host+window.location.pathname+"?event=plugin_prefs.glz_custom_fields\">"+GLZ_CUSTOM_FIELDS.messages['configure']+"</a></span>");
