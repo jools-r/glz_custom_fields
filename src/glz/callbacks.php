@@ -251,42 +251,12 @@ function glz_custom_fields_install()
     global $all_custom_sets, $prefs;
     $msg = '';
 
+    // Set plugin preferences
+    glz_cf_prefs_install();
+
     // Change 'html' key of default custom fields from 'custom_set'
     // to 'text_input' to avoid confusion with glz set_types()
     safe_update('txp_prefs', "html = 'text_input'", "event = 'custom' AND html = 'custom_set'");
-
-    // set plugin preferences
-    $plugin_prefs = array(
-        'values_ordering'       => 'custom',
-        'multiselect_size'      => '5',
-        'datepicker_url'        => hu.'plugins/glz_custom_fields/jquery.datePicker',
-        'datepicker_format'     => 'dd/mm/yyyy',
-        'datepicker_first_day'  => 1,
-        'datepicker_start_date' => '01/01/2017',
-        'timepicker_url'        => hu.'plugins/glz_custom_fields/jquery.timePicker',
-        'timepicker_start_time' => '00:00',
-        'timepicker_end_time'   => '23:30',
-        'timepicker_step'       => 30,
-        'timepicker_show_24'    => true,
-        'custom_scripts_path'   => $prefs['path_to_site'].'/plugins/glz_custom_fields',
-        'glz_cf_css_url'        => hu.'plugins/glz_custom_fields',
-        'glz_cf_js_url'         => hu.'plugins/glz_custom_fields'
-    );
-    // set prefs (but don't reset already set prefs)
-    glz_custom_fields_MySQL('set_plugin_prefs', $plugin_prefs, '', $no_reset = true);
-
-    // PLUGIN PREFS in future under Admin > Preferences so no longer remove
-/*
-  // let's update plugin preferences, make sure they won't appear under Admin > Preferences
-  safe_query("
-    UPDATE
-      `".PFX."txp_prefs`
-    SET
-      `type` = '10'
-    WHERE
-      `event` = 'glz_custom_f'
-  ");
-*/
 
     // Create a search section if not already available (for searching by custom fields)
     if (empty(safe_row("name", 'txp_section', "name='search'"))) {

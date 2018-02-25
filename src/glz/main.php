@@ -19,6 +19,7 @@ if (@txpinterface === 'admin') {
     );
 
     // Check if all tables exist and everything is setup properly
+    add_privs('prefs.glz_custom_f', '1');
     // Disable regular customs preferences (remove privs)
     $txp_permissions['prefs.custom'] = '';
 
@@ -43,10 +44,6 @@ if (@txpinterface === 'admin') {
     add_privs('glz_custom_fields', '1,2');
     register_tab('extensions', 'glz_custom_fields', gTxt('glz_cf_tab_name'));
     register_callback('glz_custom_fields', 'glz_custom_fields');
-
-    // Plugin preferences
-    add_privs('plugin_prefs.glz_custom_fields', '1,2');
-    register_callback('glz_custom_fields_preferences', 'plugin_prefs.glz_custom_fields');
 
     // Replace default custom fields with modified glz custom fields
     add_privs('glz_custom_fields_replace', '1,2,3,4,5,6');
@@ -233,7 +230,7 @@ function glz_custom_fields()
         <h1 class="txp-heading">'.gTxt('glz_cf_tab_name').'</h1>
     </div>
     <div class="txp-layout-2col">
-        <a class="glz-cf-setup-switch" href="?event=plugin_prefs.glz_custom_fields">'.gTxt('glz_cf_setup_prefs').'</a>
+        <a class="glz-cf-setup-switch" href="?event=prefs#prefs_group_glz_custom_f">'.gTxt('glz_cf_setup_prefs').'</a>
     </div>
 </div>';
 
@@ -380,176 +377,3 @@ function glz_custom_fields()
 '    </p>'.n.
 '</form>'.n;
 }
-
-
-// -------------------------------------------------------------
-// glz_custom_fields preferences
-function glz_custom_fields_preferences() {
-
-    global $event;
-    $msg = '';
-
-    if ( $_POST && gps('save') ) {
-        glz_custom_fields_MySQL("set_plugin_prefs", $_POST['glz_custom_fields_prefs']);
-        $msg = gTxt('glz_cf_preferences_updated');
-    }
-    pagetop(gTxt('glz_cf_prefpane_title'), $msg);
-    // need to re-fetch from db because this has changed since $prefs has been populated
-    $current_preferences = glz_custom_fields_MySQL('get_plugin_prefs');
-
-    // custom_fields
-    $arr_values_ordering = array(
-        'ascending'   => gTxt('glz_cf_prefs_value_asc'),
-        'descending'  => gTxt('glz_cf_prefs_value_desc'),
-        'custom'      => gTxt('glz_cf_prefs_value_custom')
-    );
-    $values_ordering = '<select name="glz_custom_fields_prefs[values_ordering]" id="glz_custom_fields_prefs_values_ordering" class="select-medium">';
-    foreach ( $arr_values_ordering as $value => $title ) {
-        $selected = ($current_preferences['values_ordering'] == $value) ? ' selected="selected"' : '';
-        $values_ordering .= "<option value=\"$value\"$selected>$title</option>";
-    }
-    $values_ordering .= "</select>";
-
-    $multiselect_size = '<input type="text" class="input-medium" name="glz_custom_fields_prefs[multiselect_size]" id="glz_custom_fields_prefs_multiselect_size" value="'.$current_preferences['multiselect_size'].'" />';
-
-    $custom_scripts_path_error = ( @fopen($current_preferences['custom_scripts_path'], "r") ) ?
-    '' :
-    '<br><span class="error">'.gTxt('glz_cf_prefs_custom_scripts_path_error').'</span>';
-
-    // jquery.datePicker
-    $datepicker_url_error = ( @fopen($current_preferences['datepicker_url']."/datePicker.js", "r") ) ?
-    '' :
-    '<br><span class="error">'.gTxt('glz_cf_prefs_datepicker_url_error').'</span>';
-    $arr_date_format = array("dd/mm/yyyy", "mm/dd/yyyy", "yyyy-mm-dd", "dd mm yy");
-    $date_format = '<select name="glz_custom_fields_prefs[datepicker_format]" id="glz_custom_fields_prefs_datepicker_format" class="select-medium">';
-    foreach ( $arr_date_format as $format ) {
-        $selected = ($current_preferences['datepicker_format'] == $format) ? ' selected="selected"' : '';
-        $date_format .= "<option value=\"$format\"$selected>$format</option>";
-    }
-    $date_format .= "</select>";
-
-    $arr_days = array('Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday');
-    $first_day = '<select name="glz_custom_fields_prefs[datepicker_first_day]" id="glz_custom_fields_prefs_datepicker_first_day" class="select-medium">';
-    foreach ( $arr_days as $key => $day ) {
-        $selected = ($current_preferences['datepicker_first_day'] == $key) ? ' selected="selected"' : '';
-        $first_day .= "<option value=\"$key\"$selected>".gTxt('glz_cf_prefs_'.strtolower($day))."</option>";
-    }
-    $first_day .= "</select>";
-
-    $start_date = '<input type="text" class="input-medium" name="glz_custom_fields_prefs[datepicker_start_date]" id="glz_custom_fields_prefs_datepicker_start_date" value="'.$current_preferences['datepicker_start_date'].'" />';
-
-    // jquery.timePicker
-    $timepicker_url_error = ( @fopen($current_preferences['timepicker_url']."/timePicker.js", "r") ) ?
-    '' :
-    '<br><span class="error">'.gTxt('glz_cf_prefs_timepicker_url_error').'</span>';
-    $arr_time_format = array('true' => "24 hours", 'false' => "12 hours");
-    $show_24 = '<select name="glz_custom_fields_prefs[timepicker_show_24]" id="glz_custom_fields_prefs_timepicker_show_24" class="select-medium">';
-    foreach ( $arr_time_format as $value => $title ) {
-        $selected = ($current_preferences['timepicker_show_24'] == $value) ? ' selected="selected"' : '';
-        $show_24 .= "<option value=\"$value\"$selected>".gTxt('glz_cf_prefs_'.str_replace(" ", "_", $title))."</option>";
-    }
-    $show_24 .= "</select>";
-
-    echo '<div class="txp-layout">
-    <div class="txp-layout-2col">
-        <h1 class="txp-heading">'.gTxt('glz_cf_prefpane_title').'</h1>
-    </div>
-    <div class="txp-layout-2col">
-        <a class="glz-cf-setup-switch" href="?event=glz_custom_fields">'.gTxt('glz_cf_back_to_cf_window').'</a>
-    </div>
-</div>';
-
-    // initialize replacement var
-    if(!isset($gTxt)) {
-        $gTxt = 'gTxt';
-    }
-    $out = <<<EOF
-<form class="txp-edit" action="index.php" method="post">
-
-<h2 class="pref-heading">Custom Fields</h2>
-
-<div class="txp-form-field glz-cf-prefs-values-ordering">
-    <div class="txp-form-field-label"><label for="glz_custom_fields_prefs_values_ordering">{$gTxt('glz_cf_prefs_value_ordering')}</label></div>
-    <div class="txp-form-field-value">{$values_ordering}</div>
-</div>
-
-<div class="txp-form-field glz-cf-prefs-multiselect-size">
-    <div class="txp-form-field-label"><label for="glz_custom_fields_prefs_multiselect_size">{$gTxt('glz_cf_prefs_multiselect_size')}</label></div>
-    <div class="txp-form-field-value">{$multiselect_size}</div>
-</div>
-
-<div class="txp-form-field glz-cf-prefs-css-url">
-    <div class="txp-form-field-label"><label for="glz_custom_fields_prefs_custom_scripts_path">{$gTxt('glz_cf_prefs_css_url')}</label></div>
-    <div class="txp-form-field-value"><input type="text" class="input-large" name="glz_custom_fields_prefs[custom_scripts_path]" id="glz_custom_fields_prefs_custom_scripts_path" value="{$current_preferences['glz_cf_css_url']}" /></div>
-</div>
-
-<div class="txp-form-field glz-cf-prefs-js-url">
-    <div class="txp-form-field-label"><label for="glz_custom_fields_prefs_custom_scripts_path">{$gTxt('glz_cf_prefs_js_url')}</label></div>
-    <div class="txp-form-field-value"><input type="text" class="input-large" name="glz_custom_fields_prefs[custom_scripts_path]" id="glz_custom_fields_prefs_custom_scripts_path" value="{$current_preferences['glz_cf_js_url']}" /></div>
-</div>
-
-<div class="txp-form-field glz-cf-prefs-custom-scripts-path">
-    <div class="txp-form-field-label"><label for="glz_custom_fields_prefs_custom_scripts_path">{$gTxt('glz_cf_prefs_custom_scripts_path')}</label></div>
-    <div class="txp-form-field-value"><input type="text" class="input-large" name="glz_custom_fields_prefs[custom_scripts_path]" id="glz_custom_fields_prefs_custom_scripts_path" value="{$current_preferences['custom_scripts_path']}" /><br><span class="information">{$gTxt('glz_cf_edit_path_from_root')}</span>{$custom_scripts_path_error}</div>
-</div>
-
-<h2 class="pref-heading">{$gTxt('glz_cf_date-picker')} <a class="information" href="http://www.kelvinluck.com/assets/jquery/datePicker/v2/demo/index.html" title="A flexible unobtrusive calendar component for jQuery">jQuery datePicker</a></h2>
-
-<div class="txp-form-field glz-cf-prefs-datepicker-url">
-    <div class="txp-form-field-label"><label for="glz_custom_fields_prefs_datepicker_url">{$gTxt('glz_cf_prefs_datepicker_url')}</label></div>
-    <div class="txp-form-field-value"><input type="text" class="input-large" name="glz_custom_fields_prefs[datepicker_url]" id="glz_custom_fields_prefs_datepicker_url" value="{$current_preferences['datepicker_url']}" />{$datepicker_url_error}</div>
-</div>
-
-<div class="txp-form-field glz-cf-prefs-datepicker-format">
-    <div class="txp-form-field-label"><label for="glz_custom_fields_prefs_datepicker_format">{$gTxt('glz_cf_prefs_datepicker_format')}</label></div>
-    <div class="txp-form-field-value">{$date_format}</div>
-</div>
-
-<div class="txp-form-field glz-cf-prefs-datepicker-first-day">
-    <div class="txp-form-field-label"><label for="glz_custom_fields_prefs_datepicker_first_day">{$gTxt('glz_cf_prefs_datepicker_first_day')}</label></div>
-    <div class="txp-form-field-value">{$first_day}</div>
-</div>
-
-<div class="txp-form-field glz-cf-prefs-datepicker-start-date">
-    <div class="txp-form-field-label"><label for="glz_custom_fields_prefs_datepicker_start_date">{$gTxt('glz_cf_prefs_datepicker_start_date')}</label></div>
-    <div class="txp-form-field-value">{$start_date}<br><span class="information">{$gTxt('glz_cf_prefs_datepicker_start_date_info')}</span></div>
-</div>
-
-<h2 class="pref-heading">{$gTxt('glz_cf_time-picker')} <a class="information" href="http://labs.perifer.se/timedatepicker/" title="jQuery time picker">jQuery timePicker</a></h2>
-
-<div class="txp-form-field glz-cf-prefs-timepicker-url">
-    <div class="txp-form-field-label"><label for="glz_custom_fields_prefs_timepicker_url">{$gTxt('glz_cf_prefs_timepicker_url')}</label></div>
-    <div class="txp-form-field-value"><input type="text" class="input-large" name="glz_custom_fields_prefs[timepicker_url]" id="glz_custom_fields_prefs_timepicker_url" value="{$current_preferences['timepicker_url']}" />{$timepicker_url_error}</div>
-</div>
-
-<div class="txp-form-field glz-cf-prefs-timepicker-start-time">
-    <div class="txp-form-field-label"><label for="glz_custom_fields_prefs_timepicker_start_time">{$gTxt('glz_cf_prefs_timepicker_start_time')}</label></div>
-    <div class="txp-form-field-value"><input type="text" name="glz_custom_fields_prefs[timepicker_start_time]" id="glz_custom_fields_prefs_timepicker_start_time" value="{$current_preferences['timepicker_start_time']}" /></div>
-</div>
-
-<div class="txp-form-field glz-cf-prefs-timepicker-end-time">
-    <div class="txp-form-field-label"><label for="glz_custom_fields_prefs_timepicker_end_time">{$gTxt('glz_cf_prefs_timepicker_end_time')}</label></div>
-    <div class="txp-form-field-value"><input type="text" name="glz_custom_fields_prefs[timepicker_end_time]" id="glz_custom_fields_prefs_timepicker_end_time" value="{$current_preferences['timepicker_end_time']}" /></div>
-</div>
-
-<div class="txp-form-field glz-cf-prefs-timepicker-step">
-    <div class="txp-form-field-label"><label for="glz_custom_fields_prefs_timepicker_step">{$gTxt('glz_cf_prefs_timepicker_step')}</label></div>
-    <div class="txp-form-field-value"><input type="text" name="glz_custom_fields_prefs[timepicker_step]" id="glz_custom_fields_prefs_timepicker_step" value="{$current_preferences['timepicker_step']}" /></div>
-</div>
-
-<div class="txp-form-field glz-cf-prefs-timepicker-show-24">
-    <div class="txp-form-field-label"><label for="glz_custom_fields_prefs_timepicker_show_24">{$gTxt('glz_cf_prefs_timepicker_format')}</label></div>
-    <div class="txp-form-field-value">{$show_24}</div>
-</div>
-
-<p class="txp-edit-actions">
-    <input class="publish" type="submit" name="save" value="{$gTxt('save')}" />
-    <input type="hidden" name="event" value="plugin_prefs.glz_custom_fields" />
-</p>
-</form>
-EOF;
-
-    echo $out;
-}
-
-?>

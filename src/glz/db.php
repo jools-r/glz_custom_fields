@@ -52,9 +52,6 @@ function glz_custom_fields_MySQL($do, $name='', $table='', $extra='')
                 return glz_get_plugin_prefs($name);
                 break;
 
-            case 'set_plugin_prefs':
-                return glz_set_plugin_prefs($name, $extra);
-                break;
         }
     } else {
         trigger_error(gTxt('glz_cf_no_do'), E_ERROR);
@@ -428,19 +425,6 @@ function glz_custom_fields_update_count()
 }
 
 // -------------------------------------------------------------
-
-// -------------------------------------------------------------
-// sets all plugin preferences
-function glz_set_plugin_prefs($options, $no_reset = false) {
-    // DEBUG
-    // die(dmp($options, $no_reset));
-    $position = 200;
-    foreach ($options as $name => $val) {
-        // if $no_reset is true, skip already set prefs
-        if ($no_reset == true) {
-            if (get_pref($name)) {
-                continue;
-            }
 // Gets all plugin preferences
 function glz_get_plugin_prefs($arr_preferences)
 {
@@ -449,8 +433,6 @@ function glz_get_plugin_prefs($arr_preferences)
         while ($a = nextRow($r)) {
             $out[$a['name']] = stripslashes($a['val']);
         }
-        set_pref($name, addslashes(addslashes(trim($val))), 'glz_custom_f', PREF_PLUGIN, 'text_input', $position);
-        $position++;
     }
     return $out;
 }

@@ -15,6 +15,7 @@
     "code"          : {"file" : [
                           "./src/glz/db.php",
                           "./src/glz/helpers.php",
+                          "./src/glz/prefpane.php",
                           "./src/glz/field-types.php",
                           "./src/glz/callbacks.php",
                           "./src/glz/main.php"

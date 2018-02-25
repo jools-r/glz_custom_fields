@@ -135,7 +135,7 @@ textpattern.Relay.register('txpAsyncForm.success', glzResetRadio);
     function glzToggleTypeLink() {
         $("select#custom_set_type").parent().find('br, span').remove();
         if ( $.inArray($("select#custom_set_type :selected").attr("value"), [].concat(GLZ_CUSTOM_FIELDS.special_custom_types, ["multi-select", "custom-script"])) != -1 ) {
-            $("select#custom_set_type").after("<br><span class=\"information\"><a href=\"http://"+window.location.host+window.location.pathname+"?event=plugin_prefs.glz_custom_fields\">"+GLZ_CUSTOM_FIELDS.messages['configure']+"</a></span>");
+            $("select#custom_set_type").after("<br><span class=\"information\"><a href=\"http://"+window.location.host+window.location.pathname+"?event=prefs#prefs_group_glz_custom_f\">"+GLZ_CUSTOM_FIELDS.messages['configure']+"</a></span>");
         }
     }
 

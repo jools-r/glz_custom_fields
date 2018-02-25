@@ -39,6 +39,7 @@ with instant gratification.
 - New js/css URL location prefs: locate your files where you want them in your project (also for multisite installations)
 - Translatable: now uses Textpattern gTxt function and textpacks
 - Uses TXP’s own error messaging system
+- Plugin preferences now handled in Admin › Preferences
 - HTML aligned to ‘Hive’ admin styling
 - Updated + minified js/css
 - Datepicker/timepicker libraries updated (deprecated $.browser detection removed to prevent misleading error message on write tab)
