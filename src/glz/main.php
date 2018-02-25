@@ -355,7 +355,7 @@ function glz_custom_fields()
 '    <div class="txp-form-field glz-cf-name">
         <div class="txp-form-field-label"><label for="custom_set_name">'.gTxt('glz_cf_edit_name').'</label></div>
         <div class="txp-form-field-value"><input type="text" name="custom_set_name" value="'.htmlspecialchars($custom_name).'" id="custom_set_name" />
-        <br><span class="information">'.gTxt('glz_cf_edit_name_info').'</span></div>
+        <br><span class="information">'.gTxt('glz_cf_edit_name_hint').'</span></div>
     </div>'.n.
 '    <div class="txp-form-field glz-cf-type">
         <div class="txp-form-field-label"><label for="custom_set_type">'.gTxt('glz_cf_edit_type').'</label></div>
@@ -366,7 +366,7 @@ function glz_custom_fields()
 '    <div class="txp-form-field glz-cf-position">
         <div class="txp-form-field-label"><label for="custom_set_position">'.gTxt('glz_cf_edit_position').'</label></div>
         <div class="txp-form-field-value"><input type="text" name="custom_set_position" value="'.htmlspecialchars($custom_set_position).'" id="custom_set_position" />
-        <br><span class="information">'.gTxt('glz_cf_edit_position_info').'</span></div>
+        <br><span class="information">'.gTxt('glz_cf_edit_position_hint').'</span></div>
     </div>'.n.
 '    <div class="txp-form-field glz-cf-value">
         <div class="txp-form-field-label"><label for="value">'.gTxt('glz_cf_edit_value').'</label></div>
