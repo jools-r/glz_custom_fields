@@ -5,8 +5,8 @@ global $event, $step, $use_minified;
 $use_minified = true;
 // DEBUG: set to false to load regular (non-minified) js and css files
 
-// globals, expensive operations mostly
-before_glz_custom_fields();
+// Initialise reused variables
+init_glz_custom_fields();
 
 if (@txpinterface === 'admin') {
 
