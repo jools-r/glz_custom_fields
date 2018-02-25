@@ -2,8 +2,8 @@
 
 global $event, $step, $use_minified;
 
-// DEBUG: set to false to load regular js and css files
 $use_minified = true;
+// DEBUG: set to false to load regular (non-minified) js and css files
 
 // globals, expensive operations mostly
 before_glz_custom_fields();
@@ -23,20 +23,20 @@ if (@txpinterface === 'admin') {
     register_callback('glz_custom_fields_install', 'plugin_lifecycle.glz_custom_fields', 'installed');
 
     // Restrict css/js + pre-save to relevant admin pages only
-    if (in_array($event, $glz_admin_events) ) {
+    if (in_array($event, $glz_admin_events)) {
 
-        // add CSS & JS to admin head area
+        // Add CSS & JS to admin head area
         add_privs('glz_custom_fields_inject_css_js', '1,2,3,4,5,6');
         register_callback('glz_custom_fields_inject_css_js', 'admin_side', 'head_end');
 
-        // convert all custom field values to strings before saving (e.g. checkboxes & multi-selects)
-        if ( ($step === 'edit') || ($step === 'create') ) {
+        // Write tab: array -> string conversion on save/create
+        if (($step === 'edit') || ($step === 'create')) {
             add_privs('glz_custom_fields_before_save', '1,2,3,4,5,6');
             register_callback('glz_custom_fields_before_save', 'article', '', 1);
         }
     }
 
-    // Add custom fields tab under extensions
+    // Custom fields tab under extensions
     add_privs('glz_custom_fields', '1,2');
     register_tab('extensions', 'glz_custom_fields', gTxt('glz_cf_tab_name'));
     register_callback('glz_custom_fields', 'glz_custom_fields');
@@ -47,35 +47,34 @@ if (@txpinterface === 'admin') {
 
     // Replace default custom fields with modified glz custom fields
     add_privs('glz_custom_fields_replace', '1,2,3,4,5,6');
-    // -> Custom fields
+    // -> custom fields
     register_callback('glz_custom_fields_replace', 'article_ui', 'custom_fields');
-    // -> Textareas
+    // -> textareas
     register_callback('glz_custom_fields_replace', 'article_ui', 'body');
-
 }
 
 // -------------------------------------------------------------
-// everything is happening in this function... generates the content for Extensions > Custom Fields
-function glz_custom_fields() {
-
+// Main function: generates the content for Extensions > Custom Fields
+function glz_custom_fields()
+{
     global $event, $all_custom_sets, $prefs;
     $msg = '';
 
-    // we have $_POST, let's see if there is any CRUD
-    if ( $_POST ) {
+    // We have $_POST, let's see if there is any CRUD
+    if ($_POST) {
         $incoming = stripPost();
         // DEBUG
         // die(dmp($incoming));
 
         extract($incoming);
 
-        // create an empty $value if it's not set in the $_POST
-        if ( !isset($value) ) {
+        // Create an empty $value if it's not set in the $_POST
+        if (!isset($value)) {
             $value = '';
         }
 
-        // we are deleting a new custom field
-        if ( gps('delete') ) {
+        // Delete a new custom field
+        if (gps('delete')) {
             glz_custom_fields_MySQL("delete", $custom_set, "txp_prefs");
             glz_custom_fields_MySQL("delete", $custom_set, "txp_lang");
             glz_custom_fields_MySQL("delete", $custom_set, "custom_fields");
@@ -84,11 +83,14 @@ function glz_custom_fields() {
             $msg = gTxt('glz_cf_deleted', array('{custom_set_name}' => $custom_set_name));
         }
 
-        // we are resetting one of the mighty 10
-        if ( gps('reset') ) {
-            glz_custom_fields_MySQL("reset",  $custom_set, "txp_prefs");
+        // Reset one of the mighty 10 standard custom fields
+        if (gps('reset')) {
+            glz_custom_fields_MySQL("reset", $custom_set, "txp_prefs");
             glz_custom_fields_MySQL("delete", $custom_set, "custom_fields");
-            glz_custom_fields_MySQL("reset", glz_custom_number($custom_set), "textpattern",
+            glz_custom_fields_MySQL(
+                "reset",
+                glz_custom_number($custom_set),
+                "textpattern",
                 array(
                     'custom_set_type' => $custom_set_type,
                     'custom_field' => glz_custom_number($custom_set)
@@ -98,43 +100,54 @@ function glz_custom_fields() {
             $msg = gTxt('glz_cf_reset', array('{custom_set_name}' => $custom_set_name));
         }
 
-        // we are adding a new custom field
-        if ( gps("custom_field_number") ) {
+        // Add a new custom field
+        if (gps("custom_field_number")) {
             $custom_set_name = gps("custom_set_name");
             $custom_field_number = gps("custom_field_number");
 
-            // a name has been specified
-            if ( !empty($custom_set_name) ) {
-
+            // A name has been specified
+            if (!empty($custom_set_name)) {
                 $custom_set_name = glz_clean_string($custom_set_name);
                 $custom_set = "custom_".intval($custom_field_number)."_set";
 
                 $name_exists = glz_check_custom_set_name($all_custom_sets, $custom_set_name, $custom_set);
 
-                // if name doesn't exist
-                if ( $name_exists == FALSE ) {
-                    glz_custom_fields_MySQL("new", $custom_set_name, "txp_prefs",
+                // If name doesn't exist
+                if ($name_exists == false) {
+                    glz_custom_fields_MySQL(
+                        "new",
+                        $custom_set_name,
+                        "txp_prefs",
                         array(
                             'custom_field_number' => $custom_field_number,
                             'custom_set_type'     => $custom_set_type,
                             'custom_set_position' => $custom_set_position
                         )
                     );
-                    glz_custom_fields_MySQL("new", $custom_set_name, "txp_lang",
+                    glz_custom_fields_MySQL(
+                        "new",
+                        $custom_set_name,
+                        "txp_lang",
                         array(
                             'custom_field_number' => $custom_field_number,
                             'lang'                => $GLOBALS['prefs']['language']
                         )
                     );
-                    glz_custom_fields_MySQL("new", $custom_set_name, "textpattern",
+                    glz_custom_fields_MySQL(
+                        "new",
+                        $custom_set_name,
+                        "textpattern",
                         array(
                             'custom_field_number' => $custom_field_number,
                             'custom_set_type'     => $custom_set_type
                         )
                     );
-                    // there are custom fields for which we do not need to touch custom_fields table
-                    if ( !in_array($custom_set_type, array("textarea", "text_input")) ) {
-                        glz_custom_fields_MySQL("new", $custom_set_name, "custom_fields",
+                    // There are custom fields for which we do not need to touch custom_fields table
+                    if (!in_array($custom_set_type, array("textarea", "text_input"))) {
+                        glz_custom_fields_MySQL(
+                            "new",
+                            $custom_set_name,
+                            "custom_fields",
                             array(
                                 'custom_field_number' => $custom_field_number,
                                 'value'               => $value
@@ -143,26 +156,27 @@ function glz_custom_fields() {
                     }
                     $msg = gTxt('glz_cf_created', array('{custom_set_name}' => $custom_set_name));
                 } else {
-                    // name exists, abort
+                    // Name exists, abort
                     $msg = array(gTxt('glz_cf_exists', array('{custom_set_name}' => $custom_set_name)), E_ERROR);
                 }
-
             } else {
-                // no name given
+                // No name given
                 $msg = array(gTxt('glz_cf_no_name'), E_ERROR);
             }
-
         }
 
-        // we are editing an existing custom field
-        if ( gps('save') ) {
-            if ( !empty($custom_set_name) ) {
+        // Edit an existing custom field
+        if (gps('save')) {
+            if (!empty($custom_set_name)) {
                 $custom_set_name = glz_clean_string($custom_set_name);
 
                 $name_exists = glz_check_custom_set_name($all_custom_sets, $custom_set_name, $custom_set);
-                // if name doesn't exist we'll need to create a new custom_set
-                if ( $name_exists == FALSE ) {
-                    glz_custom_fields_MySQL("update", $custom_set, "txp_prefs",
+                // If name doesn't exist we'll need to create a new custom_set
+                if ($name_exists == false) {
+                    glz_custom_fields_MySQL(
+                        "update",
+                        $custom_set,
+                        "txp_prefs",
                         array(
                             'custom_set_name'     => $custom_set_name,
                             'custom_set_type'     => $custom_set_type,
@@ -170,18 +184,24 @@ function glz_custom_fields() {
                         )
                     );
 
-                    // custom sets need to be changed based on their type
-                    glz_custom_fields_MySQL("update", $custom_set, "textpattern",
+                    // Custom sets need to be changed based on their type
+                    glz_custom_fields_MySQL(
+                        "update",
+                        $custom_set,
+                        "textpattern",
                         array(
                             'custom_set_type' => $custom_set_type,
                             'custom_field' => glz_custom_number($custom_set)
                         )
                     );
 
-                    // for textareas we do not need to touch custom_fields table
-                    if ( $custom_set_type != "textarea" ) {
+                    // For textareas we do not need to touch custom_fields table
+                    if ($custom_set_type != "textarea") {
                         glz_custom_fields_MySQL("delete", $custom_set, "custom_fields");
-                        glz_custom_fields_MySQL("new", $custom_set_name, "custom_fields",
+                        glz_custom_fields_MySQL(
+                            "new",
+                            $custom_set_name,
+                            "custom_fields",
                             array(
                                 'custom_set'  => $custom_set,
                                 'value'       => $value
@@ -191,10 +211,9 @@ function glz_custom_fields() {
 
                     $msg = gTxt('glz_cf_updated', array('{custom_set_name}' => $custom_set_name));
                 } else {
-                    // name exists, abort
+                    // Name exists, abort
                     $msg = array(gTxt('glz_cf_exists', array('{custom_set_name}' => $custom_set_name)), E_ERROR);
                 }
-
             } else {
                 $msg = array(gTxt('glz_cf_no_name'), E_ERROR);
             }
@@ -215,10 +234,10 @@ function glz_custom_fields() {
     </div>
 </div>';
 
-    // need to re-fetch data since things modified
+    // Need to re-fetch data since things modified
     $all_custom_sets = glz_custom_fields_MySQL("all");
 
-    // the table with all custom fields follows
+    // The table with all custom fields follows
     echo
     n.'<div class="txp-listtables">'.n.
     '    <table class="txp-list glz_custom_fields">'.n.
@@ -233,17 +252,17 @@ function glz_custom_fields() {
     '        </thead>'.n.
     '        <tbody>'.n;
 
-    // looping through all our custom fields to build the table
+    // Looping through all our custom fields to build the table
     $i = 0;
-    foreach ( $all_custom_sets as $custom => $custom_set ) {
-        // first 10 fields cannot be deleted, just reset
-        if ( $i < 10 ) {
-            // only show 'reset' for custom fields that are set
-            $reset_delete = ( $custom_set['name'] ) ?
-                glz_form_buttons("reset", gTxt('glz_cf_action_reset'), $custom, htmlspecialchars($custom_set['name']), $custom_set['type'], '', 'return confirm(\''.gTxt('glz_cf_confirm_reset', array('{custom}' => $custom ) ).'\');') :
-                NULL;
+    foreach ($all_custom_sets as $custom => $custom_set) {
+        // First 10 fields cannot be deleted, just reset
+        if ($i < 10) {
+            // Only show 'reset' for custom fields that are set
+            $reset_delete = ($custom_set['name']) ?
+                glz_form_buttons("reset", gTxt('glz_cf_action_reset'), $custom, htmlspecialchars($custom_set['name']), $custom_set['type'], '', 'return confirm(\''.gTxt('glz_cf_confirm_reset', array('{custom}' => $custom )).'\');') :
+                null;
         } else {
-            $reset_delete = glz_form_buttons("delete", gTxt('glz_cf_action_delete'), $custom, htmlspecialchars($custom_set['name']), $custom_set['type'], '', 'return confirm(\''.gTxt('glz_cf_confirm_delete', array('{custom}' => $custom ) ).'\');');
+            $reset_delete = glz_form_buttons("delete", gTxt('glz_cf_action_delete'), $custom, htmlspecialchars($custom_set['name']), $custom_set['type'], '', 'return confirm(\''.gTxt('glz_cf_confirm_delete', array('{custom}' => $custom )).'\');');
         }
 
         $edit = glz_form_buttons("edit", gTxt('glz_cf_action_edit'), $custom, htmlspecialchars($custom_set['name']), $custom_set['type'], $custom_set['position']);
@@ -279,39 +298,39 @@ function glz_custom_fields() {
 
     $custom_set = gps('edit') ?
         gps('custom_set') :
-        NULL;
+        null;
 
     $custom_name = gps('edit') ?
         gps('custom_set_name') :
-        NULL;
+        null;
 
     $custom_set_position = gps('edit') ?
         gps('custom_set_position') :
-        NULL;
+        null;
 
     $arr_custom_set_types = glz_custom_set_types();
 
-    $custom_set_types = NULL;
-    foreach ( $arr_custom_set_types as $custom_type_group => $custom_types ) {
+    $custom_set_types = null;
+    foreach ($arr_custom_set_types as $custom_type_group => $custom_types) {
         $custom_set_types .= '<optgroup label="'.ucfirst($custom_type_group).'">'.n;
         foreach ($custom_types as $custom_type) {
-            $selected = ( gps('edit') && gps('custom_set_type') == $custom_type ) ?
+            $selected = (gps('edit') && gps('custom_set_type') == $custom_type) ?
                 ' selected="selected"' :
-                NULL;
+                null;
             $custom_set_types .= '<option value="'.$custom_type.'"'.$selected.'>'.gTxt('glz_cf_'.$custom_type).'</option>'.n;
         }
         $custom_set_types .= '</optgroup>'.n;
     }
 
-    // fetch values for this custom field
-    if ( gps('edit') ) {
-        if ( $custom_set_type == "text_input" ) {
+    // Fetch values for this custom field
+    if (gps('edit')) {
+        if ($custom_set_type == "text_input") {
             $arr_values = glz_custom_fields_MySQL('all_values', glz_custom_number($custom_set), '', array('custom_set_name' => $custom_set_name, 'status' => 4));
         } else {
             $arr_values = glz_custom_fields_MySQL("values", $custom_set, '', array('custom_set_name' => $custom_set_name));
         }
 
-        $values = ( $arr_values ) ? implode("\r\n", $arr_values) : '';
+        $values = ($arr_values) ? implode("\r\n", $arr_values) : '';
     } else {
         $values = '';
     }
@@ -319,8 +338,8 @@ function glz_custom_fields() {
     $action = gps('edit') ?
         '<input name="save" value="'.gTxt('save').'" type="submit" class="publish" />' :
         '<input name="add_new" value="'.gTxt('glz_cf_add_new_cf').'" type="submit" class="publish" />';
-    // this needs to be different for a script
-    $value = ( isset($custom_set_type) && $custom_set_type == "custom-script" ) ?
+    // This needs to be different for a script
+    $value = (isset($custom_set_type) && $custom_set_type == "custom-script") ?
         '<input type="text" name="value" id="value" value="'.$values.'" /><br>
          <span class="information">'.gTxt('glz_cf_js_script_msg').'</span>' :
         '<textarea name="value" id="value">'.$values.'</textarea><br>

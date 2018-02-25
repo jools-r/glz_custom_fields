@@ -1,16 +1,15 @@
 <?php
 
-
 // -------------------------------------------------------------
-// formats the custom set output based on its type
-function glz_format_custom_set_by_type($custom, $custom_id, $custom_set_type, $arr_custom_field_values, $custom_value = "", $default_value = "") {
-
-    if ( is_array($arr_custom_field_values) ) {
+// Formats the custom set output based on its type
+function glz_format_custom_set_by_type($custom, $custom_id, $custom_set_type, $arr_custom_field_values, $custom_value = "", $default_value = "")
+{
+    if (is_array($arr_custom_field_values)) {
         $arr_custom_field_values = array_map('glz_array_stripslashes', $arr_custom_field_values);
     }
 
-    switch ( $custom_set_type ) {
-        // these are the normal custom fields
+    switch ($custom_set_type) {
+        // These are the normal custom fields
         case "text_input":
             return array(
                 fInput("text", $custom, $custom_value, "edit", "", "", "22", "", $custom_id),
@@ -47,7 +46,7 @@ function glz_format_custom_set_by_type($custom, $custom_id, $custom_set_type, $a
                 'glz_text_area_field'
             );
 
-        // here start the special custom fields, might need to refactor the return, starting to repeat itself
+        // Here start the special custom fields, might need to refactor the return, starting to repeat itself
         case "date-picker":
             return array(
                 fInput("text", $custom, $custom_value, "edit date-picker", "", "", "22", "", $custom_id),
@@ -67,7 +66,7 @@ function glz_format_custom_set_by_type($custom, $custom_id, $custom_set_type, $a
                 'glz_custom_field_script'
             );
 
-        // a type has been passed that is not supported yet
+        // A type has been passed that is not supported yet
         default:
             return array(
                 gTxt('glz_cf_type_not_supported'),
