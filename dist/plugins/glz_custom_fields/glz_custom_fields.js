@@ -2,15 +2,15 @@ $(function() {
 textpattern.Relay.register('txpAsyncForm.success', glzResetRadio);
 
     // creating a global object to store variables, functions etc.
-    var GLZ_CUSTOM_FIELDS;
     if (GLZ_CUSTOM_FIELDS == undefined) {
+        var GLZ_CUSTOM_FIELDS;
         GLZ_CUSTOM_FIELDS = {};
         GLZ_CUSTOM_FIELDS.special_custom_types  = ["date-picker", "time-picker"];
         GLZ_CUSTOM_FIELDS.no_value_custom_types = ["text_input", "textarea"];
         GLZ_CUSTOM_FIELDS.messages = {
             'textarea' : "Each value on a separate line<br>One {default} value allowed",
             'script'   : "File name in your custom scripts path",
-            'configure': "Configure glz_custom_fields"
+            'configure': "Configure custom scripts path"
         }
     }
 
