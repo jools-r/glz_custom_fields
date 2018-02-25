@@ -73,145 +73,147 @@ function glz_format_custom_set_by_type($custom, $custom_id, $custom_set_type, $a
                 'glz_custom_field'
             );
     }
-
 }
 
 
 // -------------------------------------------------------------
-// had to duplicate the default selectInput() because trimming \t and \n didn't work + some other mods & multi-select
-function glz_selectInput($name = '', $id = '', $arr_values = '', $custom_value = '', $default_value = '', $multi = '') {
-  if ( is_array($arr_values) ) {
-    global $prefs;
-    $out = array();
+// Had to duplicate the default selectInput() because trimming \t and \n didn't work + some other mods & multi-select
+function glz_selectInput($name = '', $id = '', $arr_values = '', $custom_value = '', $default_value = '', $multi = '')
+{
+    if (is_array($arr_values)) {
+        global $prefs;
+        $out = array();
 
-    // if there is no custom_value coming from the article, let's use our default one
-    if ( empty($custom_value) )
-      $custom_value = $default_value;
+        // If there is no custom_value coming from the article, let's use our default one
+        if (empty($custom_value)) {
+            $custom_value = $default_value;
+        }
 
-    foreach ($arr_values as $key => $value) {
-      $selected = glz_selected_checked('selected', $key, $custom_value, $default_value);
-      $out[] = "<option value=\"$key\"{$selected}>$value</option>";
-    }
+        foreach ($arr_values as $key => $value) {
+            $selected = glz_selected_checked('selected', $key, $custom_value, $default_value);
+            $out[] = "<option value=\"$key\"{$selected}>$value</option>";
+        }
 
-    // we'll need the extra attributes as well as a name that will produce an array
-    if ($multi) {
-      $multi = ' multiple="multiple" size="'.$prefs['multiselect_size'].'"';
-      $name .= "[]";
-    }
+        // We'll need the extra attributes as well as a name that will produce an array
+        if ($multi) {
+            $multi = ' multiple="multiple" size="'.$prefs['multiselect_size'].'"';
+            $name .= "[]";
+        }
 
-    return "<select id=\"".glz_idify($id)."\" name=\"$name\" class=\"list\"$multi>".
+        return "<select id=\"".glz_idify($id)."\" name=\"$name\" class=\"list\"$multi>".
       ($default_value ? '' : "<option value=\"\"$selected>&nbsp;</option>").
-      ( $out ? join('', $out) : '').
+      ($out ? join('', $out) : '').
       "</select>";
-  }
-  else {
-    return gTxt('glz_cf_field_problems', array('{custom_set_name}' => $name));
+    } else {
+        return gTxt('glz_cf_field_problems', array('{custom_set_name}' => $name));
     }
 }
 
 
 // -------------------------------------------------------------
-// had to duplicate the default checkbox() to keep the looping in here and check against existing value/s
-function glz_checkbox($name = '', $arr_values = '', $custom_value = '', $default_value = '') {
-  if ( is_array($arr_values) ) {
-    $out = array();
+// Had to duplicate the default checkbox() to keep the looping in here and check against existing value/s
+function glz_checkbox($name = '', $arr_values = '', $custom_value = '', $default_value = '')
+{
+    if (is_array($arr_values)) {
+        $out = array();
 
-    // if there is no custom_value coming from the article, let's use our default one
-    if ( empty($custom_value) )
-      $custom_value = $default_value;
+        // If there is no custom_value coming from the article, let's use our default one
+        if (empty($custom_value)) {
+            $custom_value = $default_value;
+        }
 
-    foreach ( $arr_values as $key => $value ) {
-      $checked = glz_selected_checked('checked', $key, $custom_value);
+        foreach ($arr_values as $key => $value) {
+            $checked = glz_selected_checked('checked', $key, $custom_value);
 
-      $out[] = "<div class=\"txp-form-checkbox glz-cf-".str_replace("_", "-", glz_idify($key))."\"><input type=\"checkbox\" name=\"{$name}[]\" value=\"$key\" class=\"checkbox\" id=\"".glz_idify($key)."\"{$checked} /> <label for=\"".glz_idify($key)."\">$value</label></div>";
+            $out[] = "<div class=\"txp-form-checkbox glz-cf-".str_replace("_", "-", glz_idify($key))."\"><input type=\"checkbox\" name=\"{$name}[]\" value=\"$key\" class=\"checkbox\" id=\"".glz_idify($key)."\"{$checked} /> <label for=\"".glz_idify($key)."\">$value</label></div>";
+        }
+
+        return join('', $out);
+    } else {
+        return gTxt('glz_cf_field_problems', array('{custom_set_name}' => $name));
     }
-
-    return join('', $out);
-  }
-  else
-    return gTxt('glz_cf_field_problems', array('{custom_set_name}' => $name));
 }
 
 
 // -------------------------------------------------------------
-// had to duplicate the default radio() to keep the looping in here and check against existing value/s
-function glz_radio($name = '', $id = '', $arr_values = '', $custom_value = '', $default_value = '') {
-  if ( is_array($arr_values) ) {
-    $out = array();
+// Had to duplicate the default radio() to keep the looping in here and check against existing value/s
+function glz_radio($name = '', $id = '', $arr_values = '', $custom_value = '', $default_value = '')
+{
+    if (is_array($arr_values)) {
+        $out = array();
 
-    // if there is no custom_value coming from the article, let's use our default one
-    if ( empty($custom_value) )
-      $custom_value = $default_value;
+        // If there is no custom_value coming from the article, let's use our default one
+        if (empty($custom_value)) {
+            $custom_value = $default_value;
+        }
 
-    foreach ( $arr_values as $key => $value ) {
-      $checked = glz_selected_checked('checked', $key, $custom_value);
+        foreach ($arr_values as $key => $value) {
+            $checked = glz_selected_checked('checked', $key, $custom_value);
 
-//    $out[] = "<span><input type=\"radio\" name=\"$name\" value=\"$key\" class=\"radio\" id=\"{$id}_".glz_idify($key)."\"{$checked} /><label for=\"{$id}_".glz_idify($key)."\">$value</label></span><br />";
+            $out[] = "<div class=\"txp-form-radio glz-cf-".str_replace("_", "-", glz_idify($key))."\"><input type=\"radio\" name=\"$name\" value=\"$key\" class=\"radio\" id=\"{$id}_".glz_idify($key)."\"{$checked} /> <label for=\"{$id}_".glz_idify($key)."\">$value</label></div>";
+        }
 
-      $out[] = "<div class=\"txp-form-radio glz-cf-".str_replace("_", "-", glz_idify($key))."\"><input type=\"radio\" name=\"$name\" value=\"$key\" class=\"radio\" id=\"{$id}_".glz_idify($key)."\"{$checked} /> <label for=\"{$id}_".glz_idify($key)."\">$value</label></div>";
-
+        return join('', $out);
+    } else {
+        return gTxt('glz_cf_field_problems', array('{custom_set_name}' => $name));
     }
-
-    return join('', $out);
-  }
-  else
-    return gTxt('glz_cf_field_problems', array('{custom_set_name}' => $name));
 }
 
 
 // -------------------------------------------------------------
-// checking if this custom field has selected or checked values
-function glz_selected_checked($range_unit, $value, $custom_value = '') {
-  // we're comparing against a key which is a "clean" value
-  $custom_value = htmlspecialchars($custom_value);
+// Checking if this custom field has selected or checked values
+function glz_selected_checked($range_unit, $value, $custom_value = '')
+{
+    // We're comparing against a key which is a "clean" value
+    $custom_value = htmlspecialchars($custom_value);
 
-  // make an array if $custom_value contains multiple values
-  if ( strpos($custom_value, '|') )
-    $arr_custom_value = explode('|', $custom_value);
+    // Make an array if $custom_value contains multiple values
+    if (strpos($custom_value, '|')) {
+        $arr_custom_value = explode('|', $custom_value);
+    }
 
-  if ( isset($arr_custom_value) )
-    $out = ( in_array($value, $arr_custom_value) ) ? " $range_unit=\"$range_unit\"" : "";
-  else
-    $out = ($value == $custom_value) ? " $range_unit=\"$range_unit\"" : "";
+    if (isset($arr_custom_value)) {
+        $out = (in_array($value, $arr_custom_value)) ? " $range_unit=\"$range_unit\"" : "";
+    } else {
+        $out = ($value == $custom_value) ? " $range_unit=\"$range_unit\"" : "";
+    }
 
-  return $out;
+    return $out;
 }
 
 
 //-------------------------------------------------------------
-// button gets more consistent styling across browsers rather than input type="submit"
+// Button gets more consistent styling across browsers rather than input type="submit"
 // included in this plugin until in makes it into TXP - if that ever happens...
-function glz_fButton($type, $name, $contents='Submit', $value, $class='', $id='', $title='', $onClick='', $disabled = false) {
-  $o  = '<button type="'.$type.'" name="'.$name.'"';
-  $o .= ' value="'.htmlspecialchars($value).'"';
-  $o .= ($class)    ? ' class="'.$class.'"' : '';
-  $o .= ($id)       ? ' id="'.$id.'"' : '';
-  $o .= ($title)    ? ' title="'.$title.'"' : '';
-  $o .= ($onClick)  ? ' onclick="'.$onClick.'"' : '';
-  $o .= ($disabled) ? ' disabled="disabled"' : '';
-  $o .= '>';
-  $o .= $contents;
-  $o .= '</button>';
-  return $o;
+function glz_fButton($type, $name, $contents='Submit', $value, $class='', $id='', $title='', $onClick='', $disabled = false)
+{
+    $o  = '<button type="'.$type.'" name="'.$name.'"';
+    $o .= ' value="'.htmlspecialchars($value).'"';
+    $o .= ($class)    ? ' class="'.$class.'"' : '';
+    $o .= ($id)       ? ' id="'.$id.'"' : '';
+    $o .= ($title)    ? ' title="'.$title.'"' : '';
+    $o .= ($onClick)  ? ' onclick="'.$onClick.'"' : '';
+    $o .= ($disabled) ? ' disabled="disabled"' : '';
+    $o .= '>';
+    $o .= $contents;
+    $o .= '</button>';
+    return $o;
 }
 
 
 //-------------------------------------------------------------
-// evals a PHP script and displays output right under the custom field label
-function glz_custom_script($script, $custom, $custom_id, $custom_value) {
-
-    if ( is_file($script) ) {
+// Evals a PHP script and displays output right under the custom field label
+function glz_custom_script($script, $custom, $custom_id, $custom_value)
+{
+    if (is_file($script)) {
         include_once($script);
         $custom_function = basename($script, ".php");
-        if ( is_callable($custom_function) ) {
+        if (is_callable($custom_function)) {
             return call_user_func_array($custom_function, array($custom, $custom_id, $custom_value));
         } else {
             return gTxt('glz_cf_not_callable', array('{function}' => $custom_function, '{file}' => $script));
         }
     } else {
-        return gTxt('glz_cf_not_found', array('{file}' => $script));
+        return '<span class="error"><span class="ui-icon ui-icon-alert"></span> '.gTxt('glz_cf_not_found', array('{file}' => $script)).'</span>';
     }
-
 }
-
-?>

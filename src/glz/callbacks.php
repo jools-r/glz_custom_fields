@@ -109,19 +109,21 @@ function glz_custom_fields_inject_css_js()
 {
     global $date_picker, $time_picker, $prefs, $use_minified;
     $msg = array();
+    $min = ($use_minified) ? '.min' : '';
+
     // glz_cf stylesheets
-    $css = '<link rel="stylesheet" type="text/css" media="all" href="'.$prefs['glz_cf_css_url'].'/glz_custom_fields'.($use_minified ? '.min' : '').'.css">'.n;
+    $css = '<link rel="stylesheet" type="text/css" media="all" href="'.$prefs['glz_cf_css_asset_url'].'/glz_custom_fields'.$min.'.css">'.n;
     // glz_cf javascript
     $js = '';
 
-        $css .= '<link rel="stylesheet" type="text/css" media="all" href="'.$prefs['datepicker_url'].'/datePicker'.($use_minified ? '.min' : '').'.css" />'.n;
-        foreach (array('date'.($use_minified ? '.min' : '').'.js', 'datePicker'.($use_minified ? '.min' : '').'.js') as $file) {
-            $js .= '<script src="'.$prefs['datepicker_url']."/".$file.'"></script>'.n;
     // If a date picker field exists
     if ($date_picker) {
+        $css .= '<link rel="stylesheet" type="text/css" media="all" href="'.$prefs['glz_cf_datepicker_url'].'/datePicker'.$min.'.css" />'.n;
+        foreach (array('date'.$min.'.js', 'datePicker'.$min.'.js') as $file) {
+            $js .= '<script src="'.$prefs['glz_cf_datepicker_url']."/".$file.'"></script>'.n;
         }
-    $js_datepicker_msg = '<span class="messageflash error" role="alert" aria-live="assertive"><span class="ui-icon ui-icon-alert"></span> <a href="'.$PROTOCOL.ahu.'?event=plugin_prefs.glz_custom_fields">'.gTxt('glz_cf_public_error_datepicker').'</a> <a class="close" role="button" title="Close" href="#close"><span class="ui-icon ui-icon-close">Close</span></a></span>';
-    $js .= <<<JS
+        $js_datepicker_msg = '<span class="messageflash error" role="alert" aria-live="assertive"><span class="ui-icon ui-icon-alert"></span> <a href="'.ahu.'index.php?event=prefs#prefs_group_glz_custom_f">'.gTxt('glz_cf_public_error_datepicker').'</a> <a class="close" role="button" title="Close" href="#close"><span class="ui-icon ui-icon-close">Close</span></a></span>';
+        $js .= <<<JS
 <script>
 $(document).ready(function () {
     textpattern.Relay.register('txpAsyncForm.success', glzDatePicker);
@@ -129,10 +131,10 @@ $(document).ready(function () {
     function glzDatePicker() {
         if ($("input.date-picker").length > 0) {
             try {
-                Date.firstDayOfWeek = {$prefs['datepicker_first_day']};
-                Date.format = '{$prefs['datepicker_format']}';
+                Date.firstDayOfWeek = {$prefs['glz_cf_datepicker_first_day']};
+                Date.format = '{$prefs["glz_cf_datepicker_format"]}';
                 Date.fullYearStart = '19';
-                $(".date-picker").datePicker({startDate:'{$prefs['datepicker_start_date']}'});
+                $(".date-picker").datePicker({startDate:'{$prefs["glz_cf_datepicker_start_date"]}'});
                 $(".date-picker").dpSetOffset(29, -1);
             } catch(err) {
                 $('#messagepane').html('{$js_datepicker_msg}');
@@ -146,11 +148,11 @@ $(document).ready(function () {
 JS;
     }
 
-        $css .= '<link rel="stylesheet" type="text/css" media="all" href="'.$prefs['timepicker_url'].'/timePicker'.($use_minified ? '.min' : '').'.css" />'.n;
-        $js  .= '<script src="'.$prefs['timepicker_url'].'/timePicker'.($use_minified ? '.min' : '').'.js"></script>'.n;
-        $js_timepicker_msg = '<span class="messageflash error" role="alert" aria-live="assertive"><span class="ui-icon ui-icon-alert"></span> <a href="'.$PROTOCOL.ahu.'?event=plugin_prefs.glz_custom_fields">'.gTxt('glz_cf_public_error_timepicker').'</a> <a class="close" role="button" title="Close" href="#close"><span class="ui-icon ui-icon-close">Close</span></a></span>';
     // If a time picker field exists
     if ($time_picker) {
+        $css .= '<link rel="stylesheet" type="text/css" media="all" href="'.$prefs['glz_cf_timepicker_url'].'/timePicker'.$min.'.css" />'.n;
+        $js  .= '<script src="'.$prefs['glz_cf_timepicker_url'].'/timePicker'.$min.'.js"></script>'.n;
+        $js_timepicker_msg = '<span class="messageflash error" role="alert" aria-live="assertive"><span class="ui-icon ui-icon-alert"></span> <a href="'.ahu.'index.php?event=prefs#prefs_group_glz_custom_f">'.gTxt('glz_cf_public_error_timepicker').'</a> <a class="close" role="button" title="Close" href="#close"><span class="ui-icon ui-icon-close">Close</span></a></span>';
         $js  .= <<<JS
 <script>
 $(document).ready(function () {
@@ -160,10 +162,10 @@ $(document).ready(function () {
         if ($(".time-picker").length > 0) {
             try {
                 $("input.time-picker").timePicker({
-                    startTime: '{$prefs['timepicker_start_time']}',
-                    endTime: '{$prefs['timepicker_end_time']}',
-                    step: {$prefs['timepicker_step']},
-                    show24Hours: {$prefs['timepicker_show_24']}
+                    startTime: '{$prefs["glz_cf_timepicker_start_time"]}',
+                    endTime: '{$prefs["glz_cf_timepicker_end_time"]}',
+                    step: {$prefs["glz_cf_timepicker_step"]},
+                    show24Hours: {$prefs["glz_cf_timepicker_show_24"]}
                 });
                 $(".glz-custom-time-picker-field .txp-form-field-value").on("click", function (){
                     $(this).children(".time-picker").trigger("click");
@@ -201,7 +203,7 @@ $(function() {
 });
 </script>
 JS;
-    $js .= '<script src="'.$prefs['glz_cf_js_url'].'/glz_custom_fields'.($use_minified ? '.min' : '').'.js"></script>';
+    $js .= '<script src="'.$prefs['glz_cf_js_asset_url'].'/glz_custom_fields'.$min.'.js"></script>';
 
     // Displays the notices we have gathered throughout the entire plugin
     if (count($msg) > 0) {
@@ -329,15 +331,15 @@ function glz_custom_fields_install()
 
     // Migrate existing custom_field data to new 'custom_fields' table
 
-    if ( isset($prefs['migrated']) ) {
     // Skip if glz_cf migration has already been performed
+    if (isset($prefs['glz_cf_migrated'])) {
         return;
     }
 
     // Skip if 'custom_fields' table already contains values (don't overwrite anything)
     if (($count = safe_count('custom_fields', "1 = 1")) !== false) {
-        set_pref("migrated", "1", "glz_custom_f");
         // Set flag in 'txp_prefs' that migration has already been performed
+        set_pref("glz_cf_migrated", "1", "glz_custom_f", PREF_HIDDEN);
         $msg = gTxt('glz_cf_migration_skip');
         return;
     }

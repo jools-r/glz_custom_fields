@@ -454,5 +454,3 @@ function glz_get_plugin_prefs($arr_preferences)
     }
     return $out;
 }
-
-?>
