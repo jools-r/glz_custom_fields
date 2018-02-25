@@ -1,6 +1,6 @@
 <?php
 
-global $event, $step, $use_minified;
+global $event, $step, $use_minified, $txp_permissions;
 
 $use_minified = true;
 // DEBUG: set to false to load regular (non-minified) js and css files
@@ -19,6 +19,9 @@ if (@txpinterface === 'admin') {
     );
 
     // Check if all tables exist and everything is setup properly
+    // Disable regular customs preferences (remove privs)
+    $txp_permissions['prefs.custom'] = '';
+
     add_privs('glz_custom_fields_install', '1');
     register_callback('glz_custom_fields_install', 'plugin_lifecycle.glz_custom_fields', 'installed');
 

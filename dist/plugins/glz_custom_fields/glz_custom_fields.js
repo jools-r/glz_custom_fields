@@ -14,10 +14,6 @@ textpattern.Relay.register('txpAsyncForm.success', glzResetRadio);
         }
     }
 
-    // PREFS PANE: disable all custom field references in Admin › Prefs pane
-    $(".ui-tab[aria-controls=prefs_group_custom]").hide();
-    $("#prefs_group_custom").hide();
-
     // CUSTOM FIELD PREFS PANE
     // init toggle custom field "value" field:
     // – disable for special custom types / types that have no_value
