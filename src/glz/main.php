@@ -289,7 +289,7 @@ function glz_custom_fields()
 
     // Variables for edit or add form
     $legend = gps('edit') ?
-        gTxt('glz_cf_action_edit_title', array('{custom_set_name}' => gps('custom_set'))) :
+        gTxt('glz_cf_action_edit_title', array('{custom_set_name}' => gTxt('glz_cf_title').' #'.glz_custom_digit(gps('custom_set')))) :
         gTxt('glz_cf_action_new_title');
 
     $custom_field = gps('edit') ?
