@@ -220,69 +220,116 @@ function glz_custom_fields()
         }
     }
 
-    // CUSTOM FIELDS List
+    // CUSTOM FIELDS Pane
     // ––––––––––––––––--
 
     pagetop(gTxt('glz_cf_tab_name'), $msg);
 
-    echo '<div class="txp-layout">
-    <div class="txp-layout-2col">
-        <h1 class="txp-heading">'.gTxt('glz_cf_tab_name').'</h1>
-    </div>
-    <div class="txp-layout-2col">
-        <a class="glz-cf-setup-switch" href="?event=prefs#prefs_group_glz_custom_f">'.gTxt('glz_cf_setup_prefs').'</a>
-    </div>
-</div>';
+    $contentBlock = tag_start('div', array('class' => 'txp-layout')).
+            tag_start('div', array('class' => 'txp-layout-2col')).
+                hed(gTxt('glz_cf_tab_name'), 1, array('class' => 'txp-heading')).
+            tag_end('div').
+            tag_start('div', array('class' => 'txp-layout-2col')).
+                href(gTxt('tab_preferences'), '?event=prefs#prefs_group_glz_custom_f', array('class' => 'glz-cf-setup-switch')).
+            tag_end('div').
+        tag_end('div'); // end .txp-layout
 
     // Need to re-fetch data since things modified
     $all_custom_sets = glz_custom_fields_MySQL("all");
 
-    // The table with all custom fields follows
-    echo
-    n.'<div class="txp-listtables">'.n.
-    '    <table class="txp-list glz_custom_fields">'.n.
-    '        <thead>'.n.
-    '            <tr>'.n.
-    '                <th scope="col">'.gTxt('glz_cf_col_id').'</th>'.n.
-    '                <th scope="col">'.gTxt('glz_cf_col_position').'</th>'.n.
-    '                <th scope="col">'.gTxt('glz_cf_col_name').'</th>'.n.
-    '                <th scope="col">'.gTxt('glz_cf_col_type').'</th>'.n.
-    '                <th scope="col">'.gTxt('glz_cf_col_options').'</th>'.n.
-    '            </tr>'.n.
-    '        </thead>'.n.
-    '        <tbody>'.n;
+    // CUSTOM FIELDS Table
 
-    // Looping through all our custom fields to build the table
+    // Column headings
+    $headers = array(
+        'id'        => 'id',
+        'position'  => 'position',
+        'name'      => 'name',
+        'type'      => 'type',
+        'options'   => 'options'
+    );
+
+    foreach ($headers as $header => $column_head) {
+        $head_row .= column_head(array(
+                'options' => array('class' => trim('txp-list-col-'.$header)),
+                'value'   => $column_head,
+                'sort'    => $header
+            )
+        );
+    }
+
+    // Table head
+    $contentBlock .= tag_start('div', array('class' => 'txp-listtables')).
+                n.tag_start('table', array('class' => 'txp-list glz_custom_fields')).
+                n.tag_start('thead').
+                tr($head_row).
+                n.tag_end('thead');
+
+    // Table body
+    $contentBlock .= n.tag_start('tbody');
+
+    // Custom field table rows
     $i = 0;
     foreach ($all_custom_sets as $custom => $custom_set) {
         // First 10 fields cannot be deleted, just reset
         if ($i < 10) {
             // Only show 'reset' for custom fields that are set
             $reset_delete = ($custom_set['name']) ?
-                glz_form_buttons("reset", gTxt('glz_cf_action_reset'), $custom, htmlspecialchars($custom_set['name']), $custom_set['type'], '', 'return confirm(\''.gTxt('glz_cf_confirm_reset', array('{custom}' => $custom )).'\');') :
-                null;
+                    glz_form_buttons("reset",
+                        gTxt('reset'),
+                        $custom,
+                        htmlspecialchars($custom_set['name']),
+                        $custom_set['type'],
+                        '',
+                        'return confirm(\''.gTxt('glz_cf_confirm_reset', array('{custom}' => 'ID# '.glz_custom_digit($custom).': '.htmlspecialchars($custom_set['name']) )).'\')'
+                    )
+                :
+                    null;
         } else {
-            $reset_delete = glz_form_buttons("delete", gTxt('glz_cf_action_delete'), $custom, htmlspecialchars($custom_set['name']), $custom_set['type'], '', 'return confirm(\''.gTxt('glz_cf_confirm_delete', array('{custom}' => $custom )).'\');');
+            $reset_delete =
+                    glz_form_buttons("delete",
+                        gTxt('delete'),
+                        $custom,
+                        htmlspecialchars($custom_set['name']),
+                        $custom_set['type'],
+                        '',
+                        'return confirm(\''.gTxt('glz_cf_confirm_delete', array('{custom}' => 'ID# '.glz_custom_digit($custom).': '.htmlspecialchars($custom_set['name']) )).'\')'
+                    );
         }
 
-        $edit = glz_form_buttons("edit", gTxt('glz_cf_action_edit'), $custom, htmlspecialchars($custom_set['name']), $custom_set['type'], $custom_set['position']);
+        $edit =
+                    glz_form_buttons("edit",
+                        gTxt('edit'),
+                        $custom,
+                        htmlspecialchars($custom_set['name']),
+                        $custom_set['type'],
+                        $custom_set['position']
+                    );
 
-        echo
-        '            <tr>'.n.
-        '                <th class="custom-set-id" scope="row">'.$custom_set['id'].'</th>'.n.
-        '                <td class="custom-set-position">'.$custom_set['position'].'</td>'.n.
-        '                <td class="custom-set-name">'.$custom_set['name'].'</td>'.n.
-        '                <td class="type">'.(($custom_set['name']) ? gTxt('glz_cf_'.$custom_set['type']) : '').'</td>'.n.
-        '                <td class="events">'.$edit.sp.$reset_delete.'</td>'.n.
-        '            </tr>'.n;
-
+        $contentBlock .= tr(
+            hCell(
+                $custom_set['id'], '', array('class' => 'txp-list-col-id')
+            ).
+            td(
+                $custom_set['position'], '', 'txp-list-col-position'
+            ).
+            td(
+                $custom_set['name'], '', 'txp-list-col-name'
+            ).
+            td(
+                (($custom_set['name']) ? gTxt('glz_cf_'.$custom_set['type']) : ''), '', 'txp-list-col-type'
+            ).
+            td(
+                $edit.sp.$reset_delete, '', 'txp-list-col-options'
+            )
+        );
         $i++;
     }
 
-    echo
-    '        </tbody>'.n.
-    '    </table>'.n;
-    '</div>'.n;
+    $contentBlock .= n.tag_end('tbody').
+        n.tag_end('table').
+        n.tag_end('div'); // End of .txp-listtables.
+
+    echo $contentBlock;
 
     // EDIT / ADD Panel
     // ––––––––––––––––
