@@ -5,7 +5,7 @@
 Title : glz_custom_fields stylesheet
 Author : Gerhard Lazu + many contributors
 
-Last modified: 24 February 2018 (jcr)
+Last modified: 27 February 2018 (jcr)
 
 - - - - - - - - - - - - - - - - - - - - - */
 
@@ -144,7 +144,7 @@ div.dp-popup td.disabled {
 
 /* button */
 
-.glz-custom-date-picker-field .txp-form-field-value {
+.glz-custom-datepicker .txp-form-field-value {
 	position: relative;
 }
 input.dp-applied {

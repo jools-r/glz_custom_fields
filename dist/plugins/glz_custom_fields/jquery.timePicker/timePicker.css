@@ -5,7 +5,7 @@
 Title : glz_custom_fields stylesheet
 Author : Gerhard Lazu + many contributors
 
-Last modified: 24 February 2018 (jcr)
+Last modified: 27 February 2018 (jcr)
 
 - - - - - - - - - - - - - - - - - - - - - */
 
@@ -43,13 +43,13 @@ div.time-picker li.selected {
 
 /* button */
 
-.glz-custom-time-picker-field .txp-form-field-value {
+.glz-custom-timepicker .txp-form-field-value {
 	position: relative;
 }
 input.time-picker {
 	text-indent: 2em;
 }
-.glz-custom-time-picker-field .txp-form-field-value::before {
+.glz-custom-timepicker .txp-form-field-value::before {
 	position: absolute;
 	top: 1px;
 	left: 1px;
@@ -67,7 +67,7 @@ input.time-picker {
 	background-repeat: no-repeat;
 	filter: opacity(45%);
 }
-.glz-custom-time-picker-field .txp-form-field-value:hover::before {
+.glz-custom-timepicker .txp-form-field-value:hover::before {
 	filter: opacity(100%);
 	cursor: pointer;
 }
