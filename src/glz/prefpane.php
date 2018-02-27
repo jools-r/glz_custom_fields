@@ -2,6 +2,8 @@
 
 function glz_cf_prefs_install()
 {
+    global $prefs;
+
     $position = 200;
 
     $plugin_prefs = array(
