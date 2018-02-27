@@ -2,8 +2,8 @@
 
 global $event, $step, $use_minified, $txp_permissions;
 
-$use_minified = true;
 // DEBUG: set to false to load regular (non-minified) js and css files
+$use_minified = true;
 
 // Initialise reused variables
 init_glz_custom_fields();
