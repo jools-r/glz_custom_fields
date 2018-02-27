@@ -96,7 +96,7 @@ function glz_selectInput($name = '', $id = '', $arr_values = '', $custom_value =
 
         // We'll need the extra attributes as well as a name that will produce an array
         if ($multi) {
-            $multi = ' multiple="multiple" size="'.$prefs['multiselect_size'].'"';
+            $multi = ' multiple="multiple" size="'.$prefs['glz_cf_multiselect_size'].'"';
             $name .= "[]";
         }
 

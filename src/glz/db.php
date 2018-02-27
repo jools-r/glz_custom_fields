@@ -89,7 +89,7 @@ function glz_values_custom_field($name, $extra)
         extract($extra);
 
         if (!empty($name)) {
-            switch ($prefs['values_ordering']) {
+            switch ($prefs['glz_cf_values_ordering']) {
                 case "ascending":
                     $orderby = "value ASC";
                     break;
