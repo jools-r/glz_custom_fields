@@ -20,6 +20,8 @@ if (@txpinterface === 'admin') {
 
     // Check if all tables exist and everything is setup properly
     add_privs('prefs.glz_custom_f', '1');
+    add_privs('prefs.glz_custom_f.glz_cf_datepicker', '1');
+    add_privs('prefs.glz_custom_f.glz_cf_timepicker', '1');
     // Disable regular customs preferences (remove privs)
     $txp_permissions['prefs.custom'] = '';
 
