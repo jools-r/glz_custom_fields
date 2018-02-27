@@ -1,18 +1,26 @@
 $(function() {
 textpattern.Relay.register('txpAsyncForm.success', glzResetRadio);
 
-    // creating a global object to store variables, functions etc.
-    if (GLZ_CUSTOM_FIELDS == undefined) {
-        var GLZ_CUSTOM_FIELDS;
-        GLZ_CUSTOM_FIELDS = {};
-        GLZ_CUSTOM_FIELDS.special_custom_types  = ["date-picker", "time-picker"];
-        GLZ_CUSTOM_FIELDS.no_value_custom_types = ["text_input", "textarea"];
-        GLZ_CUSTOM_FIELDS.messages = {
-            'textarea' : "Each value on a separate line<br>One {default} value allowed",
-            'script'   : "File name in your custom scripts path",
-            'configure': "Configure custom scripts path"
-        }
+    // Init: global object to store variables
+    var GLZ_CF;
+    GLZ_CF = {};
+    GLZ_CF.special_custom_types  = ["date-picker", "time-picker"];
+    GLZ_CF.no_value_custom_types = ["text_input", "textarea"];
+
+    // Init: re-used jQuery objects
+    $glz_value_field = $(".edit-custom-set-value");
+    $glz_value_instructions = $glz_value_field.find(".txp-form-field-instructions");
+    $glz_select_instructions = $('.edit-custom-set-type').find(".txp-form-field-instructions");
+
+    // Init: get and store instruction strings, clear up message holders
+    GLZ_CF.messages = {
+        'textarea'         : $('.glz-custom-textarea-msg').html(),
+        'configure'        : $glz_select_instructions.text(),
+        'customscriptpath' : $('.glz-custom-script-msg').text()
     }
+    $('.glz-custom-script-msg').remove();
+    $('.glz-custom-textarea-msg').remove();
+
 
     // CUSTOM FIELD PREFS PANE
     // init toggle custom field "value" field:

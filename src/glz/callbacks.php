@@ -182,27 +182,6 @@ $(document).ready(function () {
 JS;
     }
 
-    // Localisable jquery message strings for prefs pane
-    $js_textarea_msg = gTxt('glz_cf_js_textarea_msg');
-    $js_script_msg = gTxt('glz_cf_js_script_msg');
-    $js_configure_msg = gTxt('glz_cf_js_configure_msg');
-    $js  .= <<<JS
-<script>
-$(function() {
-    var GLZ_CUSTOM_FIELDS;
-    if (GLZ_CUSTOM_FIELDS == undefined) {
-        GLZ_CUSTOM_FIELDS = {};
-        GLZ_CUSTOM_FIELDS.special_custom_types  = ["date-picker", "time-picker"];
-        GLZ_CUSTOM_FIELDS.no_value_custom_types = ["text_input", "textarea"];
-        GLZ_CUSTOM_FIELDS.messages = {
-            'textarea' : "{$js_textarea_msg}",
-            'script'   : "{$js_script_msg}",
-            'configure': "{$js_configure_msg}"
-        }
-    }
-});
-</script>
-JS;
     $js .= '<script src="'.$prefs['glz_cf_js_asset_url'].'/glz_custom_fields'.$min.'.js"></script>';
 
     // Displays the notices we have gathered throughout the entire plugin
