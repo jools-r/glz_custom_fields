@@ -58,9 +58,10 @@ function glz_cf_prefs_install()
  * IMPORTANT: There has been no uninstall function until to now to prevent
  * accidental data loss if uninstalling the plugin. Is there a case for it?
  *
- * This is currently intended just as an on-demand clean-up script.
+ * This should be just as an on-demand clean-up script.
  *
  */
+ // TODO: make a hidden pref to expose this function
 
 function glz_prefs_uninstall()
 {
