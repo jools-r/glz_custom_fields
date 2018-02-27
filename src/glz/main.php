@@ -343,8 +343,8 @@ function glz_custom_fields()
         gTxt('glz_cf_action_new_title');
 
     $custom_field = gps('edit') ?
-        '<input name="custom_set" value="'.gps('custom_set').'" type="hidden" />' :
-        '<input name="custom_field_number" value="'.glz_custom_next($all_custom_sets).'" type="hidden" />';
+        hInput('custom_set', gps('custom_set')) :
+        hInput('custom_field_number', glz_custom_next($all_custom_sets));
 
     $custom_set = gps('edit') ?
         gps('custom_set') :
@@ -445,7 +445,7 @@ function glz_custom_fields()
     n.tag(gTxt('glz_cf_js_script_msg'), 'span', array('class' => 'glz-custom-script-msg hidden')).
     n.tag(gTxt('glz_cf_js_textarea_msg'), 'span', array('class' => 'glz-custom-textarea-msg hidden')).
     hInput('event', 'glz_custom_fields').
-    hInput('custom_set', $custom_set).
+    $custom_field.
     graf(
         $action,
         array('class' => 'txp-edit-actions')
