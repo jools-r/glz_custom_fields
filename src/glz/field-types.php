@@ -205,8 +205,9 @@ function glz_fButton($type, $name, $contents='Submit', $value, $class='', $id=''
 // Evals a PHP script and displays output right under the custom field label
 function glz_custom_script($script, $custom, $custom_id, $custom_value)
 {
-    if (is_file($script)) {
-        include_once($script);
+    global $prefs;
+    if (is_file($prefs['glz_cf_custom_scripts_path'].$script)) {
+        include_once($prefs['glz_cf_custom_scripts_path'].$script);
         $custom_function = basename($script, ".php");
         if (is_callable($custom_function)) {
             return call_user_func_array($custom_function, array($custom, $custom_id, $custom_value));
@@ -214,6 +215,6 @@ function glz_custom_script($script, $custom, $custom_id, $custom_value)
             return gTxt('glz_cf_not_callable', array('{function}' => $custom_function, '{file}' => $script));
         }
     } else {
-        return '<span class="error"><span class="ui-icon ui-icon-alert"></span> '.gTxt('glz_cf_not_found', array('{file}' => $script)).'</span>';
+        return '<span class="error"><span class="ui-icon ui-icon-alert"></span> '.gTxt('glz_cf_not_found', array('{file}' => $prefs['glz_cf_custom_scripts_path'].$script)).'</span>';
     }
 }
