@@ -239,7 +239,7 @@ function glz_custom_fields()
     // Need to re-fetch data since things modified
     $all_custom_sets = glz_custom_fields_MySQL("all");
 
-    // CUSTOM FIELDS Table
+    // CUSTOM FIELDS Table -------------------
 
     // Column headings
     $headers = array(
@@ -249,6 +249,8 @@ function glz_custom_fields()
         'type'      => 'type',
         'options'   => 'options'
     );
+
+    $head_row = '';
 
     foreach ($headers as $header => $column_head) {
         $head_row .= column_head(array(
@@ -333,8 +335,7 @@ function glz_custom_fields()
 
     echo $contentBlock;
 
-    // EDIT / ADD Panel
-    // ––––––––––––––––
+    // CUSTOM FIELDS Edit/Add Panel ----------
 
     // Variables for edit or add form
     $legend = gps('edit') ?
@@ -366,10 +367,11 @@ function glz_custom_fields()
             $selected = (gps('edit') && gps('custom_set_type') == $custom_type) ?
                 ' selected="selected"' :
                 null;
-            $custom_set_types .= '<option value="'.$custom_type.'"'.$selected.'>'.gTxt('glz_cf_'.$custom_type).'</option>'.n;
+            $custom_set_types .= '<option value="'.$custom_type.'" dir="auto"'.$selected.'>'.gTxt('glz_cf_'.$custom_type).'</option>'.n;
         }
         $custom_set_types .= '</optgroup>'.n;
     }
+
 
     // Fetch values for this custom field
     if (gps('edit')) {
@@ -385,44 +387,70 @@ function glz_custom_fields()
     }
 
     $action = gps('edit') ?
-        '<input name="save" value="'.gTxt('save').'" type="submit" class="publish" />' :
-        '<input name="add_new" value="'.gTxt('glz_cf_add_new_cf').'" type="submit" class="publish" />';
+        sLink('glz_custom_fields', '', gTxt('cancel'), 'txp-button').
+        fInput('submit', 'save', gTxt('save'), 'publish') :
+        fInput('submit', 'add_new', gTxt('glz_cf_add_new_cf'), 'publish');
+
     // This needs to be different for a script
-    $value = (isset($custom_set_type) && $custom_set_type == "custom-script") ?
-        '<input type="text" name="value" id="value" value="'.$values.'" /><br>
-         <span class="information">'.gTxt('glz_cf_js_script_msg').'</span>' :
-        '<textarea name="value" id="value">'.$values.'</textarea><br>
-         <span class="information">'.gTxt('glz_cf_edit_on_separate_line').'<br>
-         '.gTxt('glz_cf_edit_one_default_allowed').'</span>';
+    if (isset($custom_set_type) && $custom_set_type == "custom-script") {
+        $value = fInput('text', 'value', $values, '', '', '', '', '', 'value');
+        $value_instructions = 'glz_cf_js_script_msg';
+    } else {
+        $value = text_area('value', 0, 0, $values, 'value');
+        $value_instructions = 'glz_cf_multiple_values_instructions';
+    }
 
     // Build the form
-    echo
-'<form method="post" class="txp-edit" action="index.php" id="add_edit_custom_field">'.n.
-'<input name="event" value="glz_custom_fields" type="hidden" />'.n.
-    $custom_field.n.
-'    <h2>'.$legend.'</h2>'.n.
-'    <div class="txp-form-field glz-cf-name">
-        <div class="txp-form-field-label"><label for="custom_set_name">'.gTxt('glz_cf_edit_name').'</label></div>
-        <div class="txp-form-field-value"><input type="text" name="custom_set_name" value="'.htmlspecialchars($custom_name).'" id="custom_set_name" />
-        <br><span class="information">'.gTxt('glz_cf_edit_name_hint').'</span></div>
-    </div>'.n.
-'    <div class="txp-form-field glz-cf-type">
-        <div class="txp-form-field-label"><label for="custom_set_type">'.gTxt('glz_cf_edit_type').'</label></div>
-        <div class="txp-form-field-value"><select name="custom_set_type" id="custom_set_type">
-'.      $custom_set_types.'
-        </select></div>
-    </div>'.n.
-'    <div class="txp-form-field glz-cf-position">
-        <div class="txp-form-field-label"><label for="custom_set_position">'.gTxt('glz_cf_edit_position').'</label></div>
-        <div class="txp-form-field-value"><input type="text" name="custom_set_position" value="'.htmlspecialchars($custom_set_position).'" id="custom_set_position" />
-        <br><span class="information">'.gTxt('glz_cf_edit_position_hint').'</span></div>
-    </div>'.n.
-'    <div class="txp-form-field glz-cf-value">
-        <div class="txp-form-field-label"><label for="value">'.gTxt('glz_cf_edit_value').'</label></div>
-        <div class="txp-form-field-value">'.$value.'</div>
-    </div>'.n.
-'    <p class="txp-edit-actions">'.n.
-'        '.$action.n.
-'    </p>'.n.
-'</form>'.n;
+
+    $out = array();
+
+    $out[] = hed($legend, 2);
+    $out[] =
+    inputLabel(
+            'custom_set_name',
+            fInput('text', 'custom_set_name', htmlspecialchars($custom_name), '', '', '', INPUT_REGULAR, '', 'custom_set_name'),
+            'glz_cf_edit_name',
+            array(
+                0 => '',
+                1 => 'glz_cf_edit_name_hint' // Inline help string
+            )
+        ).
+    inputLabel(
+            'custom_set_type',
+            '<select name="custom_set_type" id="custom_set_type">'.$custom_set_types.'</select>',
+            'glz_cf_edit_type',
+            array(
+                0 => '',
+                1 => 'glz_cf_js_configure_msg'  // Inline help string
+            )
+        ).
+    inputLabel(
+            'custom_set_position',
+            fInput('text', 'custom_set_position', htmlspecialchars($custom_set_position), '', '', '', INPUT_MEDIUM, '', 'custom_set_position'),
+            'glz_cf_edit_position',
+            array(
+                0 => '',
+                1 => 'glz_cf_edit_position_hint'  // Inline help string
+            )
+        ).
+    inputLabel(
+            'custom_set_value',
+            $value,
+            'glz_cf_edit_value',
+            array(
+                0 => '',
+                1 => $value_instructions  // Inline help string
+            )
+        ).
+    n.tag(gTxt('glz_cf_js_script_msg'), 'span', array('class' => 'glz-custom-script-msg hidden')).
+    n.tag(gTxt('glz_cf_js_textarea_msg'), 'span', array('class' => 'glz-custom-textarea-msg hidden')).
+    hInput('event', 'glz_custom_fields').
+    hInput('custom_set', $custom_set).
+    graf(
+        $action,
+        array('class' => 'txp-edit-actions')
+    );
+
+    echo form(join('', $out), '', '', 'post', 'txp-edit', '', 'add_edit_custom_field');
+
 }

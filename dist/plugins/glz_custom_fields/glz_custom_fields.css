@@ -5,7 +5,7 @@
 Title : glz_custom_fields stylesheet
 Author : Gerhard Lazu + many contributors
 
-Last modified: 22 February 2018
+Last modified: 27 February 2018
 
 - - - - - - - - - - - - - - - - - - - - - */
 
@@ -30,23 +30,26 @@ Last modified: 22 February 2018
 .glz_custom_fields td {
   vertical-align: middle;
 }
-.glz_custom_fields th.custom-set-id {
+.glz_custom_fields th.txp-list-col-id {
   text-align: center;
   width: 5%;
 }
-.glz_custom_fields td.custom-set-position {
+.glz_custom_fields td.txp-list-col-position {
   text-align: center;
   width: 10%;
 }
-.glz_custom_fields td.custom-set-name {
+.glz_custom_fields td.txp-list-col-name {
   width: 40%;
 }
-.glz_custom_fields td.type {
+.glz_custom_fields td.txp-list-col-type {
   width: 20%;
 }
-.glz_custom_fields td.events {
+.glz_custom_fields td.txp-list-col-options {
   width: 21%;
   text-align: left;
+}
+.hidden {
+  display: none;
 }
 /* edit, delete, reset buttons */
 .action-button {
@@ -66,6 +69,28 @@ Last modified: 22 February 2018
 .action-button .ui-button.ui-corner-all {
     border-radius: .25em;
 }
+
+/* Form field instruction styling (remove once in core) */
+
+.txp-prefs-group .txp-form-field,
+.txp-edit .txp-form-field {
+    flex-flow: row wrap;
+}
+.txp-prefs-group .txp-form-field .txp-form-field-instructions,
+.txp-edit .txp-form-field .txp-form-field-instructions {
+    flex: 0 0 100%;
+    order: 3;
+    max-width: 50%;
+    padding-left: 50%;
+}
+
+@media screen and (max-width: 47em) {
+    .txp-prefs-group .txp-form-field .txp-form-field-instructions,
+    .txp-edit .txp-form-field .txp-form-field-instructions {
+        padding-left: 0em;
+    }
+}
+
 
 /* CUSTOM FIELDS PREFS PANE
 -------------------------------------------------------------- */
