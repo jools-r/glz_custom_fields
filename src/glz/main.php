@@ -18,12 +18,17 @@ if (@txpinterface === 'admin') {
         'plugin_prefs.glz_custom_fields'
     );
 
-    // Check if all tables exist and everything is setup properly
+    // Add prefs privs
     add_privs('prefs.glz_custom_f', '1');
     add_privs('prefs.glz_custom_f.glz_cf_datepicker', '1');
     add_privs('prefs.glz_custom_f.glz_cf_timepicker', '1');
+
     // Disable regular customs preferences (remove privs)
     $txp_permissions['prefs.custom'] = '';
+
+    // 'Options' link on plugin panel
+    add_privs('plugin_prefs.glz_custom_fields', '1');
+    register_callback('glz_custom_fields_prefs_redirect', 'plugin_prefs.glz_custom_fields');
 
     add_privs('glz_custom_fields_install', '1');
     register_callback('glz_custom_fields_install', 'plugin_lifecycle.glz_custom_fields', 'installed');

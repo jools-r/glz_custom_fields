@@ -353,3 +353,12 @@ function glz_custom_fields_install()
     // Set flag in txp_prefs that migration has been performed
     set_pref("glz_cf_migrated", "1", "glz_custom_f", PREF_HIDDEN);
 }
+
+
+// -------------------------------------------------------------
+// Re-route 'Options' link on Plugins panel to Admin › Preferences
+function glz_custom_fields_prefs_redirect()
+{
+    require_privs('plugin_prefs.glz_custom_fields');
+    header("Location: index.php?event=prefs#prefs_group_glz_custom_f");
+}
