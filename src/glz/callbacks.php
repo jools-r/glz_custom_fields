@@ -62,6 +62,11 @@ function glz_custom_fields_replace($event, $step, $data, $rs)
             // DEBUG
             // dmp($custom_set_value);
 
+            // cf_lang string (define this in your language to create a field label)
+            $cf_lang = glz_cf_lang($custom_set["name"]);
+            // Get the (localised) label if one exists, otherwise the regular name (as before)
+            $cf_label = (gTxt($cf_lang) != $cf_lang) ? gTxt($cf_lang) : $custom_set["name"];
+
             $out .= inputLabel(
                 $custom_id,
                 $custom_set_value,

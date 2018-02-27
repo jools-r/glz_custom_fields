@@ -68,6 +68,19 @@ function glz_idify($value)
 
 
 // -------------------------------------------------------------
+// Converts input into a gTxt-safe lang string 'cf_' prefix + [a-z0-9]
+function glz_cf_lang($value)
+{
+    $patterns[0] = "/\s\-/";
+    $replacements[0] = "_";
+    $patterns[1] = "/[^a-zA-Z0-9\_]/";
+    $replacements[1] = "";
+
+    return 'cf_'.preg_replace($patterns, $replacements, strtolower($value));
+}
+
+
+// -------------------------------------------------------------
 // Will leave only [A-Za-z0-9_- ] in the string
 function glz_clean_string($string)
 {
