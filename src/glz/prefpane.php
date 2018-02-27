@@ -6,32 +6,34 @@ function glz_cf_prefs_install()
 
     $position = 200;
 
+    // array: old_prefname => array('pref.subevent', 'html', 'default-value')
     $plugin_prefs = array(
-        'values_ordering'        => array('glz_prefs_orderby', 'custom'),
-        'multiselect_size'       => array('glz_text_input_small', '5'),
-        'css_asset_url'          => array('glz_url_input', hu.'plugins/glz_custom_fields'),
-        'js_asset_url'           => array('glz_url_input', hu.'plugins/glz_custom_fields'),
-        'custom_scripts_path'    => array('glz_url_input', $prefs['path_to_site'].'/plugins/glz_custom_fields'),
-        'datepicker_url'         => array('glz_url_input', hu.'plugins/glz_custom_fields/jquery.datePicker'),
-        'datepicker_format'      => array('glz_prefs_datepicker_format', 'dd/mm/yyyy'),
-        'datepicker_first_day'   => array('glz_prefs_datepicker_firstday', 1),
-        'datepicker_start_date'  => array('glz_text_input_small', '01/01/2017'),
-        'timepicker_url'         => array('glz_url_input', hu.'plugins/glz_custom_fields/jquery.timePicker'),
-        'timepicker_start_time'  => array('glz_text_input_small', '00:00'),
-        'timepicker_end_time'    => array('glz_text_input_small', '23:30'),
-        'timepicker_step'        => array('glz_text_input_small', 30),
-        'timepicker_show_24'     => array('glz_prefs_timepicker_format', true)
+        'values_ordering'        => array('', 'glz_prefs_orderby', 'custom'),
+        'multiselect_size'       => array('', 'glz_text_input_small', '5'),
+        'css_asset_url'          => array('', 'glz_url_input', hu.'plugins/glz_custom_fields'),
+        'js_asset_url'           => array('', 'glz_url_input', hu.'plugins/glz_custom_fields'),
+        'custom_scripts_path'    => array('', 'glz_url_input', $prefs['path_to_site'].'/plugins/glz_custom_fields'),
+        'datepicker_url'         => array('glz_cf_datepicker', 'glz_url_input', hu.'plugins/glz_custom_fields/jquery.datePicker'),
+        'datepicker_format'      => array('glz_cf_datepicker', 'glz_prefs_datepicker_format', 'dd/mm/yyyy'),
+        'datepicker_first_day'   => array('glz_cf_datepicker', 'glz_prefs_datepicker_firstday', 1),
+        'datepicker_start_date'  => array('glz_cf_datepicker', 'glz_text_input_small', '01/01/2017'),
+        'timepicker_url'         => array('glz_cf_timepicker', 'glz_url_input', hu.'plugins/glz_custom_fields/jquery.timePicker'),
+        'timepicker_start_time'  => array('glz_cf_timepicker', 'glz_text_input_small', '00:00'),
+        'timepicker_end_time'    => array('glz_cf_timepicker', 'glz_text_input_small', '23:30'),
+        'timepicker_step'        => array('glz_cf_timepicker', 'glz_text_input_small', 30),
+        'timepicker_show_24'     => array('glz_cf_timepicker', 'glz_prefs_timepicker_format', true)
     );
 
     foreach ($plugin_prefs as $name => $val) {
         if (get_pref($name, false) === false) {
             // If pref is new, create new pref with 'glz_cf_' prefix
-            create_pref('glz_cf_'.$name, $val[1], 'glz_custom_f', PREF_PLUGIN, $val[0], $position, '');
+            create_pref('glz_cf_'.$name, $val[2], 'glz_custom_f'.($val[0] ? '.'.$val[0] : ''), PREF_PLUGIN, $val[1], $position, '');
         } else {
             // If pref exists, add 'glz_cf_' prefix to name, reassign position and html type and set to type PREF_PLUGIN
             safe_update(
                 'txp_prefs',
                 "name = 'glz_cf_".$name."',
+                 event = 'glz_custom_f".($val[0] ? ".".$val[0] : "")."',
                  html = '".$val[0]."',
                  type = ".PREF_PLUGIN.",
                  position = ".$position,
