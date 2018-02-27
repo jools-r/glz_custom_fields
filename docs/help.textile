@@ -1,34 +1,47 @@
-h1. glz_custom_fields, unlimited custom fields
+h1. Unlimited Custom Fields for Textpattern – glz_custom_fields
 
-This plugin provides unlimited custom fields in Textpattern. You can create custom fields as selects, multi-selects, checkboxes, radio buttons and textareas - as well as the default text input fields. Predefine values can be set for custom fields and you can select a single default value (selects, multi-selects, checkboxes and radio buttons only).
+This plugin removes the limit on the number of custom fields in Textpattern and also allows you to create a range of different custom field types:
 
-*If you want to submit bug reports and feature requests, please visit "glz_custom_fields on GitHub":http://github.com/bloke/glz_custom_fields*. There is also a handy section on "glz_custom_fields tips and tricks":http://wiki.github.com/gerhard/glz_custom_fields/.
+* Text input (default)
+* Checkboxes
+* Radio buttons
+* Select dropdowns
+* Multiselect boxes
+* Textareas
 
-h2. Time and date pickers
+You can specify a set of predefined values for selects, multi-selects, checkboxes and radio button custom fields, one of which may be set as the @{default value}@ by placing it in curly brackets.
 
-Time and date pickers are pretty straightforward to use. To set the required JavaScript and styling properly, please refer to the %(information)INSTALL% file that came with this plugin.
+In addition, there are three special custom field types:
 
-h2. Custom scripts
+h3(#time-and-date-pickers). Time and date pickers
 
-This is a rather complex and long sought-for piece of functionality, please refer to the %(information)my_image.php% file which contains inline explanations on how they should be used. The file came with the plugin, in the %(information)scripts/glz_custom_fields% folder.
+Time and date pickers offer an easy way for users to specify dates and times in a consistent format. The *date format*, *first day of the week* and *start date* for the calendar can be set in the plugin preferences.
 
-h2. Default values
+Similarly, the *time format* (24 or 12 hours), *start and end times* (e.g. @08:00@ and @19:00@) and *time step* (intervals, e.g. @30@ minutes) can be set in the plugin preferences.
 
-You can now define a single default value by adding curly brackets around a value like so: @{default value}@.
+_IMPORTANT: You must copy the "plugins/glz_custom_fields":https://github.com/jools-r/glz_custom_fields/dist/plugins/glz_custom_fields folder to your Textpattern installation directory and set the corresponding paths in the "plugin preferences":?event=prefs#prefs_group_glz_custom_f for the datepicker and timepicker to function correctly. To place them in another web-reachable location, just change the path settings in the preferences accordingly._
 
-h2. Ranges
+h3(#custom-scripts). Custom scripts
 
-If you want to define ranges, create a new custom field with the following name e.g. @Price range &amp;pound;(after)@.
+Custom scripts make it possible to build-in custom functionality, for example to pull in information from elsewhere in your site, by writing a corresponding php script to create the custom field. Please refer to "my_image.php":https://github.com/jools-r/glz_custom_fields/blob/master/dist/plugins/glz_custom_fields/my_images.php file as an example with inline explanations or ask on the forum for tips and examples.
 
-* @range@ - this is really important and *(warning)must* be present for the range to work correctly.
-* @&amp;pound;@ - don't use straight symbols (like @€@ or @£@), instead use entity ones e.g. @&amp;euro;@ and @&amp;pound;@ are valid symbols.
-* @(after)@ - don't leave any spaces after e.g. $ and (after). This basically says where to add the measuring unit (be it a currency or something like m³ etc.) - @(before)@ is default.
+h3(#ranges). Ranges
 
-Ranges are defined 10-20, 21-30 etc. (no measuring units - they get pulled from the custom set name).
+Ranges are not in themselves a special field type. If you want to define ranges, create a new ‘Text Input’ custom field with the following name e.g. @Price range &amp;pound;(after)@.
 
-h2. Support
+* @range@ - this *(warning)must* be present in the name for the custom field to be recognised as a range.
+* @&amp;pound;@ - don't use straight symbols (like @€@ or @£@) but rather their "entities":http://www.amp-what.com/unicode/search/ e.g. @&amp;euro;@ and @&amp;pound;@ are valid symbols.
+* @(after)@ - don't leave any spaces after e.g. @&amp;euro;@ and @(after)@. This basically says where to add the measuring unit (be it a currency or something like m³ etc.) - @(before)@ is default.
 
-If anything goes wrong or you discover a bug:
+Ranges are defined @10-20@, @21-30@ etc. (no measuring units - they get pulled from the custom set name).
 
-# report an issue on "GitHub":http://github.com/bloke/glz_custom_fields/issues.
-# look for help in the Textpattern forum, "glz_custom_fields thread":http://forum.textpattern.io/viewtopic.php?id=23996.
+h3(#support). Support
+
+Comments, bug reports and pull requests are welcome:
+
+# Report an issue on "GitHub":http://github.com/jools-r/glz_custom_fields/issues.
+# Help is also always available in the Textpattern forum: "glz_custom_fields thread":http://forum.textpattern.io/viewtopic.php?id=23996.
+
+h3(#credits). Credits
+
+This plugin was originally written by "Gerhard Lazu":https://github.com/gerhard and dates back to "2007":https://forum.textpattern.io/viewtopic.php?pid=157983#p157983. It has been repaired, expanded and adopted by numerous forum members over the years (credited in the code), most recently by "Bloke":https://github.com/Bloke/glz_custom_fields. This significantly refactored version adds compatibility with Textpattern v4.7 and is currently looked after by "jools-r":https://github.com/jools-r/glz_custom_fields. Its concept and core workings are still those of Gerhard's original plugin. The Textpattern core will ultimately support unlimited custom fields, making this plugin obsolete at some point in the future.
