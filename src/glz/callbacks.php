@@ -62,12 +62,14 @@ function glz_custom_fields_replace($event, $step, $data, $rs)
             // DEBUG
             // dmp($custom_set_value);
 
-            $out .= n.tag(
-          n.tag('<label for="'.$custom_id.'">'.$custom_set["name"].'</label>', 'div', ' class="txp-form-field-label"').
-          n.tag($custom_set_value, 'div', ' class="txp-form-field-value"'),
-          'div',
-          ' class="txp-form-field '.str_replace('_', '-', $custom_class).' '.glz_idify(str_replace('_', '-', $custom_set["name"])).' '.$custom_id.'"'
-      );
+            $out .= inputLabel(
+                $custom_id,
+                $custom_set_value,
+                $cf_label,
+                array('', 'instructions_'.$custom),
+                array('class' => 'txp-form-field custom-field glz-cf '.$custom_class.' '.$custom_id.' cf-'.glz_idify(str_replace('_', '-', $custom_set["name"])))
+            );
+
         }
     }
 
