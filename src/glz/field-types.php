@@ -13,64 +13,64 @@ function glz_format_custom_set_by_type($custom, $custom_id, $custom_set_type, $a
         case "text_input":
             return array(
                 fInput("text", $custom, $custom_value, "edit", "", "", "22", "", $custom_id),
-                'glz_custom_field'
+                ''
             );
 
         case "select":
             return array(
                 glz_selectInput($custom, $custom_id, $arr_custom_field_values, $custom_value, $default_value),
-                'glz_custom_select_field'
+                'glz-custom-select'
             );
 
         case "multi-select":
             return array(
                 glz_selectInput($custom, $custom_id, $arr_custom_field_values, $custom_value, $default_value, 1),
-                'glz_custom_multi-select_field'
+                'glz-custom-multiselect'
             );
 
         case "checkbox":
             return array(
                 glz_checkbox($custom, $arr_custom_field_values, $custom_value, $default_value),
-                'glz_custom_checkbox_field'
+                'glz-custom-checkbox'
             );
 
         case "radio":
             return array(
                 glz_radio($custom, $custom_id, $arr_custom_field_values, $custom_value, $default_value),
-                'glz_custom_radio_field'
+                'glz-custom-radio'
             );
 
         case "textarea":
             return array(
                 text_area($custom, 0, 0, $custom_value, $custom_id),
-                'glz_text_area_field'
+                'glz-custom-textarea'
             );
 
         // Here start the special custom fields, might need to refactor the return, starting to repeat itself
         case "date-picker":
             return array(
                 fInput("text", $custom, $custom_value, "edit date-picker", "", "", "22", "", $custom_id),
-                'glz_custom_date-picker_field clearfix'
+                'glz-custom-datepicker'
             );
 
         case "time-picker":
             return array(
                 fInput("text", $custom, $custom_value, "edit time-picker", "", "", "22", "", $custom_id),
-                'glz_custom_time-picker_field'
+                'glz-custom-timepicker'
             );
 
         case "custom-script":
             global $custom_scripts_path;
             return array(
                 glz_custom_script($custom_scripts_path."/".reset($arr_custom_field_values), $custom, $custom_id, $custom_value),
-                'glz_custom_field_script'
+                'glz-custom-script'
             );
 
         // A type has been passed that is not supported yet
         default:
             return array(
                 gTxt('glz_cf_type_not_supported'),
-                'glz_custom_field'
+                'glz-custom-unknown'
             );
     }
 }

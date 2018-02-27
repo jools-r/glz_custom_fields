@@ -268,7 +268,7 @@ function glz_custom_fields()
 
     // Table head
     $contentBlock .= tag_start('div', array('class' => 'txp-listtables')).
-                n.tag_start('table', array('class' => 'txp-list glz_custom_fields')).
+                n.tag_start('table', array('class' => 'txp-list glz-custom-fields')).
                 n.tag_start('thead').
                 tr($head_row).
                 n.tag_end('thead');

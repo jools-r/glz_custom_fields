@@ -167,7 +167,7 @@ $(document).ready(function () {
                     step: {$prefs["glz_cf_timepicker_step"]},
                     show24Hours: {$prefs["glz_cf_timepicker_show_24"]}
                 });
-                $(".glz-custom-time-picker-field .txp-form-field-value").on("click", function (){
+                $(".glz-custom-timepicker .txp-form-field-value").on("click", function (){
                     $(this).children(".time-picker").trigger("click");
                 });
             } catch(err) {

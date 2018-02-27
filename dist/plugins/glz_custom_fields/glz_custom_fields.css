@@ -16,7 +16,7 @@ Last modified: 27 February 2018
     float: right;
 }
 /* table width */
-.txp-list.glz_custom_fields {
+.txp-list.glz-custom-fields {
   margin: 1em auto;
   max-width: 60em;
 }
@@ -27,24 +27,24 @@ Last modified: 27 February 2018
   width: auto;
 }
 /* table column widths / height */
-.glz_custom_fields td {
+.glz-custom-fields td {
   vertical-align: middle;
 }
-.glz_custom_fields th.txp-list-col-id {
+.glz-custom-fields th.txp-list-col-id {
   text-align: center;
   width: 5%;
 }
-.glz_custom_fields td.txp-list-col-position {
+.glz-custom-fields td.txp-list-col-position {
   text-align: center;
   width: 10%;
 }
-.glz_custom_fields td.txp-list-col-name {
+.glz-custom-fields td.txp-list-col-name {
   width: 40%;
 }
-.glz_custom_fields td.txp-list-col-type {
+.glz-custom-fields td.txp-list-col-type {
   width: 20%;
 }
-.glz_custom_fields td.txp-list-col-options {
+.glz-custom-fields td.txp-list-col-options {
   width: 21%;
   text-align: left;
 }

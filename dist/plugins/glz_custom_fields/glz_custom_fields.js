@@ -78,7 +78,9 @@ textpattern.Relay.register('txpAsyncForm.success', glzResetRadio);
     });
 
     // Revert reset state if radio button subsequently clicked (also after async save)
-    $(".txp-layout").on("click",".glz-custom-radio-field .radio", function() {
+    $(".txp-layout").on("click",".glz-custom-radio .radio", function() {
+        var custom_field_to_reanimate = $(this).attr("name");
+        $this_reset_button = $(".glz-custom-field-reset[name=" + custom_field_to_reanimate + "]");
         // If "reset" button currently disabled
         if ($this_reset_button.hasClass("disabled")) {
             // Remove input with empty value
@@ -95,9 +97,9 @@ textpattern.Relay.register('txpAsyncForm.success', glzResetRadio);
     // Add reset button to radio fields
     function glzResetRadio() {
         // if there are radio fields
-        if ($(".glz-custom-radio-field").length > 0) {
+        if ($(".glz-custom-radio").length > 0) {
             // loop over each set
-            $(".glz-custom-radio-field").each(function() {
+            $(".glz-custom-radio").each(function() {
                 var custom_field_to_reset = $(this).find("input:first").attr("name");
                 $(this).find("label:first").after(" <span class=\"small\"><a href=\"#\" class=\"glz-custom-field-reset\" name=\"" + custom_field_to_reset +"\">Reset</a></span>");
                 // if none of the radio buttons are checked on load, set "reset" button to disabled
