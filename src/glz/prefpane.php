@@ -15,7 +15,7 @@ function glz_cf_prefs_install()
         'datepicker_url'         => array('glz_url_input', hu.'plugins/glz_custom_fields/jquery.datePicker'),
         'datepicker_format'      => array('glz_prefs_datepicker_format', 'dd/mm/yyyy'),
         'datepicker_first_day'   => array('glz_prefs_datepicker_firstday', 1),
-        'datepicker_start_date'  => array('glz_text_input_small_hint', '01/01/2017'),
+        'datepicker_start_date'  => array('glz_text_input_small', '01/01/2017'),
         'timepicker_url'         => array('glz_url_input', hu.'plugins/glz_custom_fields/jquery.timePicker'),
         'timepicker_start_time'  => array('glz_text_input_small', '00:00'),
         'timepicker_end_time'    => array('glz_text_input_small', '23:30'),
@@ -151,21 +151,6 @@ function glz_prefs_timepicker_format($name, $val)
 }
 
 /**
- * Renders a regular-width HTML &lt;input&gt; element with hint.
- *
- * @param  string $name HTML name and id of the text box
- * @param  string $val  Initial (or current) content of the text box
- * @return string HTML
- */
-function glz_text_input_hint($name, $val)
-{
-    $out  = text_input($name, $val, INPUT_REGULAR);
-    // message on next line using gTxt of $name with '_hint' suffix
-    $out .= '<br><span class="information">'.gTxt($name.'_hint').'</span>';
-    return $out;
-}
-
-/**
  * Renders a medium-width HTML &lt;input&gt; element.
  *
  * @param  string $name HTML name and id of the text box
@@ -175,21 +160,6 @@ function glz_text_input_hint($name, $val)
 function glz_text_input_medium($name, $val)
 {
     return text_input($name, $val, INPUT_MEDIUM);
-}
-
-/**
- * Renders a medium-width HTML &lt;input&gt; element with hint.
- *
- * @param  string $name HTML name and id of the text box
- * @param  string $val  Initial (or current) content of the text box
- * @return string HTML
- */
-function glz_text_input_medium_hint($name, $val)
-{
-    $out  = text_input($name, $val, INPUT_MEDIUM);
-    // message on next line using gTxt of $name with '_hint' suffix
-    $out .= '<br><span class="information">'.gTxt($name.'_hint').'</span>';
-    return $out;
 }
 
 /**
@@ -205,21 +175,6 @@ function glz_text_input_small($name, $val)
 }
 
 /**
- * Renders a small-width HTML &lt;input&gt; element with hint.
- *
- * @param  string $name HTML name and id of the text box
- * @param  string $val  Initial (or current) content of the text box
- * @return string HTML
- */
-function glz_text_input_small_hint($name, $val)
-{
-    $out  = text_input($name, $val, INPUT_SMALL);
-    // inline message using gTxt of $name with '_hint' suffix
-    $out .= ' <span class="information">'.gTxt($name.'_hint').'</span>';
-    return $out;
-}
-
-/**
  * Renders a regular-width HTML &lt;input&gt; element for an URL with path check.
  *
  * @param  string $name HTML name and id of the text box
@@ -231,22 +186,20 @@ function glz_url_input($name, $val)
     global $use_minified;
     $min = ($use_minified === true) ? '.min' : '';
 
-    // Array of possible expected url inputs and corresponding files, error-msg-stubs and message hints
-    // 'pref_name' => array('/targetfilename.ext', 'gTxt_folder (inserted into error msg)', 'gTxt_hint')
+    // Array of possible expected url inputs and corresponding files and error-msg-stubs
+    // 'pref_name' => array('/targetfilename.ext', 'gTxt_folder (inserted into error msg)')
     // paths do not require a target filename, urls do.
     $glz_cf_url_inputs = array(
-        'glz_cf_css_asset_url'       => array('/glz_custom_fields'.$min.'.css', 'glz_cf_css_folder', ''),
-        'glz_cf_js_asset_url'        => array('/glz_custom_fields'.$min.'.js', 'glz_cf_js_folder', ''),
-        'glz_cf_datepicker_url'      => array('/datePicker'.$min.'.js', 'glz_cf_datepicker_folder', ''),
-        'glz_cf_timepicker_url'      => array('/timePicker'.$min.'.js', 'glz_cf_timepicker_folder', ''),
-        'glz_cf_custom_scripts_path' => array('', 'glz_cf_custom_folder', 'glz_cf_edit_path_from_root')
+        'glz_cf_css_asset_url'       => array('/glz_custom_fields'.$min.'.css', 'glz_cf_css_folder'),
+        'glz_cf_js_asset_url'        => array('/glz_custom_fields'.$min.'.js',  'glz_cf_js_folder'),
+        'glz_cf_datepicker_url'      => array('/datePicker'.$min.'.js',         'glz_cf_datepicker_folder'),
+        'glz_cf_timepicker_url'      => array('/timePicker'.$min.'.js',         'glz_cf_timepicker_folder'),
+        'glz_cf_custom_scripts_path' => array('',                               'glz_cf_custom_folder')
     );
     // File url or path to test = prefs_val (=url/path) + targetfilename (first item in array)
     $glz_cf_url_to_test          = $val.$glz_cf_url_inputs[$name][0];
     // gTxt string ref for folder name for error message (second item in array)
     $glz_cf_url_input_error_stub = $glz_cf_url_inputs[$name][1];
-    // gTxt string ref for hint message (last item in array)
-    $glz_cf_url_input_msg        = $glz_cf_url_inputs[$name][2];
 
     // See if url / path is readable. If not, produce error message
     if ($glz_cf_url_input_error_stub) {
@@ -255,8 +208,6 @@ function glz_url_input($name, $val)
 
     // Output regular-width text_input for url
     $out  = fInput('text', $name, $val, '', '', '', INPUT_REGULAR, '', $name);
-    // Output hint if one exists
-    $out .= ($glz_cf_url_input_msg <>'') ? '<br><span class="information">'.gTxt($glz_cf_url_input_msg).'</span>' : '';
     // Output error notice if one exists
     $out .= ($url_error) ? '<br><span class="error"><span class="ui-icon ui-icon-alert"></span> '.$url_error.'</span>' : '';
 
