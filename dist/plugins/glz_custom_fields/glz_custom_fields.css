@@ -70,16 +70,10 @@ Last modified: 27 February 2018
     border-radius: .25em;
 }
 
-/* Form field instruction styling (remove once in core) */
+/* Form field instruction styling */
 
-.txp-prefs-group .txp-form-field,
-.txp-edit .txp-form-field {
-    flex-flow: row wrap;
-}
 .txp-prefs-group .txp-form-field .txp-form-field-instructions,
 .txp-edit .txp-form-field .txp-form-field-instructions {
-    flex: 0 0 100%;
-    order: 3;
     max-width: 50%;
     padding-left: 50%;
 }
@@ -87,6 +81,7 @@ Last modified: 27 February 2018
 @media screen and (max-width: 47em) {
     .txp-prefs-group .txp-form-field .txp-form-field-instructions,
     .txp-edit .txp-form-field .txp-form-field-instructions {
+        max-width: none;
         padding-left: 0em;
     }
 }
