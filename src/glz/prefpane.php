@@ -34,7 +34,7 @@ function glz_cf_prefs_install()
                 'txp_prefs',
                 "name = 'glz_cf_".$name."',
                  event = 'glz_custom_f".($val[0] ? ".".$val[0] : "")."',
-                 html = '".$val[0]."',
+                 html = '".$val[1]."',
                  type = ".PREF_PLUGIN.",
                  position = ".$position,
                 "name = '".$name."'"
