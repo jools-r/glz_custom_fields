@@ -56,25 +56,68 @@ function glz_next_empty_custom()
 
 // -------------------------------------------------------------
 // Converts all values into id safe ones [A-Za-z0-9-]
-function glz_idify($value)
+function glz_cf_idname($text)
 {
-    $patterns[0] = "/\s/";
-    $replacements[0] = "-";
-    $patterns[1] = "/[^a-zA-Z0-9\-]/";
-    $replacements[1] = "";
-
-    return preg_replace($patterns, $replacements, strtolower($value));
+    return str_replace("_", "-", glz_sanitize_for_cf($text));
 }
 
 
 // -------------------------------------------------------------
-// Converts input into a gTxt-safe lang string 'cf_' prefix + [a-z0-9]
-function glz_cf_lang($value)
+// Converts input into a gTxt-safe lang string 'cf_' prefix + [a-z0-9_]
+function glz_cf_langname($text)
 {
-    $patterns[0] = "/\s\-/";
-    $replacements[0] = "_";
-    $patterns[1] = "/[^a-zA-Z0-9\_]/";
-    $replacements[1] = "";
+    return 'cf_'.glz_sanitize_for_cf($text);
+}
+
+
+// -------------------------------------------------------------
+// Gets translated title or instruction string if one exists
+// @name = custom_field_name
+// @cf_number = $custom_field_number for instructions
+// returns language string or nothing if none exists
+function glz_cf_gtxt($name, $cf_number = null)
+{
+    // get language string
+    if (!empty($cf_number)) {
+        // still work if 'custom_X' or 'custom_X_set' is passed in as cf_number
+        if (strstr($cf_number, 'custom_')) {
+            $parts = explode("_", $cf_number);
+            $cf_number = $parts[1];
+        }
+        $cf_name = 'instructions_custom_'.$cf_number;
+    } else {
+        $cf_name = glz_cf_langname($name);
+    }
+    $cf_gtxt = gTxt($cf_name);
+    // retrieve gTxt value if it exists
+    return ($cf_gtxt != $cf_name) ? $cf_gtxt : '';
+}
+
+
+// -------------------------------------------------------------
+// Cleans strings for custom field names and cf_language_names
+function glz_sanitize_for_cf($text, $lite = false)
+{
+    $text = trim($text);
+
+    if ($lite) {
+        // lite (legacy)
+        // U&lc letters, numbers, spaces, dashes and underscores
+        return preg_replace('/[^A-Za-z0-9\s\_\-]/', '', $text);
+    } else {
+        // strict
+        // lowercase letters, numbers and single underscores; may not start with a number
+        $patterns[0] = "/[\_\s\-]+/"; // space(s), dash(es), underscore(s)
+        $replacements[0] = "_";
+        $patterns[1] = "/[^a-z0-9\_]/"; // only a-z, 0-9 and underscore
+        $replacements[1] = "";
+        $patterns[2] = "/^\d+/"; // numbers at start of string
+        $replacements[2] = "";
+
+        return trim(preg_replace($patterns, $replacements, strtolower($text)), "_");
+    }
+}
+
 // -------------------------------------------------------------
 // Checks if specified start date matches current date format
 function glz_is_valid_start_date($date)
@@ -96,14 +139,10 @@ function glz_is_valid_start_date($date)
 
 
 // -------------------------------------------------------------
-// Will leave only [A-Za-z0-9_- ] in the string
-function glz_clean_string($string)
 // Accommodate relative urls in prefs
 // $addhost = true prepends the hostname
 function glz_relative_url($url, $addhost = false)
 {
-    if ($string) {
-        return preg_replace('/[^A-Za-z0-9\s\_\-]/', '', $string);
     $parsed_url = parse_url($url);
     if (empty($parsed_url['scheme']) && empty($parsed_url['hostname'])) {
         if ($addhost) {

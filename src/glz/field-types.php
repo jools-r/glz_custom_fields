@@ -100,7 +100,7 @@ function glz_selectInput($name = '', $id = '', $arr_values = '', $custom_value =
             $name .= "[]";
         }
 
-        return "<select id=\"".glz_idify($id)."\" name=\"$name\" class=\"list\"$multi>".
+        return "<select id=\"".glz_cf_idname($id)."\" name=\"$name\" class=\"list\"$multi>".
       ($default_value ? '' : "<option value=\"\"$selected>&nbsp;</option>").
       ($out ? join('', $out) : '').
       "</select>";
@@ -125,7 +125,7 @@ function glz_checkbox($name = '', $arr_values = '', $custom_value = '', $default
         foreach ($arr_values as $key => $value) {
             $checked = glz_selected_checked('checked', $key, $custom_value);
 
-            $out[] = "<div class=\"txp-form-checkbox glz-cf-".str_replace("_", "-", glz_idify($key))."\"><input type=\"checkbox\" name=\"{$name}[]\" value=\"$key\" class=\"checkbox\" id=\"".glz_idify($key)."\"{$checked} /> <label for=\"".glz_idify($key)."\">$value</label></div>";
+            $out[] = "<div class=\"txp-form-checkbox glz-cf-".str_replace("_", "-", glz_cf_idname($key))."\"><input type=\"checkbox\" name=\"{$name}[]\" value=\"$key\" class=\"checkbox\" id=\"".glz_cf_idname($key)."\"{$checked} /> <label for=\"".glz_cf_idname($key)."\">$value</label></div>";
         }
 
         return join('', $out);
@@ -150,7 +150,7 @@ function glz_radio($name = '', $id = '', $arr_values = '', $custom_value = '', $
         foreach ($arr_values as $key => $value) {
             $checked = glz_selected_checked('checked', $key, $custom_value);
 
-            $out[] = "<div class=\"txp-form-radio glz-cf-".str_replace("_", "-", glz_idify($key))."\"><input type=\"radio\" name=\"$name\" value=\"$key\" class=\"radio\" id=\"{$id}_".glz_idify($key)."\"{$checked} /> <label for=\"{$id}_".glz_idify($key)."\">$value</label></div>";
+            $out[] = "<div class=\"txp-form-radio glz-cf-".str_replace("_", "-", glz_cf_idname($key))."\"><input type=\"radio\" name=\"$name\" value=\"$key\" class=\"radio\" id=\"{$id}_".glz_cf_idname($key)."\"{$checked} /> <label for=\"{$id}_".glz_cf_idname($key)."\">$value</label></div>";
         }
 
         return join('', $out);

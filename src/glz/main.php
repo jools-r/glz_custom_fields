@@ -113,7 +113,7 @@ function glz_custom_fields()
 
             // A name has been specified
             if (!empty($custom_set_name)) {
-                $custom_set_name = glz_clean_string($custom_set_name);
+                $custom_set_name = glz_sanitize_for_cf($custom_set_name);
                 $custom_set = "custom_".intval($custom_field_number)."_set";
 
                 $name_exists = glz_check_custom_set_name($all_custom_sets, $custom_set_name, $custom_set);
@@ -174,7 +174,7 @@ function glz_custom_fields()
         // Edit an existing custom field
         if (gps('save')) {
             if (!empty($custom_set_name)) {
-                $custom_set_name = glz_clean_string($custom_set_name);
+                $custom_set_name = glz_sanitize_for_cf($custom_set_name, $lite = true);
 
                 $name_exists = glz_check_custom_set_name($all_custom_sets, $custom_set_name, $custom_set);
                 // If name doesn't exist we'll need to create a new custom_set
