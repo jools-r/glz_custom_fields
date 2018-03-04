@@ -114,7 +114,8 @@ function glz_custom_fields_before_save()
 // Inject css & js into admin head
 function glz_custom_fields_inject_css_js()
 {
-    global $date_picker, $time_picker, $prefs, $use_minified;
+    global $event, $date_picker, $time_picker, $prefs, $use_minified;
+
     $msg = array();
     $min = ($use_minified) ? '.min' : '';
 
@@ -131,6 +132,7 @@ function glz_custom_fields_inject_css_js()
         }
         $js_datepicker_msg = '<span class="messageflash error" role="alert" aria-live="assertive"><span class="ui-icon ui-icon-alert"></span> <a href="'.ahu.'index.php?event=prefs#prefs_group_glz_custom_f">'.gTxt('glz_cf_public_error_datepicker').'</a> <a class="close" role="button" title="Close" href="#close"><span class="ui-icon ui-icon-close">Close</span></a></span>';
         $js .= <<<JS
+    if ($event == 'article') {
 <script>
 $(document).ready(function () {
     textpattern.Relay.register('txpAsyncForm.success', glzDatePicker);
@@ -187,6 +189,7 @@ $(document).ready(function () {
 });
 </script>
 JS;
+        }
     }
 
     $js .= '<script src="'.$prefs['glz_cf_js_asset_url'].'/glz_custom_fields'.$min.'.js"></script>';
@@ -204,6 +207,7 @@ $(document).ready(function() {
 });
 //--><!]]>
 </script>';
+    if ($event != 'prefs') {
     }
 
     echo $js.n.t.

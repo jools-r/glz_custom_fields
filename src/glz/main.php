@@ -14,8 +14,7 @@ if (@txpinterface === 'admin') {
     $glz_admin_events = array(
         'article',
         'prefs',
-        'glz_custom_fields',
-        'plugin_prefs.glz_custom_fields'
+        'glz_custom_fields'
     );
 
     // Add prefs privs
