@@ -74,7 +74,6 @@ function glz_custom_fields_replace($event, $step, $data, $rs)
                 array('', 'instructions_'.$custom),
                 array('class' => 'txp-form-field custom-field glz-cf '.$custom_class.' '.$custom_id.' cf-'.glz_cf_idname(str_replace('_', '-', $custom_set["name"])))
             );
-
         }
     }
 
@@ -191,20 +190,6 @@ $(document).ready(function () {
 JS;
         }
     }
-
-    // Displays the notices we have gathered throughout the entire plugin
-    if (count($msg) > 0) {
-        // Let's turn our notices into a string
-        $msg = join("<br>", array_unique($msg));
-
-        $js .= '<script>
-<!--//--><![CDATA[//><!--
-$(document).ready(function() {
-    // add our notices
-    $("#messagepane").html(\''.$msg.'\');
-});
-//--><!]]>
-</script>';
     if ($event != 'prefs') {
         $js .= '<script src="'.glz_relative_url($prefs['glz_cf_js_asset_url']).'/glz_custom_fields'.$min.'.js"></script>';
     }

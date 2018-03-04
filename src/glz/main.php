@@ -1,6 +1,6 @@
 <?php
 
-global $event, $step, $use_minified, $txp_permissions;
+global $msg, $event, $step, $use_minified, $txp_permissions;
 
 // DEBUG: set to false to load regular (non-minified) js and css files
 $use_minified = true;
@@ -63,8 +63,8 @@ if (@txpinterface === 'admin') {
 // Main function: generates the content for Extensions > Custom Fields
 function glz_custom_fields()
 {
-    global $event, $all_custom_sets, $prefs;
-    $msg = '';
+    global $msg, $event, $all_custom_sets, $prefs;
+    $msg = "";
 
     // We have $_POST, let's see if there is any CRUD
     if ($_POST) {
@@ -160,7 +160,11 @@ function glz_custom_fields()
                             )
                         );
                     }
-                    $msg = gTxt('glz_cf_created', array('{custom_set_name}' => $custom_set_name));
+                    update_lastmod();
+                    // Success or warning message (if previously generated)
+                    if (empty($msg)) {
+                        $msg = gTxt('glz_cf_created', array('{custom_set_name}' => $custom_set_name));
+                    }
                 } else {
                     // Name exists, abort
                     $msg = array(gTxt('glz_cf_exists', array('{custom_set_name}' => $custom_set_name)), E_ERROR);
@@ -175,6 +179,7 @@ function glz_custom_fields()
         if (gps('save')) {
             if (!empty($custom_set_name)) {
                 $custom_set_name = glz_sanitize_for_cf($custom_set_name, $lite = true);
+                glz_is_valid_cf_name($custom_set_name_input);
 
                 $name_exists = glz_check_custom_set_name($all_custom_sets, $custom_set_name, $custom_set);
                 // If name doesn't exist we'll need to create a new custom_set
@@ -214,8 +219,10 @@ function glz_custom_fields()
                             )
                         );
                     }
-
-                    $msg = gTxt('glz_cf_updated', array('{custom_set_name}' => $custom_set_name));
+                    // Success or warning message (if previously generated)
+                    if (empty($msg)) {
+                        $msg = gTxt('glz_cf_updated', array('{custom_set_name}' => $custom_set_name));
+                    }
                 } else {
                     // Name exists, abort
                     $msg = array(gTxt('glz_cf_exists', array('{custom_set_name}' => $custom_set_name)), E_ERROR);

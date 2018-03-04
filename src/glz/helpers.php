@@ -118,6 +118,22 @@ function glz_sanitize_for_cf($text, $lite = false)
     }
 }
 
+
+// -------------------------------------------------------------
+// Checks if a custom field contains invalid characters, starts with a number or has double underscores
+function glz_is_valid_cf_name($text)
+{
+    global $msg;
+
+    if (preg_match('/[^a-z0-9\_]/', $text)) {
+        $msg = array(gTxt('glz_cf_name_invalid_chars', array('{custom_name_input}' => $text)), E_WARNING);
+    } elseif (preg_match('/^\d+/', $text)) {
+        $msg = array(gTxt('glz_cf_name_invalid_starts_with_number', array('{custom_name_input}' => $text)), E_WARNING);
+    } elseif (preg_match('/\_{2,}/', $text)) {
+        $msg = array(gTxt('glz_cf_name_invalid_double_underscores', array('{custom_name_input}' => $text)), E_WARNING);
+    }
+}
+
 // -------------------------------------------------------------
 // Checks if specified start date matches current date format
 function glz_is_valid_start_date($date)
