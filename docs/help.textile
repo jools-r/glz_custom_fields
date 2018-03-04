@@ -35,6 +35,43 @@ Ranges are not in themselves a special field type. If you want to define ranges,
 
 Ranges are defined @10-20@, @21-30@ etc. (no measuring units - they get pulled from the custom set name).
 
+h3(#custom-field-names). Custom field names
+
+Custom field *names* should adhere to the following naming rules:
+
+* only lowercase letters and numbers
+* underscores as separators (no spaces or dashes)
+* should not start with a number
+
+This version of glz_custom_fields will convert the names of _newly created_ custom fields to this pattern and notify you when saving. In the interests of backwards compatibility, it will _not_ change existing custom fields but will issue a warning.
+
+Custom field *titles* have no such restrictions.
+
+Previous versions of glz_custom_fields permitted custom names with spaces, dashes, capital letters and numbers. These can, however, cause problems when using custom field names as an attribute for "txp:article_custom":https://docs.textpattern.io/tags/article_custom#attributes. Future versions of Textpattern will be stricter about custom field naming and it is advisable to adapt your custom field names and code accordingly.
+
+_*Important:* You can rename them with this plugin but remember you will also need to alter all instances of "txp:custom_field":https://docs.textpattern.io/tags/custom_field and "txp:if_custom_field":https://docs.textpattern.io/tags/if_custom_field in your page templates and forms to match._
+
+h3(#upgrading). Version compatibility and upgrading
+
+This version is compatible with Version 4.7+ of Textpattern. It uses functionality not available in earlier versions of Textpattern and adds new functionality not previously available in earlier versions of glz_custom_fields. It is therefore not for use with earlier versions of Textpattern.
+
+On installation, the plugin upgrades your settings and preferences to avoid potential naming collisions. Downgrading to an earlier version of Textpattern is therefore inadvisable and requires manually renaming preference names to their old naming scheme in the database.
+
+h3(#changelog). Changelog
+
+v2.0 – March 2018
+
+– Refactored for Textpattern v4.7
+– Installation should not overwrite existing settings
+– Plugin preferences now handled in Admin › Preferences
+– Custom field title labels and supporting instruction hints (also per UI-language)
+– js/css URL location pref and support for relative URLs: relocate your js/css files where you want them (e.g. for multisite installations)
+– Now makes widespread use of Textpattern’s in-built functions for UI creation, error messages/notices, language strings, field labels
+– Translatable: now uses textpacks
+– Updated + minified js/css and datepicker/timepicker labels
+– Changes to custom fields updates last modified date (for cache renewal)
+
+
 h3(#support). Support
 
 Comments, bug reports and pull requests are welcome:
@@ -45,3 +82,5 @@ Comments, bug reports and pull requests are welcome:
 h3(#credits). Credits
 
 This plugin was originally written by "Gerhard Lazu":https://github.com/gerhard and dates back to "2007":https://forum.textpattern.io/viewtopic.php?pid=157983#p157983. It has been repaired, expanded and adopted by numerous forum members over the years (credited in the code), most recently by "Bloke":https://github.com/Bloke/glz_custom_fields. This significantly refactored version adds compatibility with Textpattern v4.7 and is currently looked after by "jools-r":https://github.com/jools-r/glz_custom_fields. Its concept and core workings are still those of Gerhard's original plugin. The Textpattern core will ultimately support unlimited custom fields, making this plugin obsolete at some point in the future.
+
+This plugin uses *jQuery DatePicker* ("homepage":http://2008.kelvinluck.com/assets/jquery/datePicker/v2/demo/ / "github":https://github.com/vitch/jQuery-datepicker) by Kelvin Luck and *jQuery Timepicker* ("github":https://github.com/perifer/timePicker) by Anders Fajerson.
