@@ -75,8 +75,23 @@ function glz_cf_lang($value)
     $replacements[0] = "_";
     $patterns[1] = "/[^a-zA-Z0-9\_]/";
     $replacements[1] = "";
+// -------------------------------------------------------------
+// Checks if specified start date matches current date format
+function glz_is_valid_start_date($date)
+{
+    global $prefs;
+    $formats = array(
+          "d/m/Y" => "dd/mm/yyyy",
+          "m/d/Y" => "mm/dd/yyyy",
+          "Y-m-d" => "yyyy-mm-dd",
+          "d m y" => "dd mm yy",
+          "d.m.Y" => "dd.mm.yyyy"
+    );
 
-    return 'cf_'.preg_replace($patterns, $replacements, strtolower($value));
+    $datepicker_format = array_search($prefs['glz_cf_datepicker_format'], $formats);
+
+    $d = DateTime::createFromFormat($datepicker_format, $date);
+    return $d && $d->format($datepicker_format) == $date;
 }
 
 

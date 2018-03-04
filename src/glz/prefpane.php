@@ -16,7 +16,7 @@ function glz_cf_prefs_install()
         'datepicker_url'         => array('glz_cf_datepicker', 'glz_url_input', hu.'plugins/glz_custom_fields/jquery.datePicker'),
         'datepicker_format'      => array('glz_cf_datepicker', 'glz_prefs_datepicker_format', 'dd/mm/yyyy'),
         'datepicker_first_day'   => array('glz_cf_datepicker', 'glz_prefs_datepicker_firstday', 1),
-        'datepicker_start_date'  => array('glz_cf_datepicker', 'glz_text_input_small', '01/01/2017'),
+        'datepicker_start_date'  => array('glz_cf_datepicker', 'glz_input_start_date', '01/01/2018'),
         'timepicker_url'         => array('glz_cf_timepicker', 'glz_url_input', hu.'plugins/glz_custom_fields/jquery.timePicker'),
         'timepicker_start_time'  => array('glz_cf_timepicker', 'glz_text_input_small', '00:00'),
         'timepicker_end_time'    => array('glz_cf_timepicker', 'glz_text_input_small', '23:30'),
@@ -152,6 +152,26 @@ function glz_prefs_timepicker_format($name, $val)
     );
     return selectInput($name, $vals, $val, '', '', $name);
 }
+
+
+/**
+ * Renders a small-width HTML &lt;input&gt; element.
+ * Checks if start date matches current datepicker date format
+ *
+ * @param  string $name HTML name and id of the text box
+ * @param  string $val  Initial (or current) content of the text box
+ * @return string HTML
+ */
+function glz_input_start_date($name, $val)
+{
+    $out = text_input($name, $val, INPUT_SMALL);
+    // Output error notice if start date does not match date format
+    if (!glz_is_valid_start_date($val)) {
+        $out .= '<br><span class="error"><span class="ui-icon ui-icon-alert"></span> '.gTxt('glz_cf_datepicker_start_date_error').'</span>';
+    }
+    return $out;
+}
+
 
 /**
  * Renders a medium-width HTML &lt;input&gt; element.
