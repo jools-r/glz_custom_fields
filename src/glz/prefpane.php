@@ -205,7 +205,11 @@ function glz_url_input($name, $val)
     $glz_cf_url_input_error_stub = $glz_cf_url_inputs[$name][1];
 
     // See if url / path is readable. If not, produce error message
-    if ($glz_cf_url_input_error_stub) {
+    if ($glz_cf_url_to_test) {
+        // permit relative URLs but conduct url test with hostname
+        if (strstr($name, 'url')) {
+            $glz_cf_url_to_test = glz_relative_url($glz_cf_url_to_test, $addhost = true);
+        }
         $url_error = (@fopen($glz_cf_url_to_test, "r")) ? '' : gTxt('glz_cf_folder_error', array('{folder}' => gTxt($glz_cf_url_input_error_stub) ));
     }
 

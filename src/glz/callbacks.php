@@ -120,19 +120,19 @@ function glz_custom_fields_inject_css_js()
     $min = ($use_minified) ? '.min' : '';
 
     // glz_cf stylesheets
-    $css = '<link rel="stylesheet" type="text/css" media="all" href="'.$prefs['glz_cf_css_asset_url'].'/glz_custom_fields'.$min.'.css">'.n;
+    $css = '<link rel="stylesheet" type="text/css" media="all" href="'.glz_relative_url($prefs['glz_cf_css_asset_url']).'/glz_custom_fields'.$min.'.css">'.n;
     // glz_cf javascript
     $js = '';
 
-    // If a date picker field exists
-    if ($date_picker) {
-        $css .= '<link rel="stylesheet" type="text/css" media="all" href="'.$prefs['glz_cf_datepicker_url'].'/datePicker'.$min.'.css" />'.n;
-        foreach (array('date'.$min.'.js', 'datePicker'.$min.'.js') as $file) {
-            $js .= '<script src="'.$prefs['glz_cf_datepicker_url']."/".$file.'"></script>'.n;
-        }
-        $js_datepicker_msg = '<span class="messageflash error" role="alert" aria-live="assertive"><span class="ui-icon ui-icon-alert"></span> <a href="'.ahu.'index.php?event=prefs#prefs_group_glz_custom_f">'.gTxt('glz_cf_public_error_datepicker').'</a> <a class="close" role="button" title="Close" href="#close"><span class="ui-icon ui-icon-close">Close</span></a></span>';
-        $js .= <<<JS
     if ($event == 'article') {
+        // If a date picker field exists
+        if ($date_picker) {
+            $css .= '<link rel="stylesheet" type="text/css" media="all" href="'.glz_relative_url($prefs['glz_cf_datepicker_url']).'/datePicker'.$min.'.css" />'.n;
+            foreach (array('date'.$min.'.js', 'datePicker'.$min.'.js') as $file) {
+                $js .= '<script src="'.glz_relative_url($prefs['glz_cf_datepicker_url'])."/".$file.'"></script>'.n;
+            }
+            $js_datepicker_msg = '<span class="messageflash error" role="alert" aria-live="assertive"><span class="ui-icon ui-icon-alert"></span> <a href="'.ahu.'index.php?event=prefs#prefs_group_glz_custom_f">'.gTxt('glz_cf_public_error_datepicker').'</a> <a class="close" role="button" title="Close" href="#close"><span class="ui-icon ui-icon-close">Close</span></a></span>';
+            $js .= <<<JS
 <script>
 $(document).ready(function () {
     textpattern.Relay.register('txpAsyncForm.success', glzDatePicker);
@@ -155,14 +155,14 @@ $(document).ready(function () {
 });
 </script>
 JS;
-    }
+        }
 
-    // If a time picker field exists
-    if ($time_picker) {
-        $css .= '<link rel="stylesheet" type="text/css" media="all" href="'.$prefs['glz_cf_timepicker_url'].'/timePicker'.$min.'.css" />'.n;
-        $js  .= '<script src="'.$prefs['glz_cf_timepicker_url'].'/timePicker'.$min.'.js"></script>'.n;
-        $js_timepicker_msg = '<span class="messageflash error" role="alert" aria-live="assertive"><span class="ui-icon ui-icon-alert"></span> <a href="'.ahu.'index.php?event=prefs#prefs_group_glz_custom_f">'.gTxt('glz_cf_public_error_timepicker').'</a> <a class="close" role="button" title="Close" href="#close"><span class="ui-icon ui-icon-close">Close</span></a></span>';
-        $js  .= <<<JS
+        // If a time picker field exists
+        if ($time_picker) {
+            $css .= '<link rel="stylesheet" type="text/css" media="all" href="'.glz_relative_url($prefs['glz_cf_timepicker_url']).'/timePicker'.$min.'.css" />'.n;
+            $js  .= '<script src="'.glz_relative_url($prefs['glz_cf_timepicker_url']).'/timePicker'.$min.'.js"></script>'.n;
+            $js_timepicker_msg = '<span class="messageflash error" role="alert" aria-live="assertive"><span class="ui-icon ui-icon-alert"></span> <a href="'.ahu.'index.php?event=prefs#prefs_group_glz_custom_f">'.gTxt('glz_cf_public_error_timepicker').'</a> <a class="close" role="button" title="Close" href="#close"><span class="ui-icon ui-icon-close">Close</span></a></span>';
+            $js  .= <<<JS
 <script>
 $(document).ready(function () {
     textpattern.Relay.register('txpAsyncForm.success', glzTimePicker);
@@ -192,8 +192,6 @@ JS;
         }
     }
 
-    $js .= '<script src="'.$prefs['glz_cf_js_asset_url'].'/glz_custom_fields'.$min.'.js"></script>';
-
     // Displays the notices we have gathered throughout the entire plugin
     if (count($msg) > 0) {
         // Let's turn our notices into a string
@@ -208,6 +206,7 @@ $(document).ready(function() {
 //--><!]]>
 </script>';
     if ($event != 'prefs') {
+        $js .= '<script src="'.glz_relative_url($prefs['glz_cf_js_asset_url']).'/glz_custom_fields'.$min.'.js"></script>';
     }
 
     echo $js.n.t.

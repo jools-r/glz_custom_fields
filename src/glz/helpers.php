@@ -83,10 +83,22 @@ function glz_cf_lang($value)
 // -------------------------------------------------------------
 // Will leave only [A-Za-z0-9_- ] in the string
 function glz_clean_string($string)
+// Accommodate relative urls in prefs
+// $addhost = true prepends the hostname
+function glz_relative_url($url, $addhost = false)
 {
     if ($string) {
         return preg_replace('/[^A-Za-z0-9\s\_\-]/', '', $string);
+    $parsed_url = parse_url($url);
+    if (empty($parsed_url['scheme']) && empty($parsed_url['hostname'])) {
+        if ($addhost) {
+            $hostname = (empty($txpcfg['admin_url']) ? hu : ahu);
+        } else {
+            $hostname = "/";
+        }
+        $url = $hostname.ltrim($url, '/');
     }
+    return $url;
 }
 
 
