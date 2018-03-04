@@ -184,9 +184,11 @@ function glz_custom_fields()
         if (gps('save')) {
             if (!empty($custom_set_name)) {
                 $custom_set_name = glz_sanitize_for_cf($custom_set_name, $lite = true);
+
                 glz_is_valid_cf_name($custom_set_name_input);
 
                 $name_exists = glz_check_custom_set_name($all_custom_sets, $custom_set_name, $custom_set);
+
                 // If name doesn't exist we'll need to create a new custom_set
                 if ($name_exists == false) {
                     glz_custom_fields_MySQL(
@@ -233,6 +235,7 @@ function glz_custom_fields()
                     $msg = array(gTxt('glz_cf_exists', array('{custom_set_name}' => $custom_set_name)), E_ERROR);
                 }
             } else {
+                // No name given
                 $msg = array(gTxt('glz_cf_no_name'), E_ERROR);
             }
         }
@@ -254,6 +257,7 @@ function glz_custom_fields()
 
     // Need to re-fetch data since things modified
     $all_custom_sets = glz_custom_fields_MySQL("all");
+    //dmp($all_custom_sets);
 
     // CUSTOM FIELDS Table -------------------
 
@@ -269,7 +273,8 @@ function glz_custom_fields()
     $head_row = '';
 
     foreach ($headers as $header => $column_head) {
-        $head_row .= column_head(array(
+        $head_row .= column_head(
+            array(
                 'options' => array('class' => trim('txp-list-col-'.$header)),
                 'value'   => $column_head,
                 'sort'    => $header
@@ -294,7 +299,8 @@ function glz_custom_fields()
         if ($i < 10) {
             // Only show 'reset' for custom fields that are set
             $reset_delete = ($custom_set['name']) ?
-                    glz_form_buttons("reset",
+                    glz_form_buttons(
+                        "reset",
                         gTxt('reset'),
                         $custom,
                         htmlspecialchars($custom_set['name']),
@@ -306,7 +312,8 @@ function glz_custom_fields()
                     null;
         } else {
             $reset_delete =
-                    glz_form_buttons("delete",
+                    glz_form_buttons(
+                        "delete",
                         gTxt('delete'),
                         $custom,
                         htmlspecialchars($custom_set['name']),
@@ -396,7 +403,6 @@ function glz_custom_fields()
         } else {
             $arr_values = glz_custom_fields_MySQL("values", $custom_set, '', array('custom_set_name' => $custom_set_name));
         }
-
         $values = ($arr_values) ? implode("\r\n", $arr_values) : '';
     } else {
         $values = '';
@@ -468,5 +474,4 @@ function glz_custom_fields()
     );
 
     echo form(join('', $out), '', '', 'post', 'txp-edit', '', 'add_edit_custom_field');
-
 }

@@ -1,7 +1,6 @@
 <?php
 
 // -------------------------------------------------------------
-// TODO: Is this really necessary or can we cut straight to functions?
 function glz_custom_fields_MySQL($do, $name='', $table='', $extra='')
 {
     if (!empty($do)) {
@@ -51,7 +50,6 @@ function glz_custom_fields_MySQL($do, $name='', $table='', $extra='')
             case 'get_plugin_prefs':
                 return glz_get_plugin_prefs($name);
                 break;
-
         }
     } else {
         trigger_error(gTxt('glz_cf_no_do'), E_ERROR);
@@ -290,6 +288,7 @@ function glz_new_custom_field($name, $table, $extra)
                 }
                 break;
         }
+        //dmp($query);
 
         // Execute DB query if it exists
         if (isset($query) && !empty($query)) {
@@ -306,7 +305,6 @@ function glz_update_custom_field($name, $table, $extra)
     if (is_array($extra)) {
         extract($extra);
     }
-
     if (($table == "txp_prefs")) {
         // Update custom_field data in 'txp_prefs' table
         safe_query("
@@ -329,6 +327,7 @@ function glz_update_custom_field($name, $table, $extra)
             MODIFY
                 `{$custom_field}` {$column_type} NOT NULL {$dflt}
         ");
+    //dmp('name: '.$name,'table: '.$table,$extra);
     }
 }
 
@@ -371,7 +370,7 @@ function glz_reset_custom_field($name, $table, $extra)
 
 function glz_delete_custom_field($name, $table)
 {
-    // The first ten custom fields are in-built and should not be deleted
+    // Only custom fields > 10 are actually deleted
     if (glz_custom_digit($name) > 10) {
         if (in_array($table, array("txp_prefs", "txp_lang", "custom_fields"))) {
             $query = "
@@ -403,6 +402,7 @@ function glz_delete_custom_field($name, $table)
                     `name`='{$name}'
             ");
         }
+        // In-built custom fields <= 10
     }
 }
 
@@ -423,6 +423,7 @@ function glz_custom_fields_update_count()
 {
     set_pref('max_custom_fields', safe_count('txp_prefs', "event='custom'"));
 }
+
 
 // -------------------------------------------------------------
 // Gets all plugin preferences
