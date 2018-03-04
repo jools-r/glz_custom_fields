@@ -5,7 +5,7 @@
 Title : glz_custom_fields stylesheet
 Author : Gerhard Lazu + many contributors
 
-Last modified: 27 February 2018
+Last modified: 3 March 2018
 
 - - - - - - - - - - - - - - - - - - - - - */
 
@@ -30,27 +30,49 @@ Last modified: 27 February 2018
 .glz-custom-fields td {
   vertical-align: middle;
 }
-.glz-custom-fields th.txp-list-col-id {
+.glz-custom-fields .txp-list-col-id {
   text-align: center;
   width: 5%;
 }
-.glz-custom-fields td.txp-list-col-position {
+.glz-custom-fields .txp-list-col-position {
   text-align: center;
-  width: 10%;
+  width: 5%;
 }
-.glz-custom-fields td.txp-list-col-name {
-  width: 40%;
+.glz-custom-fields .txp-list-col-name {
+  width: 17%;
 }
-.glz-custom-fields td.txp-list-col-type {
-  width: 20%;
+.glz-custom-fields .txp-list-col-title {
+  width: 28%;
+}
+.glz-custom-fields .txp-list-col-type {
+  width: 15%;
 }
 .glz-custom-fields td.txp-list-col-options {
-  width: 21%;
+  width: 15%;
   text-align: left;
 }
 .hidden {
   display: none;
 }
+/* edit button (styled as regular link) */
+.text-link {
+    font-size: 13px;
+    line-height: 20px;
+    background: none;
+    border: none;
+    color: #004cbf;
+    text-decoration: none;
+}
+.text-link:hover,
+.text-link:active,
+.text-link:focus {
+    background: none;
+    border: none;
+    box-shadow: none;
+    color: #06f;
+    text-decoration: underline;
+}
+
 /* edit, delete, reset buttons */
 .action-button {
     display: inline-block;
@@ -60,15 +82,44 @@ Last modified: 27 February 2018
     line-height: 14px;
 }
 .action-button .ui-icon {
-    height: 13px;
-    width: 13px;
-    background-size: 13px 13px;
+    height: 14px;
+    width: 14px;
+    background-size: 14px 14px;
     margin-bottom: 1px;
     margin-right: 2px;
 }
-.action-button .ui-button.ui-corner-all {
-    border-radius: .25em;
+.action-button button {
+    background: none;
+    border: none;
+    opacity: .66;
 }
+.action-button button:hover,
+.action-button button:active,
+.action-button button:focus {
+    background: none;
+    border: none;
+    box-shadow: none;
+    color: #06f;
+    text-decoration: none;
+    opacity: 1;
+}
+/*
+.text-link.add-link:hover {
+    color: #06f;
+    text-decoration: none;
+    opacity: 1;
+}
+*/
+/* change color of svg */
+.action-button button:hover .ui-icon {
+    /* #06f calculated with https://codepen.io/sosuke/pen/Pjoqqp prepended
+       with brightness(0) saturate(100%) as original icons not black */
+    -webkit-filter: brightness(0) saturate(100%) invert(27%) sepia(42%) saturate(7390%) hue-rotate(211deg) brightness(102%) contrast(105%);
+    filter: brightness(0) saturate(100%) invert(27%) sepia(42%) saturate(7390%) hue-rotate(211deg) brightness(102%) contrast(105%);
+}
+
+/* CUSTOM FIELDS EDIT PANEL + PREFS PANE
+-------------------------------------------------------------- */
 
 /* Form field instruction styling */
 .txp-prefs-group .txp-form-field .txp-form-field-instructions,

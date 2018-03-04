@@ -23,7 +23,7 @@ textpattern.Relay.register('txpAsyncForm.success', glzResetRadio);
     $('.glz-custom-textarea-msg').remove();
 
 
-    // CUSTOM FIELD PREFS PANE
+    // CUSTOM FIELD EDIT PANE
     // -----------------------
 
     // Toggle 'hint' for "select" custom field type dropdown
