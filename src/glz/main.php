@@ -86,6 +86,7 @@ function glz_custom_fields()
             glz_custom_fields_MySQL("delete", $custom_set, "txp_prefs"); // del: prefs entry
             glz_custom_fields_MySQL("delete", glz_custom_number($custom_set), "textpattern"); // del: custom field from articles
 
+            update_lastmod();
             $msg = gTxt('glz_cf_deleted', array('{custom_set_name}' => $custom_set_name));
         }
 
@@ -105,6 +106,7 @@ function glz_custom_fields()
                 )
             );
 
+            update_lastmod();
             $msg = gTxt('glz_cf_reset', array('{custom_set_name}' => $custom_set_name));
         }
 
@@ -274,6 +276,7 @@ function glz_custom_fields()
                             'cf_instructions'     => trim($custom_set_instructions)
                         )
                     );
+                    update_lastmod();
                     // Success or warning message (if previously generated)
                     if (empty($msg)) {
                         $msg = gTxt('glz_cf_updated', array('{custom_set_name}' => $custom_set_name));
