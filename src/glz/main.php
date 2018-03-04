@@ -81,18 +81,20 @@ function glz_custom_fields()
 
         // Delete a new custom field
         if (gps('delete')) {
-            glz_custom_fields_MySQL("delete", $custom_set, "txp_prefs");
-            glz_custom_fields_MySQL("delete", $custom_set, "txp_lang");
-            glz_custom_fields_MySQL("delete", $custom_set, "custom_fields");
-            glz_custom_fields_MySQL("delete", glz_custom_number($custom_set), "textpattern");
+            glz_custom_fields_MySQL("delete", $custom_set, "txp_lang"); // del: custom field title labels + instruction text + prefs language label
+            glz_custom_fields_MySQL("delete", $custom_set, "custom_fields"); // del: any glz custom_field settings / multiple values
+            glz_custom_fields_MySQL("delete", $custom_set, "txp_prefs"); // del: prefs entry
+            glz_custom_fields_MySQL("delete", glz_custom_number($custom_set), "textpattern"); // del: custom field from articles
 
             $msg = gTxt('glz_cf_deleted', array('{custom_set_name}' => $custom_set_name));
         }
 
         // Reset one of the mighty 10 standard custom fields
         if (gps('reset')) {
-            glz_custom_fields_MySQL("reset", $custom_set, "txp_prefs");
-            glz_custom_fields_MySQL("delete", $custom_set, "custom_fields");
+            glz_custom_fields_MySQL("delete", $custom_set, "txp_lang"); // del: custom field title labels + instruction text
+            glz_custom_fields_MySQL("reset", $custom_set, "txp_prefs"); // reset: prefs entry
+            glz_custom_fields_MySQL("delete", $custom_set, "custom_fields"); // del: any glz custom_field settings / multiple values
+            // reset: custom field entries in articles
             glz_custom_fields_MySQL(
                 "reset",
                 glz_custom_number($custom_set),
@@ -125,6 +127,7 @@ function glz_custom_fields()
 
                 // If name doesn't exist
                 if ($name_exists == false) {
+                    // Prefs
                     glz_custom_fields_MySQL(
                         "new",
                         $custom_set_name,
@@ -135,15 +138,45 @@ function glz_custom_fields()
                             'custom_set_position' => $custom_set_position
                         )
                     );
+                    // 'custom_X_set' lang string for Admin › Prefs label = “Custom field {X} name”
                     glz_custom_fields_MySQL(
                         "new",
-                        $custom_set_name,
+                        gTxt('custom_x_set', array('{number}' => $custom_field_number)),
                         "txp_lang",
                         array(
                             'custom_field_number' => $custom_field_number,
-                            'lang'                => $GLOBALS['prefs']['language']
+                            'lang'                => $GLOBALS['prefs']['language_ui']
                         )
                     );
+                    // 'cf_customname' = Title
+                    if (!empty(trim($custom_set_title))) {
+                        glz_custom_fields_MySQL(
+                            "new",
+                            $custom_set_title,
+                            "txp_lang",
+                            array(
+                                'custom_field_number' => $custom_field_number,
+                                'lang'                => $GLOBALS['prefs']['language_ui'],
+                                'gtxt_event'          => 'glz_cf',
+                                'gtxt_name'           => glz_cf_langname($custom_set_name)
+                            )
+                        );
+                    }
+                    // 'instructions_custom_X' = Help string
+                    if (!empty(trim($custom_set_instructions))) {
+                        glz_custom_fields_MySQL(
+                            "new",
+                            $custom_set_instructions,
+                            "txp_lang",
+                            array(
+                                'custom_field_number' => $custom_field_number,
+                                'lang'                => $GLOBALS['prefs']['language_ui'],
+                                'gtxt_event'          => 'glz_cf',
+                                'gtxt_name'           => 'instructions_custom_'.$custom_field_number
+                            )
+                        );
+                    }
+                    // Add the custom field to the 'textpattern' table for use with articles
                     glz_custom_fields_MySQL(
                         "new",
                         $custom_set_name,
@@ -183,7 +216,9 @@ function glz_custom_fields()
         // Edit an existing custom field
         if (gps('save')) {
             if (!empty($custom_set_name)) {
+                $custom_set_name_input = $custom_set_name;
                 $custom_set_name = glz_sanitize_for_cf($custom_set_name, $lite = true);
+                $custom_set_number = glz_custom_digit($custom_set);
 
                 glz_is_valid_cf_name($custom_set_name_input);
 
@@ -226,6 +261,19 @@ function glz_custom_fields()
                             )
                         );
                     }
+                    // 'cf_customname' = CF Field label (Title)
+                    // 'instructions_custom_X' = CF Field instructions
+                    glz_custom_fields_MySQL(
+                        "update",
+                        $custom_set_name,
+                        "txp_lang",
+                        array(
+                            'custom_field_number' => $custom_set_number,
+                            'old_cf_name'         => $custom_set_name_old,
+                            'cf_title'            => trim($custom_set_title),
+                            'cf_instructions'     => trim($custom_set_instructions)
+                        )
+                    );
                     // Success or warning message (if previously generated)
                     if (empty($msg)) {
                         $msg = gTxt('glz_cf_updated', array('{custom_set_name}' => $custom_set_name));
@@ -412,6 +460,7 @@ function glz_custom_fields()
         gTxt('glz_cf_action_new_title');
 
     $custom_field = gps('edit') ?
+        hInput('custom_set_name_old', gps('custom_set_name')).  // existing name prior to renaming
         hInput('custom_set', gps('custom_set')) :
         hInput('custom_field_number', glz_custom_next($all_custom_sets));
 
