@@ -266,6 +266,7 @@ function glz_custom_fields()
         'id'        => 'id',
         'position'  => 'position',
         'name'      => 'name',
+        'title'     => 'title',
         'type'      => 'type',
         'options'   => 'options'
     );
@@ -323,30 +324,75 @@ function glz_custom_fields()
                     );
         }
 
-        $edit =
-                    glz_form_buttons("edit",
-                        gTxt('edit'),
-                        $custom,
-                        htmlspecialchars($custom_set['name']),
-                        $custom_set['type'],
-                        $custom_set['position']
-                    );
+        if (!empty($custom_set['name'])) {
+            $add = '';
+            // TODO: refactor into (txp-own) button function
+            $edit = '<form method="post" action="index.php">
+                <input name="custom_set" value="'.$custom.'" type="hidden" />
+                <input name="custom_set_name" value="'.htmlspecialchars($custom_set['name']).'" type="hidden" />
+                <input name="custom_set_type" value="'.$custom_set['type'].'" type="hidden" />
+                <input name="custom_set_title" value="'.$custom_set['title'].'" type="hidden" />
+                <input name="custom_set_instructions" value="'.$custom_set['instructions'].'" type="hidden" />
+                <input name="custom_set_position" value="'.$custom_set['position'].'" type="hidden" />
+                <input name="event" value="glz_custom_fields" type="hidden" />
+                <button name="edit" type="submit" value="edit" class="text-link" title="'.gTxt('glz_cf_action_edit_title', array('{custom_set_name}' => gTxt('glz_cf_title').' #'.glz_custom_digit($custom))).'">
+                '.htmlspecialchars($custom_set['name']).'
+                </button>
+            </form>';
+        } else {
+            $edit = '';
+            // TODO: refactor into (txp-own) button function
+            $add = '<form class="action-button" method="post" action="index.php">
+                <input name="custom_set" value="'.$custom.'" type="hidden" />
+                <input name="custom_set_name" value="'.htmlspecialchars($custom_set['name']).'" type="hidden" />
+                <input name="custom_set_type" value="'.$custom_set['type'].'" type="hidden" />
+                <input name="custom_set_title" value="'.htmlspecialchars($custom_set['title']).'" type="hidden" />
+                <input name="custom_set_instructions" value="'.htmlspecialchars($custom_set['instructions']).'" type="hidden" />
+                <input name="custom_set_position" value="'.htmlspecialchars($custom_set['position']).'" type="hidden" />
+                <input name="event" value="glz_custom_fields" type="hidden" />
+                <button name="edit" type="submit" value="edit" class="jquery-ui-button-icon-left ui-button ui-corner-all ui-widget" title="'.gTxt('glz_cf_action_edit_title', array('{custom_set_name}' => gTxt('glz_cf_title').' #'.glz_custom_digit($custom))).'">
+                    <span class="ui-button-icon ui-icon ui-icon-circlesmall-plus"></span>
+                    <span class="ui-button-icon-space"> </span>
+                    '.gTxt('add').'
+                </button>
+            </form>';
+        }
+
+        $custom_label = '';
+        if (!empty($custom_set["name"])) {
+            $custom_label = (empty($custom_set['title']) ? gTxt('undefined') : $custom_set['title']);
+        }
 
         $contentBlock .= tr(
             hCell(
-                $custom_set['id'], '', array('class' => 'txp-list-col-id')
+                $custom_set['id'],
+                '',
+                array('class' => 'txp-list-col-id')
             ).
             td(
-                $custom_set['position'], '', 'txp-list-col-position'
+                $custom_set['position'],
+                '',
+                'txp-list-col-position'
             ).
             td(
-                $custom_set['name'], '', 'txp-list-col-name'
+                $edit,
+                '',
+                'txp-list-col-name'
             ).
             td(
-                (($custom_set['name']) ? gTxt('glz_cf_'.$custom_set['type']) : ''), '', 'txp-list-col-type'
+                $custom_label,
+                '',
+                'txp-list-col-title'.(empty($custom_set['title']) ? ' disabled' : '')
             ).
             td(
-                $edit.sp.$reset_delete, '', 'txp-list-col-options'
+                (($custom_set['name']) ? gTxt('glz_cf_'.$custom_set['type']) : ''),
+                '',
+                'txp-list-col-type'
+            ).
+            td(
+                $add.$reset_delete,
+                '',
+                'txp-list-col-options'
             )
         );
         $i++;
@@ -375,6 +421,14 @@ function glz_custom_fields()
 
     $custom_name = gps('edit') ?
         gps('custom_set_name') :
+        null;
+
+    $custom_set_title = gps('edit') ?
+        gps('custom_set_title') :
+        null;
+
+    $custom_set_instructions = gps('edit') ?
+        gps('custom_set_instructions') :
         null;
 
     $custom_set_position = gps('edit') ?
@@ -430,11 +484,29 @@ function glz_custom_fields()
     $out[] =
     inputLabel(
             'custom_set_name',
-            fInput('text', 'custom_set_name', htmlspecialchars($custom_name), '', '', '', INPUT_REGULAR, '', 'custom_set_name'),
+            fInput('text', 'custom_set_name', htmlspecialchars($custom_name), '', '', '', INPUT_MEDIUM, '', 'custom_set_name'),
             'glz_cf_edit_name',
             array(
                 0 => '',
                 1 => 'glz_cf_edit_name_hint' // Inline help string
+            )
+        ).
+    inputLabel(
+            'custom_set_title',
+            fInput('text', 'custom_set_title', htmlspecialchars($custom_set_title), '', '', '', INPUT_REGULAR, '', 'custom_set_title'),
+            'glz_cf_edit_title',
+            array(
+                0 => '',
+                1 => 'glz_cf_edit_title_hint' // Inline help string
+            )
+        ).
+    inputLabel(
+            'custom_set_instructions',
+            fInput('text', 'custom_set_instructions', htmlspecialchars($custom_set_instructions), '', '', '', INPUT_REGULAR, '', 'custom_set_instructions'),
+            'glz_cf_edit_instructions',
+            array(
+                0 => '',
+                1 => 'glz_cf_edit_instructions_hint' // Inline help string
             )
         ).
     inputLabel(

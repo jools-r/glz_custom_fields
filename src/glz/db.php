@@ -68,10 +68,12 @@ function glz_all_custom_sets()
     foreach ($all_custom_sets as $custom_set) {
         $custom_set['id'] = glz_custom_digit($custom_set['custom_set']);
         $out[$custom_set['custom_set']] = array(
-            'id'        => $custom_set['id'],
-            'name'      => $custom_set['name'],
-            'position'  => $custom_set['position'],
-            'type'      => $custom_set['type']
+            'id'            => $custom_set['id'],
+            'name'          => $custom_set['name'],
+            'title'         => glz_cf_gtxt($custom_set['name']),
+            'instructions'  => glz_cf_gtxt('', $custom_set['id']),
+            'position'      => $custom_set['position'],
+            'type'          => $custom_set['type']
         );
     }
 

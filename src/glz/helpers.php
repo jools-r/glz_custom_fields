@@ -367,8 +367,8 @@ function glz_form_buttons($action, $value, $custom_set, $custom_set_name, $custo
     if ($action == "reset") {
         $ui_icon = "trash";
     }
-    if ($action == "edit") {
-        $ui_icon = "pencil";
+    if ($action == "add") {
+        $ui_icon = "circlesmall-plus";
     }
 
     return
