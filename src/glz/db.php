@@ -389,11 +389,10 @@ function glz_update_custom_field($name, $table, $extra)
             $current_lang = get_pref('language_ui', TEXTPATTERN_DEFAULT_LANG);
             // If the custom_field name has changed, update cf_langname to match new name
             $new_cf_name = ($name <> $old_cf_name) ? glz_cf_langname($name) : "";
-
             // if cf title is not empty, update or insert it
             if (!empty($cf_title)) {
                 // name is unchanged: safe_update entry
-                if (empty($new_cf_name)) {
+                if ( empty($new_cf_name) && !empty(glz_cf_gtxt($old_cf_name)) ) {
                     safe_update(
                         'txp_lang',
                         "event  = 'prefs',
@@ -414,14 +413,14 @@ function glz_update_custom_field($name, $table, $extra)
                         lastmod = now()"
                     );
                     // delete entry with old name
-                    if (!empty($old_cf_name)) {
+                    if (!empty($old_cf_name) && !empty($new_cf_name)) {
                         safe_delete(
                             'txp_lang',
                             "name = '".glz_cf_langname($old_cf_name)."' AND lang = '{$current_lang}'"
                         );
                     }
                 }
-                // if cf title field is empty but a current translation exists: delete it (e.g. cancel field)
+            // if cf title field is empty but a current translation exists: delete it (e.g. cancel field)
             } elseif (glz_cf_gtxt($old_cf_name) != '') {
                 safe_delete(
                     'txp_lang',
