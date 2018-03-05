@@ -13,6 +13,8 @@ glz_cf_name_invalid_chars => <strong>{custom_name_input}</strong> was updated, b
 glz_cf_name_invalid_starts_with_number => <strong>{custom_name_input}</strong> was updated, but consider renaming it. Names should not start with a number. <a href="?event=plugin&step=plugin_help&name=glz_custom_fields#custom-field-names">» See plugin help</a>.
 glz_cf_name_invalid_double_underscores => <strong>{custom_name_input}</strong> was updated, but consider renaming it. Names should not have double underscores. <a href="?event=plugin&step=plugin_help&name=glz_custom_fields#custom-field-names">» See plugin help</a>.
 glz_cf_field_problems => <strong>{custom_set_name}</strong> has some problems. <a href="?event=glz_custom_fields">Go fix it</a>.
+glz_cf_types_normal => Normal
+glz_cf_types_special => Special
 glz_cf_text_input => Text Input
 glz_cf_select => Select
 glz_cf_multi-select => Multi-Select
@@ -34,6 +36,7 @@ glz_cf_migration_skip => <strong>custom_fields</strong> table already has data i
 glz_cf_search_section_created => <strong>search</strong> section has been created
 glz_cf_not_found => <strong>{file}</strong> cannot be found, check path
 glz_cf_not_callable => <strong>{function}()</strong> cannot be called. Ensure <strong>{file}</strong> can be executed.
+glz_cf_no_such_custom_field => No such custom field!
 glz_cf_prefpane_title => Custom Fields Preferences
 glz_cf_js_textarea_msg => Each value on a separate line<br>One {default} value allowed
 glz_cf_js_script_msg => php file name in your custom scripts path
@@ -45,11 +48,11 @@ glz_cf_action_new_title => Add new custom field
 glz_cf_action_edit_title => Edit {custom_set_name}
 glz_cf_add_new_cf => Add new custom field
 glz_cf_multiple_values_instructions => Each value on a separate line<br>One {default} value allowed
-glz_cf_edit_name_hint => A single word with alphanumeric characters
+glz_cf_edit_name_hint => Alphanumeric characters and underscores
 glz_cf_edit_position_hint => Automatically assigned if blank
 glz_cf_edit_name => Name:
 glz_cf_edit_title => Title:
-glz_cf_edit_title_hint => A descriptive field label
+glz_cf_edit_title_hint => Descriptive field label
 glz_cf_edit_instructions => Instructions:
 glz_cf_edit_instructions_hint => Optional help text (appears alongside label)
 glz_cf_edit_type => Type:
