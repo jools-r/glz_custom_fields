@@ -393,6 +393,8 @@ function glz_update_custom_field($name, $table, $extra)
             if (!empty($cf_title)) {
                 // name is unchanged: safe_update entry
                 if ( empty($new_cf_name) && !empty(glz_cf_gtxt($old_cf_name)) ) {
+                    $glz_cf_title = glz_cf_langname($old_cf_name);
+                    $glz_cf_title_val = doSlash($cf_title);
                     safe_update(
                         'txp_lang',
                         "event  = 'prefs',
@@ -402,11 +404,13 @@ function glz_update_custom_field($name, $table, $extra)
                         "name = '".glz_cf_langname($old_cf_name)."' AND lang = '{$current_lang}'"
                     );
                 } else {
+                    $glz_cf_title = (empty($new_cf_name)) ? glz_cf_langname($old_cf_name) : $new_cf_name;
+                    $glz_cf_title_val = doSlash($cf_title);
                     // name has been changed: insert entry with new name
                     safe_insert(
                         'txp_lang',
                         "lang   = '{$current_lang}',
-                        name    = '".$new_cf_name."',
+                        name    = '".$glz_cf_title."',
                         event   = 'prefs',
                         owner   = 'glz_custom_fields',
                         data    = '".doSlash($cf_title)."',
@@ -414,6 +418,8 @@ function glz_update_custom_field($name, $table, $extra)
                     );
                     // delete entry with old name
                     if (!empty($old_cf_name) && !empty($new_cf_name)) {
+                        $glz_cf_title_old = glz_cf_langname($old_cf_name);
+                        $glz_cf_title_old_val = null;
                         safe_delete(
                             'txp_lang',
                             "name = '".glz_cf_langname($old_cf_name)."' AND lang = '{$current_lang}'"
@@ -422,6 +428,8 @@ function glz_update_custom_field($name, $table, $extra)
                 }
             // if cf title field is empty but a current translation exists: delete it (e.g. cancel field)
             } elseif (glz_cf_gtxt($old_cf_name) != '') {
+                $glz_cf_title_old = glz_cf_langname($old_cf_name);
+                $glz_cf_title_old_val = null;
                 safe_delete(
                     'txp_lang',
                     "name = '".glz_cf_langname($old_cf_name)."' AND lang = '{$current_lang}'"
@@ -431,6 +439,8 @@ function glz_update_custom_field($name, $table, $extra)
             $cf_instructions_langname = 'instructions_custom_'.$custom_field_number;
             // if cf instructions is not empty, update or insert it
             if (!empty($cf_instructions)) {
+                $glz_cf_instructions = $cf_instructions_langname;
+                $glz_cf_instructions_val = doSlash($cf_instructions);
                 safe_upsert(
                     'txp_lang',
                      "event   = 'glz_cf',
@@ -441,11 +451,27 @@ function glz_update_custom_field($name, $table, $extra)
                 );
             // if cf instructions field is empty but a current translation exists: delete it (e.g. cancel field)
             } elseif (glz_cf_gtxt('', $custom_field_number) != '') {
+                $glz_cf_instructions = $cf_instructions_langname;
+                $glz_cf_instructions_val = null;
                 safe_delete(
                     'txp_lang',
                     "name = '{$cf_instructions_langname}' AND lang = '{$current_lang}'"
                 );
             }
+
+            // array of language key->values to refresh in cache
+            $refresh_cf_gtxt = array();
+            if (!empty($glz_cf_title)) {
+                $refresh_cf_gtxt[$glz_cf_title] = $glz_cf_title_val;
+            }
+            if (!empty($glz_cf_title_old)) {
+                $refresh_cf_gtxt[$glz_cf_title_old] = $glz_cf_title_old_val;
+            }
+            if (!empty($glz_cf_instructions)) {
+                $refresh_cf_gtxt[$glz_cf_instructions] = $glz_cf_instructions_val;
+            }
+            Txp::get('\Textpattern\L10n\Lang')->Setpack($refresh_cf_gtxt, true);
+
             break;
         case 'textpattern':
             // Update custom_field column type in 'textpattern' table
