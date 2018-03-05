@@ -373,7 +373,7 @@ function glz_cf_edit($msg='', $id='')
  */
 function glz_cf_save($msg='')
 {
-    global $event, $step;
+    global $event, $step, $msg;
 
     $in = array_map('assert_string', psa(array(
         'custom_set',
