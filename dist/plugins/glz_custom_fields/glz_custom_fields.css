@@ -5,7 +5,7 @@
 Title : glz_custom_fields stylesheet
 Author : Gerhard Lazu + many contributors
 
-Last modified: 3 March 2018
+Last modified: 5 March 2018
 
 - - - - - - - - - - - - - - - - - - - - - */
 
@@ -15,21 +15,7 @@ Last modified: 3 March 2018
 .glz-cf-setup-switch {
     float: right;
 }
-/* table width */
-.txp-list.glz-custom-fields {
-  margin: 1em auto;
-  max-width: 60em;
-}
-/* add/edit panel width = table width minus 1em padding either side */
-.txp-edit {
-  margin: 1em auto;
-  max-width: 58em;
-  width: auto;
-}
-/* table column widths / height */
-.glz-custom-fields td {
-  vertical-align: middle;
-}
+/* table column widths */
 .glz-custom-fields .txp-list-col-id {
   text-align: center;
   width: 5%;
@@ -39,89 +25,55 @@ Last modified: 3 March 2018
   width: 5%;
 }
 .glz-custom-fields .txp-list-col-name {
-  width: 17%;
+  width: 20%;
 }
 .glz-custom-fields .txp-list-col-title {
-  width: 28%;
+  width: 35%;
+}
+.glz-custom-fields .txp-list-col-title .cf-instructions.ui-icon {
+    width: 2em;
+    height: 17px;
+    float: right;
+    background-repeat: no-repeat;
+    background-position: center 2px;
+    opacity: .33;
+    cursor: pointer;
+}
+/* instructions on 'undefined' entries: reverse effect of double opacity */
+.glz-custom-fields .txp-list-col-title.disabled .cf-instructions {
+    opacity: 1 !important;
 }
 .glz-custom-fields .txp-list-col-type {
-  width: 15%;
+  width: 20%;
 }
-.glz-custom-fields td.txp-list-col-options {
-  width: 15%;
-  text-align: left;
+.glz-custom-fields .txp-list-col-options {
+  width: 5%;
+  text-align: center;
 }
-.hidden {
-  display: none;
+.glz-custom-fields .txp-list-col-options .ui-icon {
+    /* larger click target */
+    width: 4em;
+    background-repeat: no-repeat;
+    background-position: center;
 }
-/* edit button (styled as regular link) */
-.text-link {
-    font-size: 13px;
-    line-height: 20px;
-    background: none;
-    border: none;
-    color: #004cbf;
-    text-decoration: none;
-}
-.text-link:hover,
-.text-link:active,
-.text-link:focus {
-    background: none;
-    border: none;
-    box-shadow: none;
-    color: #06f;
-    text-decoration: underline;
+/* change color of svg background */
+.glz-custom-fields .txp-list-col-options .ui-icon:hover {
+    /* #00c4bf calculated with https://codepen.io/sosuke/pen/Pjoqqp prepended
+       with brightness(0) saturate(100%) as original icons not black */
+    -webkit-filter: brightness(0) saturate(100%) invert(17%) sepia(51%) saturate(5958%) hue-rotate(211deg) brightness(89%) contrast(101%);
+    filter: brightness(0) saturate(100%) invert(17%) sepia(51%) saturate(5958%) hue-rotate(211deg) brightness(89%) contrast(101%);
 }
 
-/* edit, delete, reset buttons */
-.action-button {
-    display: inline-block;
+/* hide language string spans to avoid FOUT */
+#add_edit_custom_field .hidden {
+  display: none;
 }
-.action-button button {
-    font-size: 12px;
-    line-height: 14px;
-}
-.action-button .ui-icon {
-    height: 14px;
-    width: 14px;
-    background-size: 14px 14px;
-    margin-bottom: 1px;
-    margin-right: 2px;
-}
-.action-button button {
-    background: none;
-    border: none;
-    opacity: .66;
-}
-.action-button button:hover,
-.action-button button:active,
-.action-button button:focus {
-    background: none;
-    border: none;
-    box-shadow: none;
-    color: #06f;
-    text-decoration: none;
-    opacity: 1;
-}
-/*
-.text-link.add-link:hover {
-    color: #06f;
-    text-decoration: none;
-    opacity: 1;
-}
-*/
-/* change color of svg */
-.action-button button:hover .ui-icon {
-    /* #06f calculated with https://codepen.io/sosuke/pen/Pjoqqp prepended
-       with brightness(0) saturate(100%) as original icons not black */
-    -webkit-filter: brightness(0) saturate(100%) invert(27%) sepia(42%) saturate(7390%) hue-rotate(211deg) brightness(102%) contrast(105%);
-    filter: brightness(0) saturate(100%) invert(27%) sepia(42%) saturate(7390%) hue-rotate(211deg) brightness(102%) contrast(105%);
-}
+
 
 /* CUSTOM FIELDS EDIT PANEL + PREFS PANE
 -------------------------------------------------------------- */
 
-/* Form field instruction styling */
+/* Form field instructions styling */
 .txp-prefs-group .txp-form-field .txp-form-field-instructions,
 .txp-edit .txp-form-field .txp-form-field-instructions {
     max-width: 50%;
@@ -135,6 +87,7 @@ Last modified: 3 March 2018
         padding-left: 0em;
     }
 }
+
 
 /* ARTICLE / WRITE PANE
 -------------------------------------------------------------- */
