@@ -1,5 +1,20 @@
 <?php
 
+##################
+#
+#	glz_custom_fields for Textpattern
+#	version 2.0 – jools-r
+#	Original version: Gerhard Lazu
+#
+##################
+
+##################
+#
+#   FIELD TYPES – Rendering of custom fields on 'Write' pane
+#
+##################
+
+
 // -------------------------------------------------------------
 // Formats the custom set output based on its type
 function glz_format_custom_set_by_type($custom, $custom_id, $custom_set_type, $arr_custom_field_values, $custom_value = "", $default_value = "")

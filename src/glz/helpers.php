@@ -1,5 +1,20 @@
 <?php
 
+##################
+#
+#	glz_custom_fields for Textpattern
+#	version 2.0 – jools-r
+#	Original version: Gerhard Lazu
+#
+##################
+
+##################
+#
+#   HELPERS – Helper functions: checks, sanitizers, preps
+#
+##################
+
+
 // -------------------------------------------------------------
 // The types our custom fields can take
 function glz_custom_set_types()
@@ -231,7 +246,7 @@ function glz_custom_digit($custom_set)
 
 
 // -------------------------------------------------------------
-// Returns the custom_X_set from a custom set name e.g. "Rating" gives us custom_1_set
+// Returns the custom_X_set from a custom set name e.g. "rating" gives us custom_1_set
 function glz_get_custom_set($value)
 {
     $result = safe_field(

@@ -1,5 +1,20 @@
 <?php
 
+##################
+#
+#	glz_custom_fields for Textpattern
+#	version 2.0 – jools-r
+#	Original version: Gerhard Lazu
+#
+##################
+
+##################
+#
+#   PREFERENCES PANE – Functions for preferences + preferences pane
+#
+##################
+
+
 function glz_cf_prefs_install()
 {
     global $prefs;

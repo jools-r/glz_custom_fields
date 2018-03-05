@@ -1,12 +1,28 @@
 <?php
 
+##################
+#
+#	glz_custom_fields for Textpattern
+#	version 2.0 – jools-r
+#	Original version: Gerhard Lazu
+#
+##################
+
+##################
+#
+#   CALLBACKS – Callback functions called from main.php
+#
+##################
+
+
 // -------------------------------------------------------------
-// Replaces the default custom fields under write tab
+// Replaces the default custom fields on the 'Write' panel
 function glz_custom_fields_replace($event, $step, $data, $rs)
 {
-    // Get all custom fields & keep only the ones which are set, filter by step
     // Get all custom field sets from prefs
     $all_custom_sets = glz_custom_fields_MySQL("all");
+
+    // Filter all custom fields & keep only those that are set for that render step
     $arr_custom_fields = glz_check_custom_set($all_custom_sets, $step);
 
     // DEBUG

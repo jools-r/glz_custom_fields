@@ -1,5 +1,20 @@
 <?php
 
+##################
+#
+#	glz_custom_fields for Textpattern
+#	version 2.0 – jools-r
+#	Original version: Gerhard Lazu
+#
+##################
+
+##################
+#
+#   DATABASE FUNCTIONS –
+#
+##################
+
+
 // -------------------------------------------------------------
 function glz_custom_fields_MySQL($do, $name='', $table='', $extra='')
 {
@@ -381,7 +396,7 @@ function glz_update_custom_field($name, $table, $extra)
                 if (empty($new_cf_name)) {
                     safe_update(
                         'txp_lang',
-                        "event   = 'prefs',
+                        "event  = 'prefs',
                         owner   = 'glz_custom_fields',
                         data    = '{$cf_title}',
                         lastmod = now()",
