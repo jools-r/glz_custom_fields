@@ -6,7 +6,7 @@ function glz_custom_fields_MySQL($do, $name='', $table='', $extra='')
     if (!empty($do)) {
         switch ($do) {
             case 'all':
-                return glz_all_custom_sets();
+                return glz_cf_all_custom_sets();
                 break;
 
             case 'values':
@@ -57,27 +57,55 @@ function glz_custom_fields_MySQL($do, $name='', $table='', $extra='')
 }
 
 
-function glz_all_custom_sets()
+function glz_cf_all_custom_sets()
 {
     $all_custom_sets = safe_rows(
-        "`name` AS custom_set, `val` AS name, `position`, `html` AS type",
+        "`name` AS custom_set,
+         `val` AS name,
+         `position`,
+         `html` AS type",
         'txp_prefs',
-        "`event`='custom' ORDER BY `position`"
+        "`event` = 'custom' ORDER BY `position`"
     );
 
     foreach ($all_custom_sets as $custom_set) {
         $custom_set['id'] = glz_custom_digit($custom_set['custom_set']);
+        $custom_set['title'] = glz_cf_gtxt($custom_set['name']);
+        $custom_set['instructions'] = glz_cf_gtxt('', $custom_set['id']);
+
         $out[$custom_set['custom_set']] = array(
             'id'            => $custom_set['id'],
             'name'          => $custom_set['name'],
-            'title'         => glz_cf_gtxt($custom_set['name']),
-            'instructions'  => glz_cf_gtxt('', $custom_set['id']),
+            'title'         => $custom_set['title'],
+            'instructions'  => $custom_set['instructions'],
             'position'      => $custom_set['position'],
             'type'          => $custom_set['type']
         );
-    }
 
+    }
     return $out;
+}
+
+
+function glz_cf_single_custom_set($id)
+{
+    if (!ctype_digit($id)) {
+        return false;
+    }
+        $custom_set = safe_row(
+            "name AS custom_set,
+             val AS name,
+             position,
+             html AS type",
+            'txp_prefs',
+            "name = 'custom_".doSlash($id)."_set'"
+        );
+
+        $custom_set['id'] = glz_custom_digit($custom_set['custom_set']);
+        $custom_set['title'] = glz_cf_gtxt($custom_set['name']);
+        $custom_set['instructions'] = glz_cf_gtxt('', $custom_set['id']);
+
+        return $custom_set;
 }
 
 
@@ -220,6 +248,20 @@ function glz_article_custom_fields($name, $extra)
     } else {
         trigger_error(gTxt('glz_cf_not_specified', array('{what}' => "extra attributes")), E_ERROR);
     }
+}
+
+
+// -------------------------------------------------------------
+// Goes through all custom sets, returns the first one which is not being used
+// Returns next free id#.
+function glz_next_empty_custom()
+{
+    $result = safe_field(
+        "name",
+        'txp_prefs',
+        "event = 'custom' AND val = '' ORDER BY name LIMIT 1"
+    );
+    return glz_custom_digit($result);
 }
 
 

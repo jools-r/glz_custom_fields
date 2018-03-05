@@ -41,20 +41,6 @@ function glz_check_custom_set($all_custom_sets, $step)
 
 
 // -------------------------------------------------------------
-// Goes through all custom sets, returns the first one which is not being used
-function glz_next_empty_custom()
-{
-    global $all_custom_sets;
-
-    foreach ($all_custom_sets as $custom => $custom_set) {
-        if (empty($custom_set['name'])) {
-            return $custom;
-        }
-    }
-}
-
-
-// -------------------------------------------------------------
 // Converts all values into id safe ones [A-Za-z0-9-]
 function glz_cf_idname($text)
 {
@@ -248,16 +234,17 @@ function glz_custom_digit($custom_set)
 // Returns the custom_X_set from a custom set name e.g. "Rating" gives us custom_1_set
 function glz_get_custom_set($value)
 {
-    global $all_custom_sets;
-
-    // Loop over custom fields and see if requested name exists
-    foreach ($all_custom_sets as $custom => $custom_set) {
-        if ($custom_set['name'] == $value) {
-            return $custom;
-        }
+    $result = safe_field(
+        "name",
+        'txp_prefs',
+        "event = 'custom' AND val = '".doSlash(val)."'"
+    );
+    if (!$result) {
+        // No result -> return error message
+        trigger_error(gTxt('glz_cf_doesnt_exist', array('{custom_set_name}' => $value)), E_USER_WARNING);
+        return false;
     }
-    // No result -> return error message
-    trigger_error(gTxt('glz_cf_doesnt_exist', array('{custom_set_name}' => $value)), E_USER_WARNING);
+    return true;
 }
 
 
@@ -342,15 +329,13 @@ function glz_custom_next($arr_custom_sets)
 
 // -------------------------------------------------------------
 // Is the custom field name already taken?
-function glz_check_custom_set_name($arr_custom_fields, $custom_set_name, $custom_set='')
+function glz_check_custom_set_name($custom_set_name, $custom_set)
 {
-    foreach ($arr_custom_fields as $custom => $arr_custom_set) {
-        if (($custom_set_name === $arr_custom_set['name']) && (!empty($custom_set) && $custom_set != $custom)) {
-            return true;
-        }
-    }
-
-    return false;
+    return safe_field(
+        "name",
+        'txp_prefs',
+        "event = 'custom' AND val = '".doSlash($custom_set_name)."' AND name <> '".doSlash($custom_set)."'"
+    );
 }
 
 

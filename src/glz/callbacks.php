@@ -4,8 +4,9 @@
 // Replaces the default custom fields under write tab
 function glz_custom_fields_replace($event, $step, $data, $rs)
 {
-    global $all_custom_sets, $date_picker;
     // Get all custom fields & keep only the ones which are set, filter by step
+    // Get all custom field sets from prefs
+    $all_custom_sets = glz_custom_fields_MySQL("all");
     $arr_custom_fields = glz_check_custom_set($all_custom_sets, $step);
 
     // DEBUG
@@ -113,10 +114,14 @@ function glz_custom_fields_before_save()
 // Inject css & js into admin head
 function glz_custom_fields_inject_css_js()
 {
-    global $event, $date_picker, $time_picker, $prefs, $use_minified;
+    global $event, $prefs, $use_minified;
 
     $msg = array();
     $min = ($use_minified) ? '.min' : '';
+
+    // do we have a date-picker or time-picker custom field
+    $date_picker = glz_custom_fields_MySQL("custom_set_exists", "date-picker");
+    $time_picker = glz_custom_fields_MySQL("custom_set_exists", "time-picker");
 
     // glz_cf stylesheets
     $css = '<link rel="stylesheet" type="text/css" media="all" href="'.glz_relative_url($prefs['glz_cf_css_asset_url']).'/glz_custom_fields'.$min.'.css">'.n;
@@ -200,29 +205,10 @@ JS;
 
 
 // -------------------------------------------------------------
-// Set up pre-requisite values for glz_custom_fields
-function init_glz_custom_fields()
-{
-    // We will be reusing these globals across the whole plugin
-    global $all_custom_sets, $prefs, $date_picker, $time_picker;
-
-    // glz_notice collects all plugin notices
-    // $msg = array();
-
-    // Get all custom field sets from prefs
-    $all_custom_sets = glz_custom_fields_MySQL("all");
-
-    // do we have a date-picker or time-picker custom field
-    $date_picker = glz_custom_fields_MySQL("custom_set_exists", "date-picker");
-    $time_picker = glz_custom_fields_MySQL("custom_set_exists", "time-picker");
-}
-
-
-// -------------------------------------------------------------
 // Install glz_cf tables and prefs
 function glz_custom_fields_install()
 {
-    global $all_custom_sets, $prefs;
+    global $prefs;
     $msg = '';
 
     // Set plugin preferences
@@ -287,6 +273,9 @@ function glz_custom_fields_install()
         $msg = gTxt('glz_cf_migration_skip');
         return;
     }
+
+    // Get all custom field sets from prefs
+    $all_custom_sets = glz_custom_fields_MySQL("all");
 
     // Iterate over all custom_fields and retrieve all values
     // in custom field columns in textpattern table
