@@ -276,7 +276,12 @@ function glz_next_empty_custom()
         'txp_prefs',
         "event = 'custom' AND val = '' ORDER BY LENGTH(name), name LIMIT 1"
     );
-    return glz_custom_digit($result);
+    if ($result) {
+        $result = glz_custom_digit($result);
+    } else {
+        $result = get_pref('max_custom_fields') + 1;
+    }
+    return $result;
 }
 
 
