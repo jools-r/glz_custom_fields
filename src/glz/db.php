@@ -371,7 +371,7 @@ function glz_update_custom_field($name, $table, $extra)
             break;
         case 'txp_lang':
             // Update custom_field title (switch reference from old to new)
-            $current_lang = $GLOBALS['prefs']['language_ui'];
+            $current_lang = get_pref('language_ui', TEXTPATTERN_DEFAULT_LANG);
             // If the custom_field name has changed, update cf_langname to match new name
             $new_cf_name = ($name <> $old_cf_name) ? glz_cf_langname($name) : "";
 
