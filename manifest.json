@@ -18,6 +18,7 @@
                           "./src/glz/prefpane.php",
                           "./src/glz/field-types.php",
                           "./src/glz/callbacks.php",
+                          "./src/glz/steps.php",
                           "./src/glz/main.php"
                       ]}
 }
