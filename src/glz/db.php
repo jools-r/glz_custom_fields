@@ -398,7 +398,7 @@ function glz_update_custom_field($name, $table, $extra)
                         'txp_lang',
                         "event  = 'prefs',
                         owner   = 'glz_custom_fields',
-                        data    = '{$cf_title}',
+                        data    = '".doSlash($cf_title)."',
                         lastmod = now()",
                         "name = '".glz_cf_langname($old_cf_name)."' AND lang = '{$current_lang}'"
                     );
@@ -410,7 +410,7 @@ function glz_update_custom_field($name, $table, $extra)
                         name    = '".$new_cf_name."',
                         event   = 'prefs',
                         owner   = 'glz_custom_fields',
-                        data    = '{$cf_title}',
+                        data    = '".doSlash($cf_title)."',
                         lastmod = now()"
                     );
                     // delete entry with old name
@@ -436,7 +436,7 @@ function glz_update_custom_field($name, $table, $extra)
                     'txp_lang',
                      "event   = 'glz_cf',
                      owner   = 'glz_custom_fields',
-                     data    = '{$cf_instructions}',
+                     data    = '".doSlash($cf_instructions)."',
                      lastmod = now()",
                      array('name' => $cf_instructions_langname, 'lang' => $current_lang)
                 );
