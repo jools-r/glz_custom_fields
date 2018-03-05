@@ -274,7 +274,7 @@ function glz_next_empty_custom()
     $result = safe_field(
         "name",
         'txp_prefs',
-        "event = 'custom' AND val = '' ORDER BY name LIMIT 1"
+        "event = 'custom' AND val = '' ORDER BY LENGTH(name), name LIMIT 1"
     );
     return glz_custom_digit($result);
 }
