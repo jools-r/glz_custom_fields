@@ -217,7 +217,7 @@ function glz_cf_edit($msg='', $id='')
         $id = gps('ID');
     }
     // Check ID is properly formed, else back to list
-    if (!ctype_digit($id)) {
+    if ( !intval($id) ) {
         glz_cf_list(array(gTxt('glz_cf_no_such_custom_field'), E_ERROR));
         return false;
     }
