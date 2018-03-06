@@ -1,41 +1,51 @@
-h1. Unlimited Custom Fields for Textpattern – glz_custom_fields
+h1. Unlimited Custom Fields for Textpattern v4.7+ – glz_custom_fields
 
-This plugin removes the limit on the number of custom fields in Textpattern and also allows you to create a range of different custom field types:
+This plugin removes the limit of 10 custom fields in Textpattern and also allows you to create a range of different custom field types:
 
-* Text input (default)
+* Text inputs (default)
 * Checkboxes
 * Radio buttons
 * Select dropdowns
 * Multiselect boxes
 * Textareas
 
-You can specify a set of predefined values for selects, multi-selects, checkboxes and radio button custom fields, one of which may be set as the @{default value}@ by placing it in curly brackets.
+You can specify a set of predefined choices for selects, multi-selects, checkboxes and radio button custom fields, one of which may also be set as the @{default value}@ by placing it in curly brackets.
 
-In addition, there are three special custom field types:
+Additionally, there are three special custom field types: date pickers, time pickers and custom fields powered by custom scripts of your own making.
 
-h3(#time-and-date-pickers). Time and date pickers
+You can provide field label titles for the "Write panel":https://docs.textpattern.io/administration/write-panel along with short instruction texts as input hints for admin users (also per UI languages), and define the order in which the custom fields appear on the Write panel.
+
+h2(#installation). Installation
+
+# Open the plugin text file, copy its entire contents to the clipboard and paste into the 'Install plugin' textarea of the "Plugins panel":https://docs.textpattern.io/administration/plugins-panel#uploading-plugins. Click 'Upload' and then 'Install'.
+# Upload the "plugins/glz_custom_fields":https://github.com/jools-r/glz_custom_fields/dist/plugins/glz_custom_fields folder to your Textpattern installation directory.
+# Activate the plugin.
+# Verify that the corresponding paths in the "plugin preferences":?event=prefs#prefs_group_glz_custom_f are correct. The plugin will indicate if there are potential problems.
+
+h3(#upgrading). Upgrading
+
+Follow the same process as installation. The installer should detect and convert your existing preferences to new names in the background. Replace all the files in the "plugins/glz_custom_fields":https://github.com/jools-r/glz_custom_fields/dist/plugins/glz_custom_fields folder as all files have changed to work with the most recent admin layout. The timepicker and datepicker have likewise been updated and minified.
+
+_Note: You may relocate the css and js files to locations of your own choosing. Change the paths in the plugin preferences panel accordingly. Only the contents of the jquery.datePicker or jquery.timePicker folders must stay together. You may rename the folders but not the filenames._
+
+h2(#special-custom-fields). Special custom fields
+
+There are three special custom field types:
+
+h3. Time and date pickers
 
 Time and date pickers offer an easy way for users to specify dates and times in a consistent format. The *date format*, *first day of the week* and *start date* for the calendar can be set in the plugin preferences.
 
 Similarly, the *time format* (24 or 12 hours), *start and end times* (e.g. @08:00@ and @19:00@) and *time step* (intervals, e.g. @30@ minutes) can be set in the plugin preferences.
 
-_IMPORTANT: You must copy the "plugins/glz_custom_fields":https://github.com/jools-r/glz_custom_fields/dist/plugins/glz_custom_fields folder to your Textpattern installation directory and set the corresponding paths in the "plugin preferences":?event=prefs#prefs_group_glz_custom_f for the datepicker and timepicker to function correctly. To place them in another web-reachable location, just change the path settings in the preferences accordingly._
+_IMPORTANT: For the datepicker and timepicker to function correctly, you must copy the "plugins/glz_custom_fields":https://github.com/jools-r/glz_custom_fields/dist/plugins/glz_custom_fields folder to your Textpattern installation directory and set the corresponding paths in the "plugin preferences":?event=prefs#prefs_group_glz_custom_f._
 
-h3(#custom-scripts). Custom scripts
+h3. Custom scripts
 
-Custom scripts make it possible to build-in custom functionality, for example to pull in information from elsewhere in your site, by writing a corresponding php script to create the custom field. Please refer to "my_image.php":https://github.com/jools-r/glz_custom_fields/blob/master/dist/plugins/glz_custom_fields/my_images.php file as an example with inline explanations or ask on the forum for tips and examples.
+Custom scripts make it possible to build-in custom functionality, for example to pull in information from elsewhere in your site, by writing a corresponding php script to create the custom input field. Please refer to "my_image.php":https://github.com/jools-r/glz_custom_fields/blob/master/dist/plugins/glz_custom_fields/my_images.php file as an example with inline explanations or ask on the forum for tips and examples.
 
-h3(#ranges). Ranges
 
-Ranges are not in themselves a special field type. If you want to define ranges, create a new ‘Text Input’ custom field with the following name e.g. @Price range &amp;pound;(after)@.
-
-* @range@ - this *(warning)must* be present in the name for the custom field to be recognised as a range.
-* @&amp;pound;@ - don't use straight symbols (like @€@ or @£@) but rather their "entities":http://www.amp-what.com/unicode/search/ e.g. @&amp;euro;@ and @&amp;pound;@ are valid symbols.
-* @(after)@ - don't leave any spaces after e.g. @&amp;euro;@ and @(after)@. This basically says where to add the measuring unit (be it a currency or something like m³ etc.) - @(before)@ is default.
-
-Ranges are defined @10-20@, @21-30@ etc. (no measuring units - they get pulled from the custom set name).
-
-h3(#custom-field-names). Custom field names
+h2(#custom-field-names). Custom field names
 
 Custom field *names* should adhere to the following naming rules:
 
@@ -47,11 +57,14 @@ This version of glz_custom_fields will convert the names of _newly created_ cust
 
 Custom field *titles* have no such restrictions.
 
-Previous versions of glz_custom_fields permitted custom names with spaces, dashes, capital letters and numbers. These can, however, cause problems when using custom field names as an attribute for "txp:article_custom":https://docs.textpattern.io/tags/article_custom#attributes. Future versions of Textpattern will be stricter about custom field naming and it is advisable to adapt your custom field names and code accordingly.
+Previous versions of glz_custom_fields permitted custom names with spaces, dashes, capital letters and numbers. These can, however, cause problems when using custom field names as an attribute for "txp:article_custom":https://docs.textpattern.io/tags/article_custom#attributes.
+
+Future versions of Textpattern will be stricter about custom field naming and it is advisable to adapt your custom field names and code accordingly.
 
 _*Important:* You can rename them with this plugin but remember you will also need to alter all instances of "txp:custom_field":https://docs.textpattern.io/tags/custom_field and "txp:if_custom_field":https://docs.textpattern.io/tags/if_custom_field in your page templates and forms to match._
 
-h3(#upgrading). Version compatibility and upgrading
+
+h2(#upgrading). Version compatibility
 
 This version is compatible with Version 4.7+ of Textpattern. It uses functionality not available in earlier versions of Textpattern and adds new functionality not previously available in earlier versions of glz_custom_fields. It is therefore not for use with earlier versions of Textpattern.
 
@@ -69,10 +82,10 @@ v2.0 – March 2018
 – Now makes widespread use of Textpattern’s in-built functions for UI creation, error messages/notices, language strings, field labels
 – Translatable: now uses textpacks
 – Updated + minified js/css and datepicker/timepicker labels
-– Changes to custom fields updates last modified date (for cache renewal)
+– Changes to custom fields updates site-wide last modified date (for cache renewal)
 
 
-h3(#support). Support
+h2(#support). Support & Credits
 
 Comments, bug reports and pull requests are welcome:
 
