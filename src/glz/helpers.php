@@ -346,10 +346,11 @@ function glz_custom_next($arr_custom_sets)
 // Is the custom field name already taken?
 function glz_check_custom_set_name($custom_set_name, $custom_set)
 {
+    // Check that the name input by the user as well as its sanitized version don't already exist
     return safe_field(
         "name",
         'txp_prefs',
-        "event = 'custom' AND val = '".doSlash($custom_set_name)."' AND name <> '".doSlash($custom_set)."'"
+        "event = 'custom' AND val IN ('".doSlash($custom_set_name)."', '".glz_sanitize_for_cf($custom_set_name)."') AND name <> '".doSlash($custom_set)."'"
     );
 }
 

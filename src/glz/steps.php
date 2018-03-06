@@ -400,7 +400,13 @@ function glz_cf_save($msg='')
 
     // Same name given as another existing custom field-> error + return to list
     if (glz_check_custom_set_name($custom_set_name, $custom_set)) {
-        $msg = array(gTxt('glz_cf_exists', array('{custom_set_name}' => $custom_set_name)), E_ERROR);
+        if ($debug) {
+            dmp('Same name as other custom field specified');
+        } // DEBUG info
+        // If the sanitized cf name matches an existing custom field, provide an extra hint in the error message
+        $name_sanitized = glz_sanitize_for_cf($custom_set_name);
+        $name_exists_msg = ($custom_set_name <> $name_sanitized) ? $custom_set_name.' ('.$name_sanitized.')' : $custom_set_name;
+        $msg = array(gTxt('glz_cf_exists', array('{custom_set_name}' => $name_exists_msg)), E_ERROR);
         glz_cf_list($msg);
         return;
     }
