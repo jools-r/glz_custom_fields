@@ -29,7 +29,7 @@ function glz_cf_list($msg='') {
     pageTop('glz_cf_tab_name', $msg);
 
     // Retrieve array of all custom fields properties
-    $all_custom_sets = glz_cf_all_custom_sets();
+    $all_custom_sets = glz_db_get_all_custom_sets();
 
     $out = array();
 
@@ -229,7 +229,7 @@ function glz_cf_edit($msg='', $id='')
 
     if ($step === 'edit') {
         // 'Edit' Step: retrieve array of all custom field properties
-        $custom_field = glz_cf_single_custom_set($id);
+        $custom_field = glz_db_get_custom_set($id);
         $panel_title = gTxt('glz_cf_action_edit_title', array('{custom_set_name}' => gTxt('glz_cf_title').' #'.$custom_field['id']));
     } else {
         // 'Add' step: set available starting properties, null others
@@ -264,9 +264,9 @@ function glz_cf_edit($msg='', $id='')
     // Fetch (multiple) type values for this custom field
     if ($step === 'edit') {
         if ($custom_field['type'] == "text_input") {
-            $arr_values = glz_custom_fields_MySQL('all_values', glz_custom_number($custom_field['custom_set']), '', array('custom_set_name' => $custom_field['name'], 'status' => 4));
+            $arr_values = glz_db_get_all_existing_cf_values(glz_custom_number($custom_field['custom_set']), array('custom_set_name' => $custom_field['name'], 'status' => 4));
         } else {
-            $arr_values = glz_custom_fields_MySQL("values", $custom_field['custom_set'], '', array('custom_set_name' => $custom_field['name']));
+            $arr_values = glz_db_get_custom_field_values($custom_field['custom_set'], array('custom_set_name' => $custom_field['name']));
         }
         $values = ($arr_values) ? implode("\r\n", $arr_values) : '';
     } else {

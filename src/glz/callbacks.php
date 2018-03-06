@@ -20,7 +20,7 @@
 function glz_custom_fields_replace($event, $step, $data, $rs)
 {
     // Get all custom field sets from prefs
-    $all_custom_sets = glz_custom_fields_MySQL("all");
+    $all_custom_sets = glz_db_get_all_custom_sets();
 
     // Filter all custom fields & keep only those that are set for that render step
     $arr_custom_fields = glz_check_custom_set($all_custom_sets, $step);
@@ -32,7 +32,7 @@ function glz_custom_fields_replace($event, $step, $data, $rs)
 
     if (is_array($arr_custom_fields) && !empty($arr_custom_fields)) {
         // Get all custom fields values for this article
-        $arr_article_customs = glz_custom_fields_MySQL("article_customs", glz_get_article_id(), '', $arr_custom_fields);
+        $arr_article_customs = glz_db_get_article_custom_fields(glz_get_article_id(), $arr_custom_fields);
 
         // DEBUG
         // dmp($arr_article_customs);
@@ -44,7 +44,7 @@ function glz_custom_fields_replace($event, $step, $data, $rs)
         // Which custom fields are set
         foreach ($arr_custom_fields as $custom => $custom_set) {
             // Get all possible/default value(s) for this custom set from custom_fields table
-            $arr_custom_field_values = glz_custom_fields_MySQL("values", $custom, '', array('custom_set_name' => $custom_set['name']));
+            $arr_custom_field_values = glz_db_get_custom_field_values($custom, array('custom_set_name' => $custom_set['name']));
 
             // DEBUG
             // dmp($arr_custom_field_values);
@@ -136,8 +136,8 @@ function glz_custom_fields_inject_css_js()
     $min = ($use_minified) ? '.min' : '';
 
     // do we have a date-picker or time-picker custom field
-    $date_picker = glz_custom_fields_MySQL("custom_set_exists", "date-picker");
-    $time_picker = glz_custom_fields_MySQL("custom_set_exists", "time-picker");
+    $date_picker = glz_check_custom_set_exists("date-picker");
+    $time_picker = glz_check_custom_set_exists("time-picker");
 
     // glz_cf stylesheets
     $css = '<link rel="stylesheet" type="text/css" media="all" href="'.glz_relative_url($prefs['glz_cf_css_asset_url']).'/glz_custom_fields'.$min.'.css">'.n;
@@ -291,7 +291,7 @@ function glz_custom_fields_install()
     }
 
     // Get all custom field sets from prefs
-    $all_custom_sets = glz_custom_fields_MySQL("all");
+    $all_custom_sets = glz_db_get_all_custom_sets();
 
     // Iterate over all custom_fields and retrieve all values
     // in custom field columns in textpattern table
@@ -301,12 +301,12 @@ function glz_custom_fields_install()
         if ($custom_set['name']) {
 
             // Get all existing custom values for ALL articles
-            $all_values = glz_custom_fields_MySQL(
-                'all_values',
+            $all_values = glz_db_get_all_existing_cf_values(
                 glz_custom_number($custom),
-                '',
-                array('custom_set_name' => $custom_set['name'],
-                'status' => 0)
+                array(
+                    'custom_set_name' => $custom_set['name'],
+                    'status' => 0
+                )
             );
 
             // If we have results, assemble SQL insert statement to add them to custom_fields table
@@ -334,15 +334,12 @@ function glz_custom_fields_install()
 
                     // Update the type of this custom field to select
                     // (might want to make this user-adjustable at some point)
-                    glz_custom_fields_MySQL(
-                        "update",
-                        $custom,
-                        safe_pfx('txp_prefs'),
-                        array(
-                            'custom_set_name'     => $custom_set['name'],
-                            'custom_set_type'     => "select",
-                            'custom_set_position' => $custom_set['position']
-                        )
+                    safe_update(
+                        'txp_prefs',
+                        "val      = '".$custom_set['name']."',
+                         html     = 'select',
+                         position = '".$custom_set['position']."'",
+                        "name = '{$custom}'"
                     );
                     $msg = gTxt('glz_cf_migration_success');
                 }

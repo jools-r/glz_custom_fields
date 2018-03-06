@@ -15,64 +15,14 @@
 ##################
 
 
-// -------------------------------------------------------------
-function glz_custom_fields_MySQL($do, $name='', $table='', $extra='')
 {
-    if (!empty($do)) {
-        switch ($do) {
-            case 'all':
-                return glz_cf_all_custom_sets();
-                break;
-
-            case 'values':
-                return glz_values_custom_field($name, $extra);
-                break;
-
-            case 'all_values':
-                return glz_all_existing_custom_values($name, $extra);
-                break;
-
-            case 'article_customs':
-                return glz_article_custom_fields($name, $extra);
-                break;
-
-            case 'next_custom':
-                return glz_next_empty_custom();
-                break;
-
-            case 'new':
-                glz_new_custom_field($name, $table, $extra);
-                glz_custom_fields_update_count();
-                break;
-
-            case 'update':
-                return glz_update_custom_field($name, $table, $extra);
-                break;
-
-            case 'reset':
-                return glz_reset_custom_field($name, $table, $extra);
-                break;
-
-            case 'delete':
-                glz_delete_custom_field($name, $table);
-                glz_custom_fields_update_count();
-                break;
-
-            case 'custom_set_exists':
-                return glz_check_custom_set_exists($name);
-                break;
-
-            case 'get_plugin_prefs':
-                return glz_get_plugin_prefs($name);
-                break;
         }
     } else {
-        trigger_error(gTxt('glz_cf_no_do'), E_ERROR);
     }
 }
 
 
-function glz_cf_all_custom_sets()
+function glz_db_get_all_custom_sets()
 {
     $all_custom_sets = safe_rows(
         "`name` AS custom_set,
@@ -102,7 +52,7 @@ function glz_cf_all_custom_sets()
 }
 
 
-function glz_cf_single_custom_set($id)
+function glz_db_get_custom_set($id)
 {
     if (!ctype_digit($id)) {
         return false;
@@ -124,7 +74,7 @@ function glz_cf_single_custom_set($id)
 }
 
 
-function glz_values_custom_field($name, $extra)
+function glz_db_get_custom_field_values($name, $extra)
 {
     global $prefs;
 
@@ -132,6 +82,7 @@ function glz_values_custom_field($name, $extra)
         extract($extra);
 
         if (!empty($name)) {
+
             switch ($prefs['glz_cf_values_ordering']) {
                 case "ascending":
                     $orderby = "value ASC";
@@ -170,7 +121,7 @@ function glz_values_custom_field($name, $extra)
 }
 
 
-function glz_all_existing_custom_values($name, $extra)
+function glz_db_get_all_existing_cf_values($name, $extra)
 {
     if (is_array($extra)) {
         extract(lAtts(array(
@@ -243,7 +194,7 @@ function glz_all_existing_custom_values($name, $extra)
 }
 
 
-function glz_article_custom_fields($name, $extra)
+function glz_db_get_article_custom_fields($name, $extra)
 {
     if (is_array($extra)) {
         // See what custom fields we need to query for
@@ -263,6 +214,14 @@ function glz_article_custom_fields($name, $extra)
     } else {
         trigger_error(gTxt('glz_cf_not_specified', array('{what}' => "extra attributes")), E_ERROR);
     }
+}
+
+
+// -------------------------------------------------------------
+// Updates 'max_custom_fields' pref
+function glz_db_update_custom_fields_count()
+{
+    set_pref('max_custom_fields', safe_count('txp_prefs', "event='custom'"));
 }
 
 
@@ -614,32 +573,10 @@ function glz_delete_custom_field($name, $table)
 
 
 // -------------------------------------------------------------
-// Check if one of the special custom fields exists
+// Check if one of the special custom fields exists (e.g. date-picker / time-picker)
 function glz_check_custom_set_exists($name)
 {
     if (!empty($name)) {
         return safe_field("name", 'txp_prefs', "html = '".$name."' AND name LIKE 'custom_%'");
     }
-}
-
-
-// -------------------------------------------------------------
-// Updates max_custom_fields
-function glz_custom_fields_update_count()
-{
-    set_pref('max_custom_fields', safe_count('txp_prefs', "event='custom'"));
-}
-
-
-// -------------------------------------------------------------
-// Gets all plugin preferences
-function glz_get_plugin_prefs($arr_preferences)
-{
-    $r = safe_rows_start('name, val', 'txp_prefs', "event = 'glz_custom_f'");
-    if ($r) {
-        while ($a = nextRow($r)) {
-            $out[$a['name']] = stripslashes($a['val']);
-        }
-    }
-    return $out;
 }
