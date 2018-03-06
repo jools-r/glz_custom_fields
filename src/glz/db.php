@@ -10,15 +10,520 @@
 
 ##################
 #
-#   DATABASE FUNCTIONS –
+#   DATABASE FUNCTIONS – Standalone reusable DB functions
 #
 ##################
 
+/**
+ * Adds a new custom field.
+ *
+ * @param  array $in Incoming array of form values (see below)
+ * @param  bool $debug Dump query
+ * @return bool FALSE on error
+ * @see    glz_db_cf_save()
+ *
+ * Expects an incoming array as follows:
+ * $in = array(
+ *     'custom_set',
+ *     'custom_field_number',
+ *     'custom_set_name',
+ *     'custom_set_name_old', **
+ *     'custom_set_title', **
+ *     'custom_set_instructions', **
+ *     'custom_set_type',
+ *     'custom_set_position',
+ *     'value', **
+ *     'save', **
+ *     'add_new'
+ * );
+ * where ** are optional
+ *
+ * Do all content checks / validation / data completion / manipulation
+ * before passing the array to this function
+ */
 
+function glz_db_cf_new($in, $debug = false)
 {
-        }
-    } else {
+    // Abort if wrong input format
+    if (!is_array($in)) {
+        if ($debug) { dmp('$in: wrong input format'); }
+        return false;
     }
+
+    // Extract incoming values
+    extract($in);
+    // Get current UI language
+    $current_lang = get_pref('language_ui', TEXTPATTERN_DEFAULT_LANG);
+
+    $ok = false;
+
+    // Insert: table 'txp_prefs' – custom_field entry
+    // Custom fields IDs 1-10 already exist (in-built)
+    if ($custom_field_number > 10) {
+        $ok = safe_insert(
+            'txp_prefs',
+            "name     = '{$custom_set}',
+             val      = '{$custom_set_name}',
+             type     = '1',
+             event    = 'custom',
+             html     = '{$custom_set_type}',
+             position = '{$custom_set_position}'",
+            $debug
+        );
+    } else {
+        // Custom field IDs 1-10 (update entry)
+        $ok = safe_update(
+            'txp_prefs',
+            "val      = '{$custom_set_name}',
+             html     = '{$custom_set_type}',
+             position = '{$custom_set_position}'",
+             "name = '{$custom_set}'",
+            $debug
+        );
+    }
+
+    // Insert: table 'textpattern' – new 'custom_X' column
+    // Custom fields IDs 1-10 already exist (in-built)
+    if ($custom_field_number > 10) {
+        // If cf type = textarea, column type + default must be different
+        $column_type = ($custom_set_type == "textarea") ? "TEXT" : "VARCHAR(255)";
+        $dflt =        ($custom_set_type == "textarea") ? ''     : "DEFAULT ''";
+        $ok = safe_alter(
+            'textpattern',
+            "ADD custom_{$custom_field_number} {$column_type} NOT NULL {$dflt}",
+            $debug
+        );
+    } else {
+        // Custom field IDs 1-10: only update column type and default as necessary
+        // Update: table 'textpattern' – column type and default if type changes
+        // If cf type = textarea, column type + default must be different
+        $column_type = ($custom_set_type == "textarea") ? "TEXT" : "VARCHAR(255)";
+        $dflt =        ($custom_set_type == "textarea") ? ''     : "DEFAULT ''";
+        $ok = safe_alter(
+            'textpattern',
+            "MODIFY custom_{$custom_field_number} {$column_type} NOT NULL {$dflt}",
+            $debug
+        );
+    }
+
+    // Insert: table 'txp_lang' – prefspane label
+    // Custom fields IDs 1-10 already exist (in-built)
+    if ($custom_field_number > 10) {
+        $custom_set_preflabel = gTxt('custom_x_set', array('{number}' => $custom_field_number));
+        $ok = safe_insert(
+            'txp_lang',
+            "lang    = '{$current_lang}',
+             name    = 'custom_{$custom_field_number}_set',
+             event   = 'prefs',
+             owner   = '',
+             data    = '{$custom_set_preflabel}',
+             lastmod = now()",
+            $debug
+        );
+    }
+
+    // Insert: table 'txp_lang' – custom field label title
+    if (!empty($custom_set_title)) {
+        $custom_set_cf_name = glz_cf_langname($custom_set_name);
+        $custom_set_cf_data = doSlash($custom_set_title);
+        $ok = safe_insert(
+            'txp_lang',
+            "lang    = '{$current_lang}',
+             name    = '{$custom_set_cf_name}',
+             event   = 'glz_cf',
+             owner   = 'glz_custom_fields',
+             data    = '{$custom_set_cf_data}',
+             lastmod = now()",
+            $debug
+        );
+        $set_gTxt[$custom_set_cf_name] = $custom_set_cf_data;
+    }
+
+    // Insert: table 'txp_lang' – custom field instructions
+    if (!empty($custom_set_instructions)) {
+        $custom_set_instr_name = 'instructions_custom_'.$custom_field_number;
+        $custom_set_instr_data = doSlash($custom_set_instructions);
+        $ok = safe_insert(
+            'txp_lang',
+            "lang    = '{$current_lang}',
+             name    = '{$custom_set_instr_name}',
+             event   = 'glz_cf',
+             owner   = 'glz_custom_fields',
+             data    = '{$custom_set_instr_data}',
+             lastmod = now()",
+            $debug
+        );
+        $set_gTxt[$custom_set_instr_name] = $custom_set_instr_data;
+    }
+
+    // Insert: table 'custom_fields' – multiple custom field values
+    // 1. break textarea entries into array removing blanks and duplicates
+    $cf_values = array_unique(array_filter(explode("\r\n", $value), 'glz_array_empty_values'));
+    // 2. fashion insert statement from array
+    if (is_array($cf_values) && !empty($cf_values)) {
+        $insert = '';
+        foreach ($cf_values as $key => $value) {
+            // Skip empty values
+            if (!empty($value)) {
+                // Escape special chars before inserting into database
+                $value = doSlash(trim($value));
+                // Build insert row
+                $insert .= "('{$custom_set}','{$value}'), ";
+            }
+        }
+        // Trim final comma and space from insert statement
+        $insert = rtrim($insert, ', ');
+        // 3. do insert query
+        $ok = safe_query("
+            INSERT INTO
+                ".safe_pfx('custom_fields')." (`name`,`value`)
+            VALUES
+                {$insert}
+            ",
+            $debug
+        );
+    }
+
+    // As the table UI doesn't include the new strings until a page refresh,
+    // set the language strings in $set_gTxt (if they exist) in the current context
+    // (true = amend/append to existing textpack)
+    if (isset($set_gTxt)) {
+        if ($debug) { dmp('$set_gTxt: '.$set_gTxt); }
+        Txp::get('\Textpattern\L10n\Lang')->setPack($set_gTxt, true);
+    }
+
+    return $ok;
+}
+
+
+/**
+ * Saves / updates an existing custom field in the DB.
+ *
+ * @param  array $in  Incoming array of form values (see below)
+ * @param  bool  $debug  Dump query
+ * @return bool  FALSE on error
+ * @see    glz_db_cf_new()
+ *
+ * Expects an incoming array as follows:
+ * $in = array(
+ *     'custom_set',
+ *     'custom_field_number',
+ *     'custom_set_name',
+ *     'custom_set_name_old',
+ *     'custom_set_title', **
+ *     'custom_set_instructions', **
+ *     'custom_set_type',
+ *     'custom_set_position',
+ *     'value', **
+ *     'save',
+ *     'add_new' **
+ * );
+ * where ** are optional
+ *
+ * Do all content checks / validation / data completion / manipulation
+ * before passing the array to this function
+ */
+
+function glz_db_cf_save($in, $debug = false)
+{
+    // Abort if wrong input format
+    if (!is_array($in)) {
+        if ($debug) { dmp('$in: wrong input format'); }
+        return false;
+    }
+
+    // Extract incoming values
+    extract($in);
+    // Get current UI language
+    $current_lang = get_pref('language_ui', TEXTPATTERN_DEFAULT_LANG);
+
+    // Has the custom field been renamed
+    $is_cf_renamed = ($custom_set_name <> $custom_set_name_old) ? true : false;
+
+    $ok = false;
+
+    // Update: table 'txp_prefs' – custom_field entry
+    $ok = safe_update(
+        'txp_prefs',
+        "val      = '{$custom_set_name}',
+         html     = '{$custom_set_type}',
+         position = '{$custom_set_position}'",
+        "name     = '{$custom_set}'", // WHERE
+        $debug
+    );
+
+    // Update: table 'textpattern' – column type and default if type changes
+    // If cf type = textarea, column type + default must be different
+    $column_type = ($custom_set_type == "textarea") ? "TEXT" : "VARCHAR(255)";
+    $dflt =        ($custom_set_type == "textarea") ? ''     : "DEFAULT ''";
+    $ok = safe_alter(
+        'textpattern',
+        "MODIFY custom_{$custom_field_number} {$column_type} NOT NULL {$dflt}",
+        $debug
+    );
+
+    // Update: table 'custom_fields' – values entries (textarea requires none)
+    // For textareas we do not need to touch custom_fields table
+    if ($custom_set_type != "textarea") {
+        safe_delete(
+            'custom_fields',
+            "name ='{$custom_set}'",
+            $debug
+        );
+        // Insert: table 'custom_fields' – multiple custom field values
+        // 1. break textarea entries into array removing blanks and duplicates
+        $cf_values = array_unique(array_filter(explode("\r\n", $value), 'glz_array_empty_values'));
+        // 2. fashion insert statement from array
+        if (is_array($cf_values) && !empty($cf_values)) {
+            $insert = '';
+            foreach ($cf_values as $key => $value) {
+                // Skip empty values
+                if (!empty($value)) {
+                    // Escape special chars before inserting into database
+                    $value = doSlash(trim($value));
+                    // Build insert row
+                    $insert .= "('{$custom_set}','{$value}'), ";
+                }
+            }
+            // Trim final comma and space from insert statement
+            $insert = rtrim($insert, ', ');
+            // 3. do insert query
+            $ok = safe_query("
+                INSERT INTO
+                    ".safe_pfx('custom_fields')." (`name`,`value`)
+                VALUES
+                    {$insert}
+                ",
+                $debug
+            );
+        }
+    } // endif ($custom_set_type != "textarea")
+
+    // Update: table 'txp_lang' – custom field label title
+    $has_cf_title = (!empty($custom_set_title)) ? true : false;
+    $custom_set_cf_langname = glz_cf_langname($custom_set_name);
+
+    if ($is_cf_renamed) {
+        $custom_set_cf_langname_old = glz_cf_langname($custom_set_name_old);
+        // OK, cf is renamed. Do cfnames still match perchance?
+        // such as when renaming spaces/dashes to underscores or uppercase to lowercase
+        if ($custom_set_cf_langname <> $custom_set_cf_langname_old) {
+            // Update name of all custom fields (if cf_langname has actually changed)
+            $custom_set_cf_name_old = $custom_set_cf_langname_old;
+            $custom_set_cf_data_old = null;
+            $ok = safe_update(
+                'txp_lang',
+                "name = '{$custom_set_cf_langname}'",
+                "name = '{$custom_set_cf_langname_old}'",
+                $debug
+            );
+            $set_gTxt[$custom_set_cf_name_old] = $custom_set_cf_data_old;
+        }
+    }
+
+    if ($has_cf_title) {
+        // A) Custom field title is specified: update or insert
+        $custom_set_cf_name = $custom_set_cf_langname;
+        $custom_set_cf_data = doSlash($custom_set_title);
+        $ok = safe_upsert(
+            'txp_lang',
+            "event   = 'glz_cf',
+             owner   = 'glz_custom_fields',
+             data    = '{$custom_set_cf_data}',
+             lastmod = now()",
+             array('name' => $custom_set_cf_name, 'lang' => $current_lang),
+            $debug
+        );
+        $set_gTxt[$custom_set_cf_name] = $custom_set_cf_data;
+    } else {
+        // B) Custom field title not specified (or blanked)
+        $custom_set_cf_name = $custom_set_cf_langname;
+        $custom_set_cf_data = null;
+        // Only delete it if it actually exists
+        $gtxt_data = glz_cf_gtxt($custom_set_name);
+        if (!empty($gtxt_data)) {
+            $ok = safe_delete(
+                'txp_lang',
+                "name = '{$custom_set_cf_name}' AND lang = '{$current_lang}'",
+                $debug
+            );
+        }
+        $set_gTxt[$custom_set_cf_name] = $custom_set_cf_data;
+    }
+
+    // Update: table 'txp_lang' – custom field instructions
+
+    // A) If instructions string exists, update existing or insert new entry, or…
+    if (!empty($custom_set_instructions)) {
+        $custom_set_instr_name = 'instructions_custom_'.$custom_field_number;
+        $custom_set_instr_data = doSlash($custom_set_instructions);
+        $ok = safe_upsert(
+            'txp_lang',
+            "event   = 'glz_cf',
+             owner   = 'glz_custom_fields',
+             data    = '{$custom_set_instr_data}',
+             lastmod = now()",
+             array('name' => $custom_set_instr_name, 'lang' => $current_lang),
+            $debug
+        );
+        $set_gTxt[$custom_set_instr_name] = $custom_set_instr_data;
+
+    // B) If instructions string is empty but previously existed, remove old entry
+    } elseif (glz_cf_gtxt('', $custom_field_number) != '') {
+        $custom_set_instr_name = 'instructions_custom_'.$custom_field_number;
+        $custom_set_instr_data = null;
+        // Only delete it if it actually exists
+        $gtxt_data = glz_cf_gtxt('',$custom_field_number);
+        if (!empty($gtxt_data)) {
+            $ok = safe_delete(
+                'txp_lang',
+                "name = '{$custom_set_instr_name}' AND lang = '{$current_lang}'",
+                $debug
+            );
+        }
+        $set_gTxt[$custom_set_instr_name] = $custom_set_instr_data;
+    }
+
+    // As the table UI doesn't include the new strings until a page refresh,
+    // set the language strings in $set_gTxt (if they exist) in the current context
+    // (true = amend/append to existing textpack)
+    if (isset($set_gTxt)) {
+        if ($debug) { dmp('$set_gTxt: '.$set_gTxt); }
+        Txp::get('\Textpattern\L10n\Lang')->setPack($set_gTxt, true);
+    }
+
+    return $ok;
+}
+
+
+/**
+ * Resets a custom field.
+ *
+ * Passes through to glz_db_cf_delete()
+ * with reset flag set to true
+ *
+ * @param  string $id Custom field ID#
+ * @param  bool $debug Dump query
+ * @return bool FALSE on error
+ * @see    glz_db_cf_delete()
+ *
+ * Do all checks on $id (if integer / if exists)
+ * before passing $id to this function
+ */
+
+function glz_db_cf_reset($id, $debug = false)
+{
+    return glz_db_cf_delete($id, $reset = true, $debug);
+}
+
+
+/**
+ * Deletes or resets a custom field.
+ *
+ * ID#s 1-10 are always reset, not deleted
+ *
+ * @param  string $id Custom field ID#
+ * @param  bool $reset Reset rather than delete
+ * @param  bool $debug Dump query
+ * @return bool FALSE on error
+ * @see    glz_db_cf_reset()
+ *
+ * Do all checks on $id (if integer / if exists)
+ * before passing $id to this function
+ */
+
+function glz_db_cf_delete($id, $reset = false, $debug = false)
+{
+    // Custom fields 1-10 are in-built -> only reset
+    if ($id <= 10) {
+        $reset = true;
+    }
+
+    // Retrieve this custom_field values
+    $custom_set = glz_db_get_custom_set($id);
+
+    $ok = false;
+
+    // --- COMMON DELETE AND RESET STEPS
+
+    // Delete: table 'txp_lang' – custom field label title
+    if (!empty($custom_set['title'])) {
+        $ok = safe_delete(
+            'txp_lang',
+            "name = '".glz_cf_langname($custom_set['name'])."'",
+            $debug
+        );
+    }
+
+    // Delete: table 'txp_lang' – custom field instructions
+    if (!empty($custom_set['instructions'])) {
+        $ok = safe_delete(
+            'txp_lang',
+            "name = 'instructions_custom_".$custom_set['id']."'",
+            $debug
+        );
+    }
+
+    // Delete: table 'custom_fields' – custom field multiple values settings
+    $cf_row = safe_row('*', 'custom_fields', "name = '".$custom_set['custom_set']."'", $debug);
+    if ($cf_row) {
+        $ok = safe_delete(
+            'custom_fields',
+            "name = '".$custom_set['custom_set']."'",
+            $debug
+        );
+    }
+
+    if ($reset) {  // --- RESET ONLY STEPS
+
+        // Reset: table 'txp_prefs' – reset to standard custom field settings
+        $ok = safe_update(
+            'txp_prefs',
+            "val = '',
+             html = 'text_input'",
+            "name = '".$custom_set['custom_set']."'",
+            $debug
+        );
+
+        // Reset: table 'textpattern' – empty custom field article data
+        $ok = safe_update(
+            'textpattern',
+            "custom_".$custom_set['id']." = ''",
+            $debug
+        );
+
+        // Reset: table 'textpattern' – reset custom_X column type to VARCHAR
+        $ok = safe_alter(
+            'textpattern',
+            "MODIFY custom_".$custom_set['id']." VARCHAR(255) NOT NULL DEFAULT ''",
+            $debug
+        );
+
+    } else {  // --- DELETE ONLY STEPS
+
+        // Delete: table 'txp_lang' – prefspane label
+        $ok = safe_delete(
+            'txp_lang',
+            "name = '".$custom_set['custom_set']."'",
+            $debug
+        );
+
+        // Delete: table 'txp_prefs' – custom field entry
+        $ok = safe_delete(
+            'txp_prefs',
+            "name = '".$custom_set['custom_set']."'",
+            $debug
+        );
+
+        // Delete: table 'textpattern' – custom field article data
+        $ok = safe_alter(
+            'textpattern',
+            "DROP `custom_".$custom_set['id']."`",
+            $debug
+        );
+    }
+
+    return $ok;
 }
 
 
@@ -54,7 +559,7 @@ function glz_db_get_all_custom_sets()
 
 function glz_db_get_custom_set($id)
 {
-    if (!ctype_digit($id)) {
+    if (!intval($id)) {
         return false;
     }
         $custom_set = safe_row(
@@ -241,334 +746,6 @@ function glz_next_empty_custom()
         $result = get_pref('max_custom_fields') + 1;
     }
     return $result;
-}
-
-
-function glz_new_custom_field($name, $table, $extra)
-{
-    if (is_array($extra)) {
-        extract($extra);
-
-        $custom_set = (isset($custom_field_number)) ?
-            "custom_{$custom_field_number}_set" : $custom_set;
-
-        switch ($table) {
-            case 'txp_prefs':
-                // If this is a new field without a position, use the $custom_field_number
-                if (empty($custom_set_position)) {
-                    $custom_set_position = $custom_field_number;
-                }
-                $query = "
-                    INSERT INTO
-                        ".safe_pfx('txp_prefs')." (`name`, `val`, `type`, `event`, `html`, `position`)
-                    VALUES
-                        ('{$custom_set}', '{$name}', '1', 'custom', '{$custom_set_type}', {$custom_set_position})
-                ";
-                break;
-
-            case 'txp_lang':
-                // if no 'gtxt_name' specified, default lang name = 'custom_X_set'
-                $lang_name = (isset($gtxt_name) ? $gtxt_name : $custom_set);
-                // if no 'gtxt_event' specified, default event = 'prefs'
-                $lang_event = (isset($gtxt_event) ? $gtxt_event : 'prefs');
-                $owner ="glz_custom_fields";
-                $query = "
-                    INSERT INTO
-                        ".safe_pfx('txp_lang')." (`lang`,`name`,`event`,`owner`,`data`,`lastmod`)
-                    VALUES
-                        ('{$lang}','{$lang_name}','{$lang_event}','{$owner}','{$name}',now())
-                ";
-                break;
-
-            case 'textpattern':
-                $column_type = ($custom_set_type == "textarea") ? "TEXT" : "VARCHAR(255)";
-                $dflt =        ($custom_set_type == "textarea") ? ''     : "DEFAULT ''";
-                $query = "
-                    ALTER TABLE
-                        ".safe_pfx('textpattern')."
-                    ADD
-                        `custom_{$custom_field_number}` {$column_type} NOT NULL {$dflt}
-                    ";
-                break;
-
-            case 'custom_fields':
-                $arr_values = array_unique(array_filter(explode("\r\n", $value), 'glz_array_empty_values'));
-
-                if (is_array($arr_values) && !empty($arr_values)) {
-                    $insert = '';
-                    foreach ($arr_values as $key => $value) {
-                        // Skip empty values
-                        if (!empty($value)) {
-                            // Escape special chars before inserting into database
-                            $value = addslashes(addslashes(trim($value)));
-                            // Build insert string
-                            $insert .= "('{$custom_set}','{$value}'), ";
-                        }
-                    }
-                    // Trim final comma and space
-                    $insert = rtrim($insert, ', ');
-                    $query = "
-                        INSERT INTO
-                            ".safe_pfx('custom_fields')." (`name`,`value`)
-                        VALUES
-                            {$insert}
-                        ";
-                }
-                break;
-        }
-        //dmp($query);
-
-        // Execute DB query if it exists
-        if (isset($query) && !empty($query)) {
-            safe_query($query);
-        }
-    } else {
-        trigger_error(gTxt('glz_cf_not_specified', array('{what}' => "extra attributes")), E_ERROR);
-    }
-}
-
-
-function glz_update_custom_field($name, $table, $extra)
-{
-    if (is_array($extra)) {
-        extract($extra);
-    }
-    //dmp('name: '.$name,'table: '.$table,$extra);
-    switch ($table) {
-        case 'txp_prefs':
-            // Update custom_field data in 'txp_prefs' table
-            safe_query("
-                UPDATE
-                    ".safe_pfx('txp_prefs')."
-                SET
-                    `val` = '{$custom_set_name}',
-                    `html` = '{$custom_set_type}',
-                    `position` = '{$custom_set_position}'
-                WHERE
-                    `name` = '{$name}'
-            ");
-            break;
-        case 'txp_lang':
-            // Update custom_field title (switch reference from old to new)
-            $current_lang = get_pref('language_ui', TEXTPATTERN_DEFAULT_LANG);
-            // If the custom_field name has changed, update cf_langname to match new name
-            $new_cf_name = ($name <> $old_cf_name) ? glz_cf_langname($name) : "";
-            // if cf title is not empty, update or insert it
-            if (!empty($cf_title)) {
-                // name is unchanged: safe_update entry
-                if ( empty($new_cf_name) && !empty(glz_cf_gtxt($old_cf_name)) ) {
-                    $glz_cf_title = glz_cf_langname($old_cf_name);
-                    $glz_cf_title_val = doSlash($cf_title);
-                    safe_update(
-                        'txp_lang',
-                        "event  = 'prefs',
-                        owner   = 'glz_custom_fields',
-                        data    = '".doSlash($cf_title)."',
-                        lastmod = now()",
-                        "name = '".glz_cf_langname($old_cf_name)."' AND lang = '{$current_lang}'"
-                    );
-                } else {
-                    $glz_cf_title = (empty($new_cf_name)) ? glz_cf_langname($old_cf_name) : $new_cf_name;
-                    $glz_cf_title_val = doSlash($cf_title);
-                    // name has been changed: insert entry with new name
-                    safe_insert(
-                        'txp_lang',
-                        "lang   = '{$current_lang}',
-                        name    = '".$glz_cf_title."',
-                        event   = 'prefs',
-                        owner   = 'glz_custom_fields',
-                        data    = '".doSlash($cf_title)."',
-                        lastmod = now()"
-                    );
-                    // delete entry with old name
-                    if (!empty($old_cf_name) && !empty($new_cf_name)) {
-                        $glz_cf_title_old = glz_cf_langname($old_cf_name);
-                        $glz_cf_title_old_val = null;
-                        safe_delete(
-                            'txp_lang',
-                            "name = '".glz_cf_langname($old_cf_name)."' AND lang = '{$current_lang}'"
-                        );
-                    }
-                }
-            // if cf title field is empty but a current translation exists: delete it (e.g. cancel field)
-            } elseif (glz_cf_gtxt($old_cf_name) != '') {
-                $glz_cf_title_old = glz_cf_langname($old_cf_name);
-                $glz_cf_title_old_val = null;
-                safe_delete(
-                    'txp_lang',
-                    "name = '".glz_cf_langname($old_cf_name)."' AND lang = '{$current_lang}'"
-                );
-            }
-            // Update 'instructions' string
-            $cf_instructions_langname = 'instructions_custom_'.$custom_field_number;
-            // if cf instructions is not empty, update or insert it
-            if (!empty($cf_instructions)) {
-                $glz_cf_instructions = $cf_instructions_langname;
-                $glz_cf_instructions_val = doSlash($cf_instructions);
-                safe_upsert(
-                    'txp_lang',
-                     "event   = 'glz_cf',
-                     owner   = 'glz_custom_fields',
-                     data    = '".doSlash($cf_instructions)."',
-                     lastmod = now()",
-                     array('name' => $cf_instructions_langname, 'lang' => $current_lang)
-                );
-            // if cf instructions field is empty but a current translation exists: delete it (e.g. cancel field)
-            } elseif (glz_cf_gtxt('', $custom_field_number) != '') {
-                $glz_cf_instructions = $cf_instructions_langname;
-                $glz_cf_instructions_val = null;
-                safe_delete(
-                    'txp_lang',
-                    "name = '{$cf_instructions_langname}' AND lang = '{$current_lang}'"
-                );
-            }
-
-            // array of language key->values to refresh in cache
-            $refresh_cf_gtxt = array();
-            if (!empty($glz_cf_title)) {
-                $refresh_cf_gtxt[$glz_cf_title] = $glz_cf_title_val;
-            }
-            if (!empty($glz_cf_title_old)) {
-                $refresh_cf_gtxt[$glz_cf_title_old] = $glz_cf_title_old_val;
-            }
-            if (!empty($glz_cf_instructions)) {
-                $refresh_cf_gtxt[$glz_cf_instructions] = $glz_cf_instructions_val;
-            }
-            Txp::get('\Textpattern\L10n\Lang')->Setpack($refresh_cf_gtxt, true);
-
-            break;
-        case 'textpattern':
-            // Update custom_field column type in 'textpattern' table
-            $column_type = ($custom_set_type == "textarea") ? "TEXT" : "VARCHAR(255)";
-            $dflt = ($custom_set_type == "textarea") ? '' : "DEFAULT ''";
-            safe_query("
-                ALTER TABLE
-                    ".safe_pfx('textpattern')."
-                MODIFY
-                    `{$custom_field}` {$column_type} NOT NULL {$dflt}
-            ");
-            break;
-    }
-}
-
-
-function glz_reset_custom_field($name, $table, $extra)
-{
-    if (is_array($extra)) {
-        extract($extra);
-    }
-
-    switch ($table) {
-        case 'txp_prefs':
-            // Reset custom field in 'txp_prefs' table to standard values
-            safe_query("
-                UPDATE
-                    ".safe_pfx('txp_prefs')."
-                SET
-                    `val` = '',
-                    `html` = 'text_input'
-                WHERE
-                    `name`='{$name}'
-            ");
-            break;
-
-        case 'textpattern':
-            // Reset custom field in 'textpattern' table to empty
-            safe_query("
-                UPDATE
-                    ".safe_pfx('textpattern')."
-                SET
-                    `{$name}` = ''
-            ");
-            // Reset custom_field column type in 'textpattern' table back to standard value
-            safe_query("
-                ALTER TABLE
-                    ".safe_pfx('textpattern')."
-                MODIFY
-                    `{$custom_field}` VARCHAR(255) NOT NULL DEFAULT ''
-            ");
-            break;
-    }
-}
-
-
-function glz_delete_custom_field($name, $table)
-{
-    // Only custom fields > 10 are actually deleted
-    if (glz_custom_digit($name) > 10) {
-        switch ($table) {
-            case 'txp_prefs':
-            case 'custom_fields':
-                safe_delete(
-                    $table,
-                    "name = '{$name}'"
-                );
-                break;
-
-            case 'txp_lang':
-                $custom_set_name = safe_field(
-                    'val',
-                    'txp_prefs',
-                    "name = '".$name."'"
-                );
-                safe_delete(
-                    $table,
-                    "name = '".glz_cf_langname($custom_set_name)."'"
-                );
-                safe_delete(
-                    $table,
-                    "name = 'instructions_custom_".glz_custom_digit($name)."'"
-                );
-                safe_delete(
-                    $table,
-                    "name = '{$name}'"
-                );
-                break;
-
-            case 'textpattern':
-                safe_query("
-                    ALTER TABLE
-                        ".safe_pfx('textpattern')."
-                    DROP
-                        `{$name}`
-                ");
-                break;
-        } // end switch
-    } else {
-        // In-built custom fields <= 10
-        switch ($table) {
-            case 'txp_prefs':
-                // Reset custom_field in 'txp_prefs'
-                glz_custom_fields_MySQL("reset", $name, $table);
-                break;
-
-            case 'custom_fields':
-                // Delete from 'custom_fields' table
-                safe_query("
-                    DELETE FROM
-                        ".safe_pfx($table)."
-                    WHERE
-                        `name`='{$name}'
-                ");
-                break;
-
-                case 'txp_lang':
-                    $custom_set_name = safe_field(
-                        'val',
-                        'txp_prefs',
-                        "name = '".$name."'"
-                    );
-                    safe_delete(
-                        $table,
-                        "name = '".glz_cf_langname($custom_set_name)."'"
-                    );
-                    safe_delete(
-                        $table,
-                        "name = 'instructions_custom_".glz_custom_digit($name)."'"
-                    );
-                break;
-        } // end switch
-    }
 }
 
 

@@ -22,8 +22,8 @@
  * @return string HTML  Table of custom fields
  */
 
-function glz_cf_list($msg='') {
-
+function glz_cf_list($msg='', $debug = false)
+{
     global $event, $step;
 
     pageTop('glz_cf_tab_name', $msg);
@@ -46,16 +46,20 @@ function glz_cf_list($msg='') {
     // 'Add new custom field' button
     $out[] =
         n.tag(
-            href(gTxt('glz_cf_add_new_cf'), array(
+            href(
+                gTxt('glz_cf_add_new_cf'),
+                array(
             'event' => 'glz_custom_fields',
             'step'  => 'add',
             '_txp_token' => form_token(),
-                ), array(
+                ),
+                array(
                     'class' => 'txp-button',
                     'title' => gTxt('glz_cf_add_new_cf')
                 )
             ),
-            'div', array('class' => 'txp-control-panel')
+            'div',
+            array('class' => 'txp-control-panel')
         );
 
     // Column headings
@@ -93,13 +97,16 @@ function glz_cf_list($msg='') {
     foreach ($all_custom_sets as $custom => $custom_set) {
 
         // Edit link (with 'name' and 'id' as link text)
-        foreach(array('name', 'id') as $text) {
-            $edit_link[$text] = href($custom_set[$text], array(
+        foreach (array('name', 'id') as $text) {
+            $edit_link[$text] = href(
+                $custom_set[$text],
+                array(
                     'event'      => 'glz_custom_fields',
                     'step'       => 'edit',
                     'ID'         => $custom_set['id'],
                     '_txp_token' => form_token(),
-                ), array(
+                ),
+                array(
                     'class'       => 'edit-link',
                     'title'       => gTxt('glz_cf_action_edit_title', array('{custom_set_name}' => gTxt('glz_cf_title').' #'.glz_custom_digit($custom)))
                 )
@@ -108,24 +115,30 @@ function glz_cf_list($msg='') {
 
         // Reset or delete buttons
         if ($custom_set['id'] < 11) {
-            $delete_link = href(gTxt('reset'), array(
+            $delete_link = href(
+                gTxt('reset'),
+                array(
                     'event'      => 'glz_custom_fields',
                     'step'       => 'reset',
                     'ID'         => $custom_set['id'],
                     '_txp_token' => form_token(),
-                ), array(
+                ),
+                array(
                     'class'       => 'ui-icon ui-icon-trash',
                     'title'       => gTxt('reset'),
                     'data-verify' => gTxt('glz_cf_confirm_reset', array('{custom}' => 'ID# '.glz_custom_digit($custom).': '.htmlspecialchars($custom_set['name']) )),
                 )
             );
         } else {
-            $delete_link = href(gTxt('delete'), array(
+            $delete_link = href(
+                gTxt('delete'),
+                array(
                     'event'      => 'glz_custom_fields',
                     'step'       => 'delete',
                     'ID'         => $custom_set['id'],
                     '_txp_token' => form_token(),
-                ), array(
+                ),
+                array(
                     'class'       => 'ui-icon ui-icon-close',
                     'title'       => gTxt('delete'),
                     'data-verify' => gTxt('glz_cf_confirm_delete', array('{custom}' => 'ID# '.glz_custom_digit($custom).': '.htmlspecialchars($custom_set['name']) )),
@@ -136,7 +149,6 @@ function glz_cf_list($msg='') {
         $custom_label = (empty($custom_set['title']) ? gTxt('undefined') : $custom_set['title']);
 
         if (!empty($custom_set["name"])) {
-
             $out[] =
                 tr(
                     hCell(
@@ -180,7 +192,7 @@ function glz_cf_list($msg='') {
         n.tag_end('div'); // End of .txp-listtables.
 
     // Render panel
-    if(is_array($out)) {
+    if (is_array($out)) {
         $out = implode(n, $out);
     }
     echo $out;
@@ -192,12 +204,12 @@ function glz_cf_list($msg='') {
  *
  * @param  string $msg  Pass-thru of success, error or warning message shown by Textpattern
  */
-function glz_cf_add($msg='')
+function glz_cf_add($msg='', $debug = false)
 {
     // Get next free custom field id
     $next_free_cf_id = glz_next_empty_custom();
     // Pass into edit pane
-    glz_cf_edit($msg,$next_free_cf_id);
+    glz_cf_edit($msg, $next_free_cf_id);
 }
 
 
@@ -208,21 +220,20 @@ function glz_cf_add($msg='')
  * @param  string  $msg  Success, error or warning message shown by Textpattern
  * @param  integer  $id  passed from glz_cf_add
  */
-function glz_cf_edit($msg='', $id='')
+function glz_cf_edit($msg='', $id='', $debug = false)
 {
     global $event, $step;
-
     // get ID from URL of $id not supplied (e.g. by "add" step)
     if (empty($id)) {
         $id = gps('ID');
     }
     // Check ID is properly formed, else back to list
-    if ( !intval($id) ) {
+    if (!intval($id)) {
         glz_cf_list(array(gTxt('glz_cf_no_such_custom_field'), E_ERROR));
         return false;
     }
     // If editing (not adding), check ID actually exists, else back to list
-    if ( ($step === 'edit') && (!get_pref('custom_'.$id.'_set')) ) {
+    if (($step === 'edit') && (!get_pref('custom_'.$id.'_set'))) {
         glz_cf_list(array(gTxt('glz_cf_no_such_custom_field'), E_ERROR));
         return false;
     };
@@ -287,7 +298,7 @@ function glz_cf_edit($msg='', $id='')
 
     // Build the form
     pageTop($panel_title, $msg);
-// dmp($custom_field);
+    // dmp($custom_field);
 
     $out = array();
 
@@ -361,7 +372,6 @@ function glz_cf_edit($msg='', $id='')
         );
 
     echo form(join('', $out), '', '', 'post', 'txp-edit', '', 'add_edit_custom_field');
-
 }
 
 
@@ -371,7 +381,7 @@ function glz_cf_edit($msg='', $id='')
  *
  * @param  string  $msg  Success, error or warning message shown by Textpattern
  */
-function glz_cf_save($msg='')
+function glz_cf_save($msg='', $debug = false)
 {
     global $event, $step, $msg;
 
@@ -390,9 +400,12 @@ function glz_cf_save($msg='')
     )));
 
     extract($in);
-// dmp($in);
+
     // No name given -> error + return to list
     if (empty($custom_set_name)) {
+        if ($debug) {
+            dmp('No name specified');
+        } // DEBUG info
         $msg = array(gTxt('glz_cf_no_name'), E_ERROR);
         glz_cf_list($msg);
         return;
@@ -411,9 +424,18 @@ function glz_cf_save($msg='')
         return;
     }
 
-    // Adding a new custom field
-//    if ($custom_set_name_old === '') {
-    if (!empty($add_new)) {
+    if ($debug) {
+        dmp('CF name as input: '.$custom_set_name);
+    } // DEBUG info
+
+    $create_new_cf = (!empty($add_new)) ? true : false;
+
+    if ($create_new_cf) {
+        // Adding a new custom field
+        if ($debug) {
+            dmp('Creating a new custom field');
+        } // DEBUG info
+
         // Note the custom field name input by the user
         $custom_set_name_input = $custom_set_name;
         // Sanitize custom field name : use strict mode for new custom fields
@@ -423,167 +445,183 @@ function glz_cf_save($msg='')
             $msg = array(gTxt('glz_cf_name_renamed_notice', array('{custom_name_input}' => $custom_set_name_input, '{custom_name_output}' => $custom_set_name )), E_WARNING);
         }
     } else {
-    // Editing an existing custom field
+        // Editing an existing custom field
+        if ($debug) {
+            dmp('Updating an existing custom field');
+        } // DEBUG info
+
         // Check if custom field name is valid -> Raise warning notice if not
         glz_is_valid_cf_name($custom_set_name);
         // Sanitize custom field name : use $lite mode for backwards compatibility
         $custom_set_name = glz_sanitize_for_cf($custom_set_name, $lite = true);
     }
 
-    // If this is a new field without a position, use the $custom_field_number
+    // Use sanitized custom set name
+    $in['custom_set_name'] = $custom_set_name;
+    if ($debug) {
+        dmp('CF name cleaned: '.$custom_set_name);
+    } // DEBUG info
+
+    // If this no value for 'position' specified, use the $custom_field_number
     if (empty($custom_set_position)) {
-        $custom_set_position = $custom_field_number;
+        $in['custom_set_position'] = $custom_field_number;
     }
+    if ($debug) {
+        dmp('$in: '.$in);
+    } // DEBUG info
 
     // OK, good to go
 
-    // Update prefs row
-    glz_custom_fields_MySQL(
-        "update",
-        $custom_set,
-        "txp_prefs",
-        array(
-            'custom_set_name'     => $custom_set_name,
-            'custom_set_type'     => $custom_set_type,
-            'custom_set_position' => $custom_set_position
-        )
-    );
+    if ($create_new_cf) {
 
-    // Custom sets need to be changed based on their type
-    glz_custom_fields_MySQL(
-        "update",
-        $custom_set,
-        "textpattern",
-        array(
-            'custom_set_type' => $custom_set_type,
-            'custom_field' => glz_custom_number($custom_set)
-        )
-    );
+        // ACTION! Save new custom field to DB
+        $result = glz_db_cf_new($in, $debug);
 
-    // For textareas we do not need to touch custom_fields table
-    if ($custom_set_type != "textarea") {
-        glz_custom_fields_MySQL("delete", $custom_set, "custom_fields");
-        glz_custom_fields_MySQL(
-            "new",
-            $custom_set_name,
-            "custom_fields",
-            array(
-                'custom_set'  => $custom_set,
-                'value'       => $value
-            )
-        );
+        if ($result) {
+            // Update count of custom fields
+            glz_db_update_custom_fields_count();
+
+            // update lastmod + corresponding event
+            update_lastmod(
+                'custom_field_created',
+                compact(
+                    'custom_set',
+                    'custom_field_number',
+                    'custom_set_name',
+                    'custom_set_title',
+                    'custom_set_instructions',
+                    'custom_set_type',
+                    'custom_set_position'
+                    )
+                );
+
+            // Success or warning message (if generated earlier by glz_is_valid_cf_name)
+            if (empty($msg)) {
+                $msg = gTxt('glz_cf_created', array('{custom_set_name}' => $custom_set_name));
+            }
+        }
+    } else {
+
+        // ACTION! Update custom field in DB
+        $result = glz_db_cf_save($in, $debug);
+
+        if ($result) {
+            // update lastmod + corresponding event
+            update_lastmod(
+                'custom_field_updated',
+                compact(
+                    'custom_set',
+                    'custom_field_number',
+                    'custom_set_name',
+                    'custom_set_name_old',
+                    'custom_set_title',
+                    'custom_set_instructions',
+                    'custom_set_type',
+                    'custom_set_position'
+                    )
+                );
+            // Success or warning message (if generated earlier by glz_is_valid_cf_name)
+            if (empty($msg)) {
+                $msg = gTxt('glz_cf_updated', array('{custom_set_name}' => $custom_set_name));
+            }
+        }
     }
-    // 'cf_customname' = CF Field label (Title)
-    // 'instructions_custom_X' = CF Field instructions
-    glz_custom_fields_MySQL(
-        "update",
-        $custom_set_name,
-        "txp_lang",
-        array(
-            'custom_field_number' => $custom_field_number,
-            'old_cf_name'         => $custom_set_name_old,
-            'cf_title'            => trim($custom_set_title),
-            'cf_instructions'     => trim($custom_set_instructions)
-        )
-    );
-
-    // update lastmod + corresponding event
-    update_lastmod(
-        'custom_field_saved',
-        compact(
-            'custom_set',
-            'custom_field_number',
-            'custom_set_name',
-            'custom_set_name_old',
-            'custom_set_title',
-            'custom_set_instructions',
-            'custom_set_type',
-            'custom_set_position'
-            )
-        );
-
-    // Success or warning message (if generated earlier by glz_is_valid_cf_name)
-    if (empty($msg)) {
-        $msg = gTxt('glz_cf_updated', array('{custom_set_name}' => $custom_set_name));
-    }
-
-    Txp::getContainer()->remove('\Textpattern\L10n\Lang');
 
     // Render custom field list
     glz_cf_list($msg);
-
 }
 
 
 /**
- * Resets values for custom fields 1-10.
- * Sets reset condition, then passes on to glz_cf_delete
+ * Reset step in UI – for custom field IDs 1-10.
+ * Retrieves value for ID from url
  *
- * @param  string  $msg  Pass-thru of success, error or warning message shown by Textpattern
+ * @param  string  $msg  Pass-thru of success / error / warning message
+ * @param  bool  $debug  Switch on debug messaging and query dumps
  */
-function glz_cf_reset($msg='')
+function glz_cf_reset($msg='', $debug = true)
 {
     global $event, $step;
 
-    $step = 'reset';
-    glz_cf_delete($msg='');
-}
-
-
-/**
- * Deletes a custom field (ID > 10) or resets a custom fields (ID < 10).
- * Retrieves values for ID url variable
- *
- * @param  string  $msg  Success, error or warning message shown by Textpattern
- */
-function glz_cf_delete($msg='')
-{
-    global $event, $step;
-
-    // get ID from URL of $id not supplied (e.g. by "add" step)
+    // Get ID from URL
     $id = gps('ID');
 
     // Check ID is properly formed, else back to list
-    if (!ctype_digit($id)) {
+    if (!intval($id)) {
+        if ($debug) {
+            dmp($id.' is not an integer');
+        } // DEBUG info
+        glz_cf_list(array(gTxt('glz_cf_no_such_custom_field'), E_ERROR));
+        return false;
+    }
+    // Check ID actually exists before resetting, else back to list
+    if (!get_pref('custom_'.$id.'_set')) {
+        if ($debug) {
+            dmp('custom_'.$id.'_set does not exist');
+        } // DEBUG info
+        glz_cf_list(array(gTxt('glz_cf_no_such_custom_field'), E_ERROR));
+        return false;
+    };
+
+    // ACTION! Reset in DB
+    $result = glz_db_cf_reset($id, $debug);
+
+    if ($result) {
+        update_lastmod('custom_field_reset', $id);
+        $msg = gTxt('glz_cf_reset', array('{custom_set_id}' => 'ID# '.$id));
+    } else {
+        $msg = array(gTxt('glz_cf_reset_error', array('{custom_set_id}' => 'ID# '.$id)), E_ERROR);
+    }
+
+    // Render custom field list + message
+    glz_cf_list($msg);
+}
+
+
+/**
+ * Delete step in UI – for custom fields ID > 10.
+ * Retrieves value for ID from url
+ *
+ * @param  string  $msg  Success / error / warning message
+ * @param  bool  $debug  Switch on debug messaging and query dumps
+ */
+function glz_cf_delete($msg='', $reset= false, $debug = true)
+{
+    global $event, $step;
+
+    // Get ID from URL
+    $id = gps('ID');
+
+    // Check ID is properly formed, else back to list
+    if (!intval($id)) {
+        if ($debug) {
+            dmp($id.' is not an integer');
+        } // DEBUG info
         glz_cf_list(array(gTxt('glz_cf_no_such_custom_field'), E_ERROR));
         return false;
     }
     // Check ID actually exists before deleting, else back to list
     if (!get_pref('custom_'.$id.'_set')) {
+        if ($debug) {
+            dmp('custom_'.$id.'_set does not exist');
+        } // DEBUG info
         glz_cf_list(array(gTxt('glz_cf_no_such_custom_field'), E_ERROR));
         return false;
     };
 
-    // Retrieve this custom_field values
-    $custom_field = glz_cf_single_custom_set($id);
+    // ACTION! Delete from DB (reset for IDs 1-10)
+    $result = glz_db_cf_delete($id, $reset, $debug);
 
-    glz_custom_fields_MySQL("delete", $custom_field['custom_set'], "txp_lang"); // del: custom field title labels + instruction text + prefs language label
-    glz_custom_fields_MySQL("delete", $custom_field['custom_set'], "custom_fields"); // del: any glz custom_field settings / multiple values
-
-    if ($step === 'delete') {
-        glz_custom_fields_MySQL("delete", $custom_field['custom_set'], "txp_prefs"); // del: prefs entry
-        glz_custom_fields_MySQL("delete", glz_custom_number($custom_field['custom_set']), "textpattern"); // del: custom field from articles
-
-        update_lastmod('custom_field_deleted', compact('custom_set', 'custom_field_number', 'custom_set_name'));
-        $msg = gTxt('glz_cf_deleted', array('{custom_set_name}' => $custom_field['name']));
-
-    } elseif ($step === 'reset') {
-
-        glz_custom_fields_MySQL("reset", $custom_field['custom_set'], "txp_prefs"); // reset: prefs entry
-        glz_custom_fields_MySQL(
-            "reset",
-            glz_custom_number($custom_field['custom_set']),
-            "textpattern",
-            array(
-                'custom_set_type' => $custom_field['type'],
-                'custom_field'    => glz_custom_number($custom_field['custom_set'])
-            )
-        );
-
-        update_lastmod('custom_field_reset', compact('custom_set', 'custom_field_number', 'custom_set_name'));
-        $msg = gTxt('glz_cf_reset', array('{custom_set_name}' => $custom_field['name']));
+    if ($result) {
+        update_lastmod('custom_field_deleted', $id);
+        $msg = gTxt('glz_cf_deleted', array('{custom_set_id}' => 'ID# '.$id));
+    } else {
+        $msg = array(gTxt('glz_cf_deleted_error', array('{custom_set_id}' => 'ID# '.$id)), E_ERROR);
     }
 
-    // Render custom field list
+    // Update count of custom fields
+    glz_db_update_custom_fields_count();
+
+    // Render custom field list + message
     glz_cf_list($msg);
 }
