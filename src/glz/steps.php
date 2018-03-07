@@ -582,7 +582,7 @@ function glz_cf_reset($msg='', $debug = false)
  * @param  string  $msg  Success / error / warning message
  * @param  bool  $debug  Switch on debug messaging and query dumps
  */
-function glz_cf_delete($msg='', $reset= false, $debug = true)
+function glz_cf_delete($msg='', $reset= false, $debug = false)
 {
     global $event, $step;
 
