@@ -539,7 +539,7 @@ function glz_cf_save($msg='', $debug = false)
  * @param  string  $msg  Pass-thru of success / error / warning message
  * @param  bool  $debug  Switch on debug messaging and query dumps
  */
-function glz_cf_reset($msg='', $debug = true)
+function glz_cf_reset($msg='', $debug = false)
 {
     global $event, $step;
 
