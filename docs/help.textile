@@ -55,14 +55,25 @@ h2(#custom-field-names). Custom field names
 
 This version of glz_custom_fields will convert the names of _newly created_ custom fields to this pattern and notify you when saving. In the interests of backwards compatibility, it will _not_ change existing custom fields but will issue a warning.
 
-*Custom field titles* have no such restrictions.
-
 Previous versions of glz_custom_fields permitted custom names with spaces, dashes, capital letters and numbers. These can, however, cause problems when using custom field names as an attribute for "txp:article_custom":https://docs.textpattern.io/tags/article_custom#attributes.
 
 Future versions of Textpattern will be stricter about custom field naming and it is advisable to adapt your custom field names and code accordingly.
 
 _*Important:* You can rename custom field names with this plugin but remember you will also need to alter all instances of "txp:custom_field":https://docs.textpattern.io/tags/custom_field and "txp:if_custom_field":https://docs.textpattern.io/tags/if_custom_field as well as all customfieldname attributes in "txp:article_custom":https://docs.textpattern.io/tags/article_custom in your page templates and forms to match._
 
+h3. Custom field titles
+
+*Custom field titles* have no strict naming restrictions and can also be specified per language. Switch the "User language" in "Admin › Languages" and enter a new title.
+
+If no custom field title is specified, the custom_field_name will be displayed as the field label as in previous versions.
+
+The custom field title can be accessed from @page templates@ and @forms@ for displaying to the front-end if required as follows:
+
+bc. <txp:custom_field name="my_custom_field" title="1" />
+
+This outputs the custom field's title string in the current front-side language. If no title has been defined for the custom field, the tag outputs nothing.
+
+_Note: The @title="1"@ attribute does not work when this plugin is not installed._
 
 h2(#upgrading). Version compatibility
 
@@ -78,8 +89,9 @@ v2.0 – March 2018
 * Installation should not overwrite existing settings
 * Plugin preferences now handled in Admin › Preferences
 * Custom field title labels and supporting instruction hints (also per UI-language)
+* Custom field titles are accessible in page templates and forms by adding the attribute @title="1"@ to "txp:custom_field":https://docs.textpattern.io/tags/custom_field.
 * js/css URL location pref and support for relative URLs: relocate your js/css files where you want them (e.g. for multisite installations)
-* Now makes widespread use of Textpattern’s in-built functions for UI creation, error messages/notices, language strings, field labels
+* Now makes use of Textpattern’s in-built functions for UI creation, error messages/notices, language strings, field labels
 * Translatable: now uses textpacks
 * Updated + minified js/css and datepicker/timepicker labels
 * Changes to custom fields updates site-wide last modified date (for cache renewal)
