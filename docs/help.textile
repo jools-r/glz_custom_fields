@@ -18,13 +18,13 @@ You can provide field label titles for the "Write panel":https://docs.textpatter
 h2(#installation). Installation
 
 # Open the plugin text file, copy its entire contents to the clipboard and paste into the 'Install plugin' textarea of the "Plugins panel":https://docs.textpattern.io/administration/plugins-panel#uploading-plugins. Click 'Upload' and then 'Install'.
-# Upload the "plugins/glz_custom_fields":https://github.com/jools-r/glz_custom_fields/dist/plugins/glz_custom_fields folder to your Textpattern installation directory.
+# Upload the "plugins/glz_custom_fields":https://github.com/jools-r/glz_custom_fields/tree/master/dist/ folder to your Textpattern installation directory.
 # Activate the plugin.
-# Verify that the corresponding paths in the "plugin preferences":?event=prefs#prefs_group_glz_custom_f are correct. The plugin will indicate if there are potential problems.
+# Verify that the corresponding paths in the plugin preferences are correct. The plugin will indicate if there are potential problems.
 
 h3(#upgrading). Upgrading
 
-Follow the same process as installation. The installer should detect and convert your existing preferences to new names in the background. Replace all the files in the "plugins/glz_custom_fields":https://github.com/jools-r/glz_custom_fields/dist/plugins/glz_custom_fields folder as all files have changed to work with the most recent admin layout. The timepicker and datepicker have likewise been updated and minified.
+Follow the same process as installation. The installer should detect and convert your existing preferences to new names in the background. Replace all the files in the "plugins/glz_custom_fields":https://github.com/jools-r/glz_custom_fields/tree/master/dist/ folder as all files have changed to work with the most recent admin layout. The timepicker and datepicker have likewise been updated and minified.
 
 _Note: You may relocate the css and js files to locations of your own choosing. Change the paths in the plugin preferences panel accordingly. Only the contents of the jquery.datePicker or jquery.timePicker folders must stay together. You may rename the folders but not the filenames._
 
@@ -38,7 +38,7 @@ Time and date pickers offer an easy way for users to specify dates and times in 
 
 Similarly, the *time format* (24 or 12 hours), *start and end times* (e.g. @08:00@ and @19:00@) and *time step* (intervals, e.g. @30@ minutes) can be set in the plugin preferences.
 
-_IMPORTANT: For the datepicker and timepicker to function correctly, you must copy the "plugins/glz_custom_fields":https://github.com/jools-r/glz_custom_fields/dist/plugins/glz_custom_fields folder to your Textpattern installation directory and set the corresponding paths in the "plugin preferences":?event=prefs#prefs_group_glz_custom_f panel._
+_IMPORTANT: For the datepicker and timepicker to function correctly, you must copy the "plugins/glz_custom_fields":https://github.com/jools-r/glz_custom_fields/dist/plugins/glz_custom_fields folder to your Textpattern installation directory and set the corresponding paths in the plugin preferences._
 
 h3. Custom scripts
 

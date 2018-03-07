@@ -4,7 +4,7 @@
     "version"       : "2.0 beta",
     "type"          : 5,
     "author"        : "Gerhard Lazu",
-    "author_uri"    : "http://github.com/bloke/glz_custom_fields",
+    "author_uri"    : "http://github.com/jools-r/glz_custom_fields",
     "contributors"  : "Randy Levine, Sam Weiss, Luca Botti, Manfre, Vladimir Siljkovic, Julian Reisenberger, Steve Dickinson, Stef Dawson, Jean-Pol Dupont",
     "compatibility" : "4.7",
     "order"         : 9,
