@@ -723,27 +723,36 @@ function glz_db_get_article_custom_fields($name, $extra)
 
 
 // -------------------------------------------------------------
-// Updates 'max_custom_fields' pref
-function glz_db_update_custom_fields_count()
-{
-    set_pref('max_custom_fields', safe_count('txp_prefs', "event='custom'"));
-}
-
-
-// -------------------------------------------------------------
 // Goes through all custom sets, returns the first one which is not being used
 // Returns next free id#.
 function glz_next_empty_custom()
 {
-    $result = safe_field(
-        "name",
+    // get current custom fields in 'txp_prefs' sorted by number
+    // LENGTH = 1-9 first, 10+ afterwards (not 1, 10, 11 ... 2, 3, ...)
+    $rs = safe_rows(
+        "name, val",
         'txp_prefs',
-        "event = 'custom' AND val = '' ORDER BY LENGTH(name), name LIMIT 1"
+        "event = 'custom' ORDER BY LENGTH(name), name"
     );
-    if ($result) {
-        $result = glz_custom_digit($result);
-    } else {
-        $result = get_pref('max_custom_fields') + 1;
+    $counter = 1;
+    foreach ($rs as $value) {
+        $cf_number = filter_var($value['name'], FILTER_SANITIZE_NUMBER_INT);
+        // Stop at first empty value in IDs 1-10
+        if ($value['val'] == '') {
+            $result = $cf_number;
+            break;
+        }
+        // Stop at first empty number > 10
+        if ($cf_number != $counter) {
+            $result = $counter;
+            break;
+        }
+
+        $counter++;
+    }
+    // No empty IDs in 1-10 and no holes > 11 -> get next number
+    if (!isset($result)) {
+        $result = $counter;
     }
     return $result;
 }

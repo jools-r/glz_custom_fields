@@ -322,27 +322,6 @@ function glz_custom_fields_range($custom_value, $custom_set_name)
 
 
 // -------------------------------------------------------------
-// Returns the next available number for custom set
-function glz_custom_next($arr_custom_sets)
-{
-    $arr_extra_custom_sets = array();
-    foreach (array_keys($arr_custom_sets) as $extra_custom_set) {
-        $arr_extra_custom_sets[] = glz_custom_digit($extra_custom_set);
-    }
-    // order the array
-    sort($arr_extra_custom_sets);
-
-    for ($i=0; $i < count($arr_extra_custom_sets); $i++) {
-        if ($arr_extra_custom_sets[$i] > $i+1) {
-            return $i+1;
-        }
-    }
-
-    return count($arr_extra_custom_sets)+1;
-}
-
-
-// -------------------------------------------------------------
 // Is the custom field name already taken?
 function glz_check_custom_set_name($custom_set_name, $custom_set)
 {

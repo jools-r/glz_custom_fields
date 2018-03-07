@@ -67,6 +67,13 @@ function glz_cf_prefs_install()
             "name = 'migrated'"
         );
     }
+
+    // Remove no longer needed 'max_custom_fields' pref
+    safe_delete(
+        'txp_prefs',
+        "name = 'max_custom_fields'"
+    );
+
 }
 
 /**
