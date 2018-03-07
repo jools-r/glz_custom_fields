@@ -20,19 +20,20 @@ function glz_cf_prefs_install()
     global $prefs;
 
     $position = 200;
+    $base_url = (empty($txpcfg['admin_url'])) ? hu : ahu;
 
     // array: old_prefname => array('pref.subevent', 'html', 'default-value')
     $plugin_prefs = array(
         'values_ordering'        => array('', 'glz_prefs_orderby', 'custom'),
         'multiselect_size'       => array('', 'glz_text_input_small', '5'),
-        'css_asset_url'          => array('', 'glz_url_input', hu.'plugins/glz_custom_fields'),
-        'js_asset_url'           => array('', 'glz_url_input', hu.'plugins/glz_custom_fields'),
+        'css_asset_url'          => array('', 'glz_url_input', $base_url.'plugins/glz_custom_fields'),
+        'js_asset_url'           => array('', 'glz_url_input', $base_url.'plugins/glz_custom_fields'),
         'custom_scripts_path'    => array('', 'glz_url_input', $prefs['path_to_site'].'/plugins/glz_custom_fields'),
-        'datepicker_url'         => array('glz_cf_datepicker', 'glz_url_input', hu.'plugins/glz_custom_fields/jquery.datePicker'),
+        'datepicker_url'         => array('glz_cf_datepicker', 'glz_url_input', $base_url.'plugins/glz_custom_fields/jquery.datePicker'),
         'datepicker_format'      => array('glz_cf_datepicker', 'glz_prefs_datepicker_format', 'dd/mm/yyyy'),
         'datepicker_first_day'   => array('glz_cf_datepicker', 'glz_prefs_datepicker_firstday', 1),
         'datepicker_start_date'  => array('glz_cf_datepicker', 'glz_input_start_date', '01/01/2018'),
-        'timepicker_url'         => array('glz_cf_timepicker', 'glz_url_input', hu.'plugins/glz_custom_fields/jquery.timePicker'),
+        'timepicker_url'         => array('glz_cf_timepicker', 'glz_url_input', $base_url.'plugins/glz_custom_fields/jquery.timePicker'),
         'timepicker_start_time'  => array('glz_cf_timepicker', 'glz_text_input_small', '00:00'),
         'timepicker_end_time'    => array('glz_cf_timepicker', 'glz_text_input_small', '23:30'),
         'timepicker_step'        => array('glz_cf_timepicker', 'glz_text_input_small', 30),
