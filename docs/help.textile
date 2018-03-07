@@ -1,4 +1,4 @@
-h1. Unlimited Custom Fields for Textpattern v4.7+ – glz_custom_fields
+h1. Unlimited Custom Fields for Textpattern v4.7+
 
 This plugin removes the limit of 10 custom fields in Textpattern and also allows you to create a range of different custom field types:
 
@@ -38,7 +38,7 @@ Time and date pickers offer an easy way for users to specify dates and times in 
 
 Similarly, the *time format* (24 or 12 hours), *start and end times* (e.g. @08:00@ and @19:00@) and *time step* (intervals, e.g. @30@ minutes) can be set in the plugin preferences.
 
-_IMPORTANT: For the datepicker and timepicker to function correctly, you must copy the "plugins/glz_custom_fields":https://github.com/jools-r/glz_custom_fields/dist/plugins/glz_custom_fields folder to your Textpattern installation directory and set the corresponding paths in the "plugin preferences":?event=prefs#prefs_group_glz_custom_f._
+_IMPORTANT: For the datepicker and timepicker to function correctly, you must copy the "plugins/glz_custom_fields":https://github.com/jools-r/glz_custom_fields/dist/plugins/glz_custom_fields folder to your Textpattern installation directory and set the corresponding paths in the "plugin preferences":?event=prefs#prefs_group_glz_custom_f panel._
 
 h3. Custom scripts
 
@@ -47,7 +47,7 @@ Custom scripts make it possible to build-in custom functionality, for example to
 
 h2(#custom-field-names). Custom field names
 
-Custom field *names* should adhere to the following naming rules:
+*Custom field names* should adhere to the following naming rules:
 
 * only lowercase letters and numbers
 * underscores as separators (no spaces or dashes)
@@ -55,13 +55,13 @@ Custom field *names* should adhere to the following naming rules:
 
 This version of glz_custom_fields will convert the names of _newly created_ custom fields to this pattern and notify you when saving. In the interests of backwards compatibility, it will _not_ change existing custom fields but will issue a warning.
 
-Custom field *titles* have no such restrictions.
+*Custom field titles* have no such restrictions.
 
 Previous versions of glz_custom_fields permitted custom names with spaces, dashes, capital letters and numbers. These can, however, cause problems when using custom field names as an attribute for "txp:article_custom":https://docs.textpattern.io/tags/article_custom#attributes.
 
 Future versions of Textpattern will be stricter about custom field naming and it is advisable to adapt your custom field names and code accordingly.
 
-_*Important:* You can rename them with this plugin but remember you will also need to alter all instances of "txp:custom_field":https://docs.textpattern.io/tags/custom_field and "txp:if_custom_field":https://docs.textpattern.io/tags/if_custom_field in your page templates and forms to match._
+_*Important:* You can rename custom field names with this plugin but remember you will also need to alter all instances of "txp:custom_field":https://docs.textpattern.io/tags/custom_field and "txp:if_custom_field":https://docs.textpattern.io/tags/if_custom_field as well as all customfieldname attributes in "txp:article_custom":https://docs.textpattern.io/tags/article_custom in your page templates and forms to match._
 
 
 h2(#upgrading). Version compatibility
@@ -74,18 +74,18 @@ h3(#changelog). Changelog
 
 v2.0 – March 2018
 
-– Refactored for Textpattern v4.7
-– Installation should not overwrite existing settings
-– Plugin preferences now handled in Admin › Preferences
-– Custom field title labels and supporting instruction hints (also per UI-language)
-– js/css URL location pref and support for relative URLs: relocate your js/css files where you want them (e.g. for multisite installations)
-– Now makes widespread use of Textpattern’s in-built functions for UI creation, error messages/notices, language strings, field labels
-– Translatable: now uses textpacks
-– Updated + minified js/css and datepicker/timepicker labels
-– Changes to custom fields updates site-wide last modified date (for cache renewal)
+* Refactored for Textpattern v4.7
+* Installation should not overwrite existing settings
+* Plugin preferences now handled in Admin › Preferences
+* Custom field title labels and supporting instruction hints (also per UI-language)
+* js/css URL location pref and support for relative URLs: relocate your js/css files where you want them (e.g. for multisite installations)
+* Now makes widespread use of Textpattern’s in-built functions for UI creation, error messages/notices, language strings, field labels
+* Translatable: now uses textpacks
+* Updated + minified js/css and datepicker/timepicker labels
+* Changes to custom fields updates site-wide last modified date (for cache renewal)
 
 
-h2(#support). Support & Credits
+h2(#support). Support & credits
 
 Comments, bug reports and pull requests are welcome:
 
