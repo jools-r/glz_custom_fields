@@ -489,6 +489,7 @@ function glz_db_cf_delete($id, $reset = false, $debug = false)
         $ok = safe_update(
             'textpattern',
             "custom_".$custom_set['id']." = ''",
+            "1 = 1",
             $debug
         );
 
