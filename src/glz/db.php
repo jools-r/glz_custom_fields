@@ -615,9 +615,7 @@ function glz_db_get_custom_field_values($name, $extra)
                 foreach ($arr_values as $key => $value) {
                     $arr_values_formatted[glz_clean_default(htmlspecialchars($value))] = stripslashes($value);
                 }
-
-                // if this is a range, format ranges accordingly
-                return glz_format_ranges($arr_values_formatted, $custom_set_name);
+                return $arr_values_formatted;
             }
         }
     } else {
@@ -678,11 +676,6 @@ function glz_db_get_all_existing_cf_values($name, $extra)
                 $out = array_unique($out);
                 // Keys and values need to be the same
                 $out = array_combine($out, $out);
-            }
-            // Are any values ranges (=‘-’)?
-            elseif (strstr($values_check, '-') && strstr($custom_set_name, 'range')) {
-                // Keys won't have the unit ($, £, m³, etc.), values will
-                $out = glz_format_ranges($arr_values, $custom_set_name);
             } else {
                 // Keys and values need to be the same
                 $out = array_combine($arr_values, $arr_values);

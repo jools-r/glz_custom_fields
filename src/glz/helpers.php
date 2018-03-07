@@ -272,56 +272,6 @@ function glz_get_article_id()
 
 
 // -------------------------------------------------------------
-// Helps with range formatting - just DRY
-function glz_format_ranges($arr_values, $custom_set_name)
-{
-    $out = array();
-    foreach ($arr_values as $key => $value) {
-        $out[$key] = (strstr($custom_set_name, 'range')) ?
-            glz_custom_fields_range($value, $custom_set_name) :
-            $value;
-    }
-
-    return $out;
-}
-
-
-// -------------------------------------------------------------
-// A callback for the glz_format_ranges() function
-function glz_custom_fields_range($custom_value, $custom_set_name)
-{
-    // Last part of string is the range unit (e.g. $, &pound;, m<sup>3</sup> etc.)
-    $range_unit = array_pop(explode(' ', $custom_set_name));
-
-    // Should range unit should go after range
-    if (strstr($range_unit, '(after)')) {
-        // Trim '(after)' from the range unit
-        $range_unit = substr($range_unit, 0, -7);
-        $after = 1;
-    }
-
-    // Is it a range or single value
-    $arr_value = explode('-', $custom_value);
-    // It's a range
-    if (is_array($arr_value)) {
-        $out = '';
-        foreach ($arr_value as $value) {
-            // add range unit before or after
-            $out[] = (!isset($after)) ?
-              $range_unit.number_format($value) : number_format($value).$range_unit;
-        }
-        return implode('-', $out);
-    }
-    // It's a single value
-    else {
-        // Add range unit before or after
-        return (!isset($after)) ?
-          $range_unit.number_format($value) : number_format($value).$range_unit;
-    }
-}
-
-
-// -------------------------------------------------------------
 // Is the custom field name already taken?
 function glz_check_custom_set_name($custom_set_name, $custom_set)
 {
