@@ -478,9 +478,6 @@ function glz_cf_save($msg='', $debug = false)
         $result = glz_db_cf_new($in, $debug);
 
         if ($result) {
-            // Update count of custom fields
-            glz_db_update_custom_fields_count();
-
             // update lastmod + corresponding event
             update_lastmod(
                 'custom_field_created',
@@ -618,9 +615,6 @@ function glz_cf_delete($msg='', $reset= false, $debug = true)
     } else {
         $msg = array(gTxt('glz_cf_deleted_error', array('{custom_set_id}' => 'ID# '.$id)), E_ERROR);
     }
-
-    // Update count of custom fields
-    glz_db_update_custom_fields_count();
 
     // Render custom field list + message
     glz_cf_list($msg);
