@@ -26,7 +26,7 @@ function glz_cf_list($msg='', $debug = false)
 {
     global $event, $step;
 
-    pageTop('glz_cf_tab_name', $msg);
+    pageTop(gTxt('glz_cf_tab_name'), $msg);
 
     // Retrieve array of all custom fields properties
     $all_custom_sets = glz_db_get_all_custom_sets();
