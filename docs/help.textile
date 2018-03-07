@@ -38,7 +38,7 @@ Time and date pickers offer an easy way for users to specify dates and times in 
 
 Similarly, the *time format* (24 or 12 hours), *start and end times* (e.g. @08:00@ and @19:00@) and *time step* (intervals, e.g. @30@ minutes) can be set in the plugin preferences.
 
-_IMPORTANT: For the datepicker and timepicker to function correctly, you must copy the "plugins/glz_custom_fields":https://github.com/jools-r/glz_custom_fields/dist/plugins/glz_custom_fields folder to your Textpattern installation directory and set the corresponding paths in the plugin preferences._
+_IMPORTANT: For the datepicker and timepicker to function correctly, you must copy the "plugins/glz_custom_fields":https://github.com/jools-r/glz_custom_fields/tree/master/dist folder to your Textpattern installation directory and set the corresponding paths in the plugin preferences._
 
 h3. Custom scripts
 
