@@ -17,10 +17,12 @@
 
 function glz_cf_prefs_install()
 {
-    global $prefs;
+    global $prefs, $txpcfg;
 
     $position = 200;
     $base_url = (empty($txpcfg['admin_url'])) ? hu : ahu;
+    $base_path = (empty($txpcfg['admin_url'])) ? $prefs['path_to_site'] : str_replace("public", "admin", $prefs['path_to_site']);
+
 
     // array: old_prefname => array('pref.subevent', 'html', 'default-value')
     $plugin_prefs = array(
@@ -28,7 +30,7 @@ function glz_cf_prefs_install()
         'multiselect_size'       => array('', 'glz_text_input_small', '5'),
         'css_asset_url'          => array('', 'glz_url_input', $base_url.'plugins/glz_custom_fields'),
         'js_asset_url'           => array('', 'glz_url_input', $base_url.'plugins/glz_custom_fields'),
-        'custom_scripts_path'    => array('', 'glz_url_input', $prefs['path_to_site'].'/plugins/glz_custom_fields'),
+        'custom_scripts_path'    => array('', 'glz_url_input', $base_path.'/plugins/glz_custom_fields'),
         'datepicker_url'         => array('glz_cf_datepicker', 'glz_url_input', $base_url.'plugins/glz_custom_fields/jquery.datePicker'),
         'datepicker_format'      => array('glz_cf_datepicker', 'glz_prefs_datepicker_format', 'dd/mm/yyyy'),
         'datepicker_first_day'   => array('glz_cf_datepicker', 'glz_prefs_datepicker_firstday', 1),
