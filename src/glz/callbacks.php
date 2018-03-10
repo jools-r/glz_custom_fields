@@ -373,6 +373,8 @@ function glz_custom_fields_install()
 
 function glz_custom_fields_uninstall()
 {
+    global $prefs;
+
     // To prevent inadvertent data loss, full deinstallation is only permitted
     // if the 'safety catch' has been disabled: set 'glz_cf_permit_full_deinstall' = 1
     if ($prefs['glz_cf_permit_full_deinstall'] == '1') {
@@ -383,14 +385,14 @@ function glz_custom_fields_uninstall()
         );
 
         // Get all custom fields > 10
-        $additional_cfs = safe_rows('txp_prefs', "name", "name LIKE 'custom\___\_set' AND name <> 'custom_10_set'");
+        $additional_cfs = safe_rows('name', 'txp_prefs', "name LIKE 'custom\___\_set' AND name <> 'custom_10_set'");
 
         $drop_query ='';
-        foreach ($additional_cfs as $name) {
+        foreach ($additional_cfs as $val) {
             // Delete prefs labels for custom fields > 10
-            safe_delete('txp_lang', "name = '".$name."'");
+            safe_delete('txp_lang', "name = '".$val['name']."'");
             // Build DROP query for 'textpattern' table
-            $drop_query .= 'DROP '.str_replace("_set", "", $name).', ';
+            $drop_query .= 'DROP '.str_replace("_set", "", $val['name']).', ';
         }
         // Trim final comma and space from drop statement
         $drop_query = rtrim($drop_query, ', ');
