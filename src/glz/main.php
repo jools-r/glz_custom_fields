@@ -51,6 +51,12 @@ if(@txpinterface == 'admin') {
         add_privs('glz_custom_fields_inject_css_js', '1,2,3,4,5,6');
         register_callback('glz_custom_fields_inject_css_js', 'admin_side', 'head_end');
 
+        // Use jqueryui.sortable to set the custom field position value
+        if ($prefs['glz_cf_use_sortable'] == '1') {
+            register_callback('glz_cf_positionsort_js', 'customfields_ui', 'table_end');
+            register_callback('glz_cf_positionsort_steps', 'glz_custom_fields');
+        }
+
         // Write tab: multiple value array -> string conversion on save/create
         if (($step === 'edit') || ($step === 'create')) {
             add_privs('glz_custom_fields_before_save', '1,2,3,4,5,6');

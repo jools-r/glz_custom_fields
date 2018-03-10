@@ -31,6 +31,7 @@ function glz_cf_prefs_install()
         'css_asset_url'          => array('', 'glz_url_input', $base_url.'plugins/glz_custom_fields'),
         'js_asset_url'           => array('', 'glz_url_input', $base_url.'plugins/glz_custom_fields'),
         'custom_scripts_path'    => array('', 'glz_url_input', $base_path.'/plugins/glz_custom_fields'),
+        'use_sortable'           => array('', 'yesnoradio', 1),
         'datepicker_url'         => array('glz_cf_datepicker', 'glz_url_input', $base_url.'plugins/glz_custom_fields/jquery.datePicker'),
         'datepicker_format'      => array('glz_cf_datepicker', 'glz_prefs_datepicker_format', 'dd/mm/yyyy'),
         'datepicker_first_day'   => array('glz_cf_datepicker', 'glz_prefs_datepicker_firstday', 1),

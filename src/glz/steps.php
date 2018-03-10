@@ -41,7 +41,7 @@ function glz_cf_list($msg='', $debug = false)
             tag_start('div', array('class' => 'txp-layout-2col')).
                 href(gTxt('tab_preferences'), '?event=prefs#prefs_group_glz_custom_f', array('class' => 'glz-cf-setup-switch')).
             tag_end('div').
-        tag_end('div'); // end .txp-layout
+            tag_start('div', array('class' => 'txp-layout-1col', 'id' => $event.'_container'));
 
     // 'Add new custom field' button
     $out[] =
@@ -86,7 +86,7 @@ function glz_cf_list($msg='', $debug = false)
     // Table start
     $out[] =
         tag_start('div', array('class' => 'txp-listtables')).
-        n.tag_start('table', array('class' => 'txp-list glz-custom-fields')).
+        n.tag_start('table', array('class' => 'txp-list')).
         n.tag_start('thead').
             tr($head_row).
         n.tag_end('thead').
@@ -180,7 +180,8 @@ function glz_cf_list($msg='', $debug = false)
                         $delete_link,
                         '',
                         'txp-list-col-options'
-                    )
+                    ),
+                    array('id' => 'glz_custom_'.$custom_set['id'].'_set')
                 );
         }
     }
@@ -189,7 +190,10 @@ function glz_cf_list($msg='', $debug = false)
     $out[] =
         n.tag_end('tbody').
         n.tag_end('table').
-        n.tag_end('div'); // End of .txp-listtables.
+        n.tag_end('div'). // End of .txp-listtables.
+        pluggable_ui('customfields_ui', 'table_end', '').
+        tag_end('div'). // End of .txp-layout-1col.
+        tag_end('div'); // End of .txp-layout.
 
     // Render panel
     if (is_array($out)) {
@@ -222,7 +226,7 @@ function glz_cf_add($msg='', $debug = false)
  */
 function glz_cf_edit($msg='', $id='', $debug = false)
 {
-    global $event, $step;
+    global $event, $step, $prefs;
     // get ID from URL of $id not supplied (e.g. by "add" step)
     if (empty($id)) {
         $id = gps('ID');
@@ -256,6 +260,10 @@ function glz_cf_edit($msg='', $id='', $debug = false)
     // Pass existing name in case custom field is renamed
     $existing_name = ($step === 'edit') ?
         hInput('custom_set_name_old', $custom_field['name']) :
+        '';
+    // Pass in existing position as hidden input (change position value in the list)
+    $existing_position = (($step === 'edit') && ($prefs['glz_cf_use_sortable'] == '1')) ?
+        hInput('custom_set_position', $custom_field['position']) :
         '';
 
     // Custom field types drop-down
@@ -340,15 +348,17 @@ function glz_cf_edit($msg='', $id='', $debug = false)
                     1 => 'glz_cf_js_configure_msg'  // Inline help string
                 )
             ).
-        inputLabel(
-                'custom_set_position',
-                fInput('text', 'custom_set_position', htmlspecialchars($custom_field['position']), '', '', '', INPUT_MEDIUM, '', 'custom_set_position'),
-                'glz_cf_edit_position',
-                array(
-                    0 => '',
-                    1 => 'glz_cf_edit_position_hint'  // Inline help string
+        ($prefs['glz_cf_use_sortable'] == '0' ?
+            inputLabel(
+                    'custom_set_position',
+                    fInput('text', 'custom_set_position', htmlspecialchars($custom_field['position']), '', '', '', INPUT_MEDIUM, '', 'custom_set_position'),
+                    'glz_cf_edit_position',
+                    array(
+                        0 => '',
+                        1 => 'glz_cf_edit_position_hint'  // Inline help string
+                    )
                 )
-            ).
+        : '').
         inputLabel(
                 'custom_set_value',
                 $value,
@@ -365,6 +375,7 @@ function glz_cf_edit($msg='', $id='', $debug = false)
         hInput('custom_set', $custom_field['custom_set']).
         hInput('custom_field_number', $custom_field['id']).
         $existing_name.
+        $existing_position.
         graf(
             sLink('glz_custom_fields', '', gTxt('cancel'), 'txp-button').
             $action,
@@ -383,7 +394,7 @@ function glz_cf_edit($msg='', $id='', $debug = false)
  */
 function glz_cf_save($msg='', $debug = false)
 {
-    global $event, $step, $msg;
+    global $event, $step, $prefs, $msg;
 
     $in = array_map('assert_string', psa(array(
         'custom_set',
@@ -462,10 +473,12 @@ function glz_cf_save($msg='', $debug = false)
         dmp('CF name cleaned: '.$custom_set_name);
     } // DEBUG info
 
-    // If this no value for 'position' specified, use the $custom_field_number
+    // If there is no value for 'position' specified, use the custom field numbers
+    // if using jqueryui.sortable use 999 (the end of the list)
     if (empty($custom_set_position)) {
-        $in['custom_set_position'] = $custom_field_number;
+        $in['custom_set_position'] = ($prefs['glz_cf_use_sortable'] == '1') ? '999' : $custom_field_number;
     }
+
     if ($debug) {
         dmp('$in: '.$in);
     } // DEBUG info

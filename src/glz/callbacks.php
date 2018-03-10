@@ -211,6 +211,10 @@ $(document).ready(function () {
 JS;
         }
     }
+    if ($event == 'glz_custom_fields') {
+        $js .= '<script src="'.glz_relative_url($prefs['glz_cf_js_asset_url']).'/glz_jqueryui.sortable'.$min.'.js"></script>';
+    }
+
     if ($event != 'prefs') {
         $js .= '<script src="'.glz_relative_url($prefs['glz_cf_js_asset_url']).'/glz_custom_fields'.$min.'.js"></script>';
     }
@@ -358,4 +362,120 @@ function glz_custom_fields_prefs_redirect()
 {
     require_privs('plugin_prefs.glz_custom_fields');
     header("Location: index.php?event=prefs#prefs_group_glz_custom_f");
+}
+
+
+// -------------------------------------------------------------
+// Custom field sortable position router function
+function glz_cf_positionsort_steps($event='', $step='', $msg='')
+{
+    switch ($step) {
+    case 'get_js':
+        glz_cf_positionsort(gps('js'));
+        break;
+    case 'put':
+        glz_cf_positionsort(gps('type'));
+        break;
+    }
+}
+
+
+// -------------------------------------------------------------
+// Custom field sortable position inject js
+function glz_cf_positionsort_js()
+{
+    echo <<<HTML
+<script src="index.php?event=glz_custom_fields&step=get_js"></script>
+HTML;
+}
+
+
+// -------------------------------------------------------------
+// Custom field sortable position steps function
+function glz_cf_positionsort($js)
+{
+    header('Content-Type: text/javascript');
+
+    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+
+        header('Content-Type: application/json');
+        $success = true;
+        foreach ($_POST as $customfield => $sort) {
+            if (!safe_update('txp_prefs', 'position=\''.doSlash($sort).'\'', 'name=\''.doSlash($customfield).'\'')) {
+                $success = false;
+            }
+        }
+        echo json_encode(array('success' => $success));
+
+    } else {
+
+        $position = array();
+        foreach (safe_rows('name, position', 'txp_prefs', "event = 'custom'") as $row) {
+            $customfield = $row['name'];
+            $sort = $row['position'];
+            if (!strlen($sort)) {
+                $sort = 0;
+            }
+            $position['glz_' . $customfield] = ctype_digit($sort) ? (int)$sort : $sort;
+        }
+
+        // Language strings
+        $ui_sort = gTxt('glz_cf_col_sort');
+        $msg_success = gTxt('glz_cf_sort_success');
+        $msg_error = gTxt('glz_cf_sort_error');
+
+        echo 'var position = ', json_encode($position), ';'."\n";
+        echo <<<EOB
+$(function() {
+    $('#glz_custom_fields_container thead tr').prepend('<th style="width: 5%;">$ui_sort</th>').find('th').each(function() {
+        var th = $(this);
+        th.html(th.text());
+    });
+    $('#glz_custom_fields_container table').addClass('sortable').find('tbody tr').prepend('<td></td>').appendTo('#glz_custom_fields_container tbody').sortElements(function(a, b) {
+        var a_sort = position[$(a).attr('id')];
+        var b_sort = position[$(b).attr('id')];
+        if (a_sort == b_sort) {
+            return 0;
+        }
+        return a_sort > b_sort ? 1 : -1;
+    }).parent().sortable({
+        items: 'tr',
+        helper: 'clone',
+        axis: 'y',
+        handle: 'td:first-child',
+        start: function(event, ui) {
+        },
+        stop: function() {
+            var position = {};
+            $(this).find('tr').each(function() {
+                var tr = $(this);
+                position[tr.attr('id').replace('glz_', '')] = tr.index();
+            });
+            var set_message = function(message, type) {
+                $('#messagepane').html('<span id="message" class="messageflash ' + type + '" role="alert" aria-live="assertive">' + message + ' <a class="close" role="button" title="Close" href="#close"><span class="ui-icon ui-icon-close">Close</span></a>');
+            }
+            $.ajax(
+                'index.php?event=glz_custom_fields&step=put', {
+                    type: 'POST',
+                    data: position,
+                    dataType: 'json',
+                    success: function(response) {
+                        if (response.success) {
+                            set_message('$msg_success', 'success')
+                        } else {
+                            this.error();
+                        }
+                    },
+                    error: function() {
+                        set_message('$msg_error', 'error');
+                    }
+                }
+            );
+        }
+    }).find('tr').find('td:first-child').html('&#9776;');
+});
+EOB;
+
+    }
+    exit();
 }
