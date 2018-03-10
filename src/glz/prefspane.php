@@ -63,6 +63,18 @@ function glz_cf_prefs_install()
         $position++;
     }
 
+    // Make some $prefs hidden (for safety and troubleshooting)
+    foreach (array(
+        'use_sortable',
+        'permit_full_deinstall'
+    ) as $name) {
+        safe_update(
+            'txp_prefs',
+            "type = ".PREF_HIDDEN,
+            "name = 'glz_cf_".$name."'"
+        );
+    }
+
     // Set 'migrated' pref to 'glz_cf_migrated' and to hidden (type = 2);
     if (get_pref('migrated')) {
         safe_update(
