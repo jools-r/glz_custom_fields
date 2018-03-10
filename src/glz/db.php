@@ -131,7 +131,7 @@ function glz_db_cf_new($in, $debug = false)
             "lang    = '{$current_lang}',
              name    = '{$custom_set_cf_name}',
              event   = 'glz_cf',
-             owner   = 'glz_custom_fields',
+             owner   = 'glz_cf_labels',
              data    = '{$custom_set_cf_data}',
              lastmod = now()",
             $debug
@@ -148,7 +148,7 @@ function glz_db_cf_new($in, $debug = false)
             "lang    = '{$current_lang}',
              name    = '{$custom_set_instr_name}',
              event   = 'glz_cf',
-             owner   = 'glz_custom_fields',
+             owner   = 'glz_cf_labels',
              data    = '{$custom_set_instr_data}',
              lastmod = now()",
             $debug
@@ -328,7 +328,7 @@ function glz_db_cf_save($in, $debug = false)
         $ok = safe_upsert(
             'txp_lang',
             "event   = 'glz_cf',
-             owner   = 'glz_custom_fields',
+             owner   = 'glz_cf_labels',
              data    = '{$custom_set_cf_data}',
              lastmod = now()",
              array('name' => $custom_set_cf_name, 'lang' => $current_lang),
@@ -360,7 +360,7 @@ function glz_db_cf_save($in, $debug = false)
         $ok = safe_upsert(
             'txp_lang',
             "event   = 'glz_cf',
-             owner   = 'glz_custom_fields',
+             owner   = 'glz_cf_labels',
              data    = '{$custom_set_instr_data}',
              lastmod = now()",
              array('name' => $custom_set_instr_name, 'lang' => $current_lang),
