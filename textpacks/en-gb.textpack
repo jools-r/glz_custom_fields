@@ -72,6 +72,7 @@ glz_cf_css_folder => Glz custom fields CSS folder
 glz_cf_js_folder => Glz custom fields JS folder
 glz_cf_custom_folder => Custom scripts path
 glz_cf_use_sortable => Set custom field order per drag and drop
+glz_cf_permit_full_deinstall => Delete all data when deinstalling
 glz_cf_datepicker_folder => Date picker folder
 glz_cf_timepicker_folder => Time picker folder
 glz_cf_folder_error => {folder} does not exist, please create it.
@@ -108,3 +109,4 @@ glz_cf_sort_error => Custom field order save failed
 custom_x_set => Custom field {number} name
 instructions_glz_cf_datepicker_start_date => Format MUST match "Date format"
 instructions_glz_cf_custom_scripts_path => Path from your web root folder
+instructions_glz_cf_permit_full_deinstall => WARNING: "Yes" = Deinstalling deletes All USER INPUT in custom fields

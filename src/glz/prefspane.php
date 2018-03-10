@@ -32,6 +32,7 @@ function glz_cf_prefs_install()
         'js_asset_url'           => array('', 'glz_url_input', $base_url.'plugins/glz_custom_fields'),
         'custom_scripts_path'    => array('', 'glz_url_input', $base_path.'/plugins/glz_custom_fields'),
         'use_sortable'           => array('', 'yesnoradio', 1),
+        'permit_full_deinstall'  => array('', 'yesnoradio', 0),
         'datepicker_url'         => array('glz_cf_datepicker', 'glz_url_input', $base_url.'plugins/glz_custom_fields/jquery.datePicker'),
         'datepicker_format'      => array('glz_cf_datepicker', 'glz_prefs_datepicker_format', 'dd/mm/yyyy'),
         'datepicker_first_day'   => array('glz_cf_datepicker', 'glz_prefs_datepicker_firstday', 1),
@@ -77,34 +78,8 @@ function glz_cf_prefs_install()
         'txp_prefs',
         "name = 'max_custom_fields'"
     );
-
 }
 
-/**
- * Uninstaller.
- *
- * IMPORTANT: There has been no uninstall function until to now to prevent
- * accidental data loss if uninstalling the plugin. Is there a case for it?
- *
- * This should be just as an on-demand clean-up script.
- *
- */
- // TODO: make a hidden pref to expose this function
-
-function glz_prefs_uninstall()
-{
-
-    // Delete prefs
-    safe_delete('txp_prefs', "event = 'glz_custom_f'");
-
-    // Delete 'custom_fields' table
-    safe_query(
-        'DROP TABLE IF EXISTS '.safe_pfx('custom_fields')
-    );
-
-    // TODO: Delete custom_field data from articles
-    // TODO: Delete custom_field > 10 from txp_prefs
-}
 
 /**
  * Renders a HTML choice of GLZ value ordering.

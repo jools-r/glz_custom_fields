@@ -356,6 +356,82 @@ function glz_custom_fields_install()
 }
 
 
+/**
+ * Uninstaller.
+ *
+ * IMPORTANT: There has been no uninstall function until to now to prevent
+ * accidental loss of user input if uninstalling the plugin.
+ *
+ * This is intended just as an on-demand clean-up script and is hidden
+ * behind a 'safety catch'. In the 'txp_prefs' table, set the column 'type'
+ * of 'glz_cf_permit_full_deinstall' to '1' to reveal the switch in the
+ * preferences panel. The installer sets this to hidden from the beginning.
+ *
+ */
+
+function glz_custom_fields_uninstall()
+{
+    // To prevent inadvertent data loss, full deinstallation is only permitted
+    // if the 'safety catch' has been disabled: set 'glz_cf_permit_full_deinstall' = 1
+    if ($prefs['glz_cf_permit_full_deinstall'] == '1') {
+
+        // Delete 'custom_fields' table
+        safe_query(
+            'DROP TABLE IF EXISTS '.safe_pfx('custom_fields')
+        );
+
+        // Get all custom fields > 10
+        $additional_cfs = safe_rows('txp_prefs', "name", "name LIKE 'custom\___\_set' AND name <> 'custom_10_set'");
+
+        $drop_query ='';
+        foreach ($additional_cfs as $name) {
+            // Delete prefs labels for custom fields > 10
+            safe_delete('txp_lang', "name = '".$name."'");
+            // Build DROP query for 'textpattern' table
+            $drop_query .= 'DROP '.str_replace("_set", "", $name).', ';
+        }
+        // Trim final comma and space from drop statement
+        $drop_query = rtrim($drop_query, ', ');
+        // Drop used 'custom_X' > 10 columns from 'textpattern' table
+        safe_alter('textpattern', $drop_query);
+
+        // Delete all saved language strings
+        safe_delete('txp_lang', "event = 'glz_cf' OR name LIKE 'instructions\_glz\_cf%'");
+
+        // Delete custom field entries > 10 from 'txp_prefs' (custom_ __ _set = must have two chars in the middle)
+        safe_delete('txp_prefs', "name LIKE 'custom\___\_set' AND name <> 'custom_10_set' AND event = 'custom'");
+
+        // Delete plugin prefs
+        safe_delete('txp_prefs', "event LIKE 'glz\_custom\_f%'");
+
+        // Reset all remaining custom fields (1-10) back to original type 'custom_set'
+        safe_update('txp_prefs', "html = 'custom_set'", "event = 'custom'");
+
+        // The following also clears the built-in custom fields 1-10
+        // For the "full whammy" uncomment these too.
+    /*
+        // Zero custom field user input in the 'textpattern' table
+        safe_update('textpattern', "custom_1 = NULL, custom_2 = NULL, custom_3 = NULL, custom_4 = NULL, custom_5 = NULL, custom_6 = NULL, custom_7 = NULL, custom_8 = NULL, custom_9 = NULL, custom_10 = NULL", "1 = 1");
+        // Erase names from 'txp_prefs' tables
+        safe_update('txp_prefs', "val = NULL", "name LIKE 'custom\_%%\_set'");
+    */
+        $message = "‘glz_custom_fields’ has been deinstalled. ALL CUSTOM FIELD USER DATA has also been removed.";
+
+    } else {
+
+        // Regular deinstall
+
+        // Should we restore the 'html' type for custom fields 1-10 to 'text_input'?
+        // Yes: it prevents errors occurring (or is there an automatic fallback)
+        // No:  switching them back loses their settings. The data is kept but the
+        //      custom_field type is then lost in the case of a reinstallation.
+
+        $message = "‘glz_custom_fields’ has been deinstalled. Your custom field data has NOT been deleted and will reappear if you reinstall ‘glz_custom_fields’.";
+    }
+
+}
+
+
 // -------------------------------------------------------------
 // Re-route 'Options' link on Plugins panel to Admin › Preferences
 function glz_custom_fields_prefs_redirect()

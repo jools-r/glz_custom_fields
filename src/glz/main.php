@@ -42,7 +42,9 @@ if(@txpinterface == 'admin') {
 
     // Install plugin
     add_privs('glz_custom_fields_install', '1');
+    add_privs('glz_custom_fields_uninstall', '1');
     register_callback('glz_custom_fields_install', 'plugin_lifecycle.glz_custom_fields', 'installed');
+    register_callback('glz_custom_fields_uninstall', 'plugin_lifecycle.glz_custom_fields', 'deleted');
 
     // Restrict css/js + pre-save to relevant admin pages only
     if (in_array($event, $glz_admin_events)) {
