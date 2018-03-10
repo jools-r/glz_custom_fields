@@ -1,0 +1,16 @@
+h3(#changelog). Changelog
+
+v2.0 – March 2018
+
+* Refactored for Textpattern v4.7
+* Plugin preferences now handled in Admin › Preferences
+* Plugin preferences not overwritten during installation
+* Support for custom field title labels and supporting instruction hints (also per UI-language)
+* Custom field titles are accessible in page templates and forms by adding the attribute @title="1"@ to "txp:custom_field":https://docs.textpattern.io/tags/custom_field.
+* Change order of custom fields per drag and drop (deactivatable via a hidden pref)
+* Translatable: UI now uses textpacks throughout, custom field labels also translatable by switching the UI language
+* Under the hood: makes use of Textpattern’s in-built functions for UI creation, error messages/notices, language strings, field labels
+* New prefs for js/css URL location including support for relative URLs: relocate your js/css files where you want them
+* Compatibility with multi-site Textpattern installations
+* Updated + minified js/css and datepicker/timepicker labels
+* Adding/deleting/changing a custom field updates site-wide last modified date (for cache renewal)

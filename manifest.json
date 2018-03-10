@@ -10,7 +10,9 @@
     "order"         : 9,
     "flags"         : 3,
     "help"          : {"file" : [
-                          "./docs/help.textile"
+                          "./docs/help.textile",
+                          "./docs/changelog.textile",
+                          "./docs/credits.textile"
                       ]},
     "code"          : {"file" : [
                           "./src/glz/db.php",

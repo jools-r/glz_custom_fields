@@ -28,6 +28,10 @@ Follow the same process as installation. The installer should detect and convert
 
 _Note: You may relocate the css and js files to locations of your own choosing. Change the paths in the plugin preferences panel accordingly. Only the contents of the jquery.datePicker or jquery.timePicker folders must stay together. You may rename the folders but not the filenames._
 
+h3(#deinstallation). Deinstallation
+
+Deinstalling the plugin does not remove the custom fields settings or the data input into the articles. This is intentional to avoid inadvertent data loss. The fields cannot be edited in the meantime, but reinstalling the plugin restores access to them. To remove data input in the custom fields, delete / reset the custom fields on the “Extensions › Custom Fields” page first before deinstalling the plugin.
+
 h2(#special-custom-fields). Special custom fields
 
 There are three special custom field types:
@@ -80,32 +84,3 @@ h2(#upgrading). Version compatibility
 This version is compatible with Version 4.7+ of Textpattern. It uses functionality not available in earlier versions of Textpattern and adds new functionality not previously available in earlier versions of glz_custom_fields. It is therefore not for use with earlier versions of Textpattern.
 
 On installation, the plugin upgrades your settings and preferences to avoid potential naming collisions. Downgrading to an earlier version of Textpattern is therefore inadvisable and requires manually renaming preference names to their old naming scheme in the database.
-
-h3(#changelog). Changelog
-
-v2.0 – March 2018
-
-* Refactored for Textpattern v4.7
-* Installation should not overwrite existing settings
-* Plugin preferences now handled in Admin › Preferences
-* Custom field title labels and supporting instruction hints (also per UI-language)
-* Custom field titles are accessible in page templates and forms by adding the attribute @title="1"@ to "txp:custom_field":https://docs.textpattern.io/tags/custom_field.
-* js/css URL location pref and support for relative URLs: relocate your js/css files where you want them (e.g. for multisite installations)
-* Now makes use of Textpattern’s in-built functions for UI creation, error messages/notices, language strings, field labels
-* Translatable: now uses textpacks
-* Updated + minified js/css and datepicker/timepicker labels
-* Changes to custom fields updates site-wide last modified date (for cache renewal)
-
-
-h2(#support). Support & credits
-
-Comments, bug reports and pull requests are welcome:
-
-# Report an issue on "GitHub":http://github.com/jools-r/glz_custom_fields/issues.
-# Help is also always available in the Textpattern forum: "glz_custom_fields thread":http://forum.textpattern.io/viewtopic.php?id=23996.
-
-h3(#credits). Credits
-
-This plugin was originally written by "Gerhard Lazu":https://github.com/gerhard and dates back to "2007":https://forum.textpattern.io/viewtopic.php?pid=157983#p157983. It has been repaired, expanded and adopted by numerous forum members over the years (credited in the code), most recently by "Bloke":https://github.com/Bloke/glz_custom_fields. This significantly refactored version adds compatibility with Textpattern v4.7 and is currently looked after by "jools-r":https://github.com/jools-r/glz_custom_fields. Its concept and core workings are still those of Gerhard's original plugin. The Textpattern core will ultimately support unlimited custom fields, making this plugin obsolete at some point in the future.
-
-This plugin uses *jQuery DatePicker* ("homepage":http://2008.kelvinluck.com/assets/jquery/datePicker/v2/demo/ / "github":https://github.com/vitch/jQuery-datepicker) by Kelvin Luck and *jQuery Timepicker* ("github":https://github.com/perifer/timePicker) by Anders Fajerson.
