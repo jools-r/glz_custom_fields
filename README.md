@@ -22,21 +22,13 @@ This plugin sits under the **Extensions** tab in the back-end and gives your cus
 
 **Multi-site installations:** copy the `plugins` folder including its contents to the `admin` folder of your multi-site. If necessary, adjust the custom_fields prefs to match your admin-side path and subdomain URL.
 
-### Changes
+### Changelog
 
-- 4.7 compatibility
-- Custom field label titles and field label instructions text
-- Translatable: now uses Textpattern’s gTxt function and textpacks
-- Plugin preferences now handled in Admin › Preferences
-- Separate list and edit panels in line with other Textpattern panes (better for longer lists)
-- UI now built with Textpattern's in-built functions (aligns with admin theme styling)
-- Error messaging now handled by Textpattern's own error messaging system
-- Installing should not overwrite existing settings (but will migrate to 'namespaced' prefs names)
-- New js/css URL location prefs: locate your files where you want them in your project (also for multisite installations). Relative URLs also possible
-- Better prefs consistency checking
-- Updated + minified js/css and only loaded where needed
-- Datepicker/timepicker libraries updated (deprecated $.browser detection removed to prevent misleading error message on write tab)
-- Refactored source files: edit with [rah_blobin](https://github.com/jools-r/rah_blobin) and compile with [rah_mass_compiler](https://github.com/gocom/MassPlugCompiler)
+See "changelog":https://github.com/jools-r/glz_custom_fields/blob/master/docs/changelog.textile.
+
+### Credits
+
+See "credits":https://github.com/jools-r/glz_custom_fields/blob/master/docs/credits.textile.
 
 
 ### License
