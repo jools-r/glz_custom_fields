@@ -238,6 +238,8 @@ function glz_custom_fields_install()
     // to 'text_input' to avoid confusion with glz set_types()
     safe_update('txp_prefs', "html = 'text_input'", "event = 'custom' AND html = 'custom_set'");
 
+/*
+    // LEGACY of the old '<txp:glz_custom_fields_search_form />' tag?
     // Create a search section if not already available (for searching by custom fields)
     if (empty(safe_row("name", 'txp_section', "name='search'"))) {
 
@@ -259,7 +261,7 @@ function glz_custom_fields_install()
 
         $msg = gTxt('glz_cf_search_section_created');
     }
-
+*/
     // Create 'custom_fields' table if it does not already exist
     safe_create(
         'custom_fields',
