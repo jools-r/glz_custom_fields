@@ -249,7 +249,7 @@ function glz_url_input($name, $val)
     // Output regular-width text_input for url
     $out  = fInput('text', $name, $val, '', '', '', INPUT_REGULAR, '', $name);
     // Output error notice if one exists
-    $out .= ($url_error) ? '<br><span class="error"><span class="ui-icon ui-icon-alert"></span> '.$url_error.'</span>' : '';
+    $out .= (!empty($url_error)) ? '<br><span class="error"><span class="ui-icon ui-icon-alert"></span> '.$url_error.'</span>' : '';
 
     return $out;
 }
