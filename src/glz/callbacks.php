@@ -520,7 +520,12 @@ $(function() {
         return a_sort > b_sort ? 1 : -1;
     }).parent().sortable({
         items: 'tr',
-        helper: 'clone',
+        helper: function(e, ui) {
+            ui.children().each(function() {
+                $(this).width($(this).width());
+            });
+            return ui;
+        },
         axis: 'y',
         handle: 'td:first-child',
         start: function(event, ui) {
