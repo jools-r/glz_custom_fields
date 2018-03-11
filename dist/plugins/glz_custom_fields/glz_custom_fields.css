@@ -5,7 +5,7 @@
 Title : glz_custom_fields stylesheet
 Author : Gerhard Lazu + many contributors
 
-Last modified: 10 March 2018
+Last modified: 11 March 2018
 
 - - - - - - - - - - - - - - - - - - - - - */
 
@@ -23,6 +23,8 @@ Last modified: 10 March 2018
 #glz_custom_fields_container .txp-list-col-position {
   text-align: center;
   width: 4%;
+[dir="rtl"] .glz-cf-setup-switch {
+    float: left;
 }
 #glz_custom_fields_container .txp-list-col-name {
   width: 25%;
