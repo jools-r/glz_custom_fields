@@ -15,22 +15,17 @@ Last modified: 11 March 2018
 .glz-cf-setup-switch {
     float: right;
 }
-/* table column widths */
-#glz_custom_fields_container .txp-list-col-id {
-  text-align: center;
-  width: 4%;
-}
-#glz_custom_fields_container .txp-list-col-position {
-  text-align: center;
-  width: 4%;
 [dir="rtl"] .glz-cf-setup-switch {
     float: left;
 }
-#glz_custom_fields_container .txp-list-col-name {
-  width: 25%;
+/* define only first and last (narrow) column widths */
+#glz_custom_fields_container .txp-list-col-id {
+    width: 3em;
+    text-align: center;
 }
-#glz_custom_fields_container .txp-list-col-title {
-  width: 35%;
+#glz_custom_fields_container .txp-list-col-position,
+#glz_custom_fields_container .txp-list-col-options {
+    width: 5em;
 }
 #glz_custom_fields_container .txp-list-col-title .cf-instructions.ui-icon {
     width: 2em;
@@ -45,12 +40,8 @@ Last modified: 11 March 2018
 #glz_custom_fields_container .txp-list-col-title.disabled .cf-instructions {
     opacity: 1 !important;
 }
-#glz_custom_fields_container .txp-list-col-type {
-  width: 20%;
-}
 #glz_custom_fields_container .txp-list-col-options {
-  width: 8%;
-  text-align: center;
+    text-align: center;
 }
 #glz_custom_fields_container .txp-list-col-options .ui-icon {
     /* larger click target */
@@ -68,26 +59,23 @@ Last modified: 11 March 2018
 
 #glz_custom_fields_container table.sortable {
     table-layout: fixed;
-    overflow: hidden;
 }
-#glz_custom_fields_container .ui-sortable-helper,
-#glz_custom_fields_container .ui-sortable-placeholder {
-    display: table;
+#glz_custom_fields_container table.sortable .txp-list-col-sort {
+    width: 3em;
+    text-align: center;
 }
 #glz_custom_fields_container table.sortable .ui-sortable-handle {
     cursor: row-resize;
     text-align: center;
     opacity: 0.66;
-    width: 4%;
 }
 #glz_custom_fields_container table.sortable .txp-list-col-position {
     display: none;
-    width: 0;
 }
-#glz_custom_fields_container table.sortable .txp-list-col-id {
-    width: 4%;
+#glz_custom_fields_container .ui-sortable-helper,
+#glz_custom_fields_container .ui-sortable-placeholder {
+    display: table;
 }
-
 /* hide language string spans to avoid FOUT */
 #add_edit_custom_field .hidden {
   display: none;
@@ -104,7 +92,6 @@ Last modified: 11 March 2018
     max-width: 50%;
     padding-left: 50%;
 }
-
 @media screen and (max-width: 47em) {
     .txp-prefs-group .txp-form-field .txp-form-field-instructions,
     .txp-edit .txp-form-field .txp-form-field-instructions,

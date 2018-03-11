@@ -507,7 +507,7 @@ function glz_cf_positionsort($js)
         echo 'var position = ', json_encode($position), ';'."\n";
         echo <<<EOB
 $(function() {
-    $('#glz_custom_fields_container thead tr').prepend('<th style="width: 5%;">$ui_sort</th>').find('th').each(function() {
+    $('#glz_custom_fields_container thead tr').prepend('<th class="txp-list-col-sort">$ui_sort</th>').find('th').each(function() {
         var th = $(this);
         th.html(th.text());
     });
