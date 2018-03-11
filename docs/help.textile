@@ -102,7 +102,9 @@ v2.0 – March 2018
 * Updated + minified js/css and datepicker/timepicker labels
 * Adding/deleting/changing a custom field updates site-wide last modified date (for cache renewal)
 
-h2(#credits). Credits
+h2(#credits). Help and Credits
+
+Help is always available from the friendly people at the "Textpattern forum":https://forum.textpattern.io/viewtopic.php?id=48511.
 
 This plugin was originally written by "Gerhard Lazu":https://github.com/gerhard and dates back to "2007":https://forum.textpattern.io/viewtopic.php?pid=157983#p157983. It has been repaired, expanded and adopted by numerous forum members over the years (credited in the code), most recently by "Bloke":https://github.com/Bloke/glz_custom_fields. This significantly refactored version adds compatibility with Textpattern v4.7 and is currently looked after by "jools-r":https://github.com/jools-r/glz_custom_fields. Its concept and core workings are still those of Gerhard's original plugin. The Textpattern core will ultimately support unlimited custom fields, making this plugin obsolete at some point in the future.
 
