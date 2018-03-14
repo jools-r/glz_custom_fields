@@ -5,7 +5,7 @@
 Title : glz_custom_fields stylesheet
 Author : Gerhard Lazu + many contributors
 
-Last modified: 11 March 2018
+Last modified: 15 March 2018
 
 - - - - - - - - - - - - - - - - - - - - - */
 
@@ -85,19 +85,12 @@ Last modified: 11 March 2018
 /* CUSTOM FIELDS EDIT PANEL + PREFS PANE
 -------------------------------------------------------------- */
 
-/* Form field instructions styling */
-.txp-prefs-group .txp-form-field .txp-form-field-instructions,
-.txp-edit .txp-form-field .txp-form-field-instructions,
-#prefs_group_glz_custom_f.txp-tabs-vertical-group .txp-form-field-instructions {
-    max-width: 50%;
-    padding-left: 50%;
-}
-@media screen and (max-width: 47em) {
-    .txp-prefs-group .txp-form-field .txp-form-field-instructions,
+/* Instructions text styling */
+@media screen and (min-width: 47em) {
     .txp-edit .txp-form-field .txp-form-field-instructions,
-    #prefs_group_glz_custom_f.txp-tabs-vertical-group .txp-form-field-instructions {
-        max-width: none;
-        padding-left: 0em;
+    .txp-tabs-vertical-group .txp-form-field-instructions {
+        max-width: 50%; /* prevent horizontal scrollbars */
+        padding-left: 50%; /* range right beneath fields */
     }
 }
 
