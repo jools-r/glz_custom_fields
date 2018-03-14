@@ -521,6 +521,7 @@ $(function() {
     }).parent().sortable({
         items: 'tr',
         helper: function(e, ui) {
+            $('.ui-sortable').parent().addClass('fixed-width');
             ui.children().each(function() {
                 $(this).width($(this).width());
             });
@@ -531,6 +532,7 @@ $(function() {
         start: function(event, ui) {
         },
         stop: function() {
+            $('.ui-sortable').parent().removeClass('fixed-width');
             var position = {};
             $(this).find('tr').each(function() {
                 var tr = $(this);
