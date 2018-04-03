@@ -40,8 +40,6 @@ if(@txpinterface == 'admin') {
     register_callback('glz_custom_fields_prefs_redirect', 'plugin_prefs.glz_custom_fields');
 
     // Install plugin
-    add_privs('glz_custom_fields_install', '1');
-    add_privs('glz_custom_fields_uninstall', '1');
     register_callback('glz_custom_fields_install', 'plugin_lifecycle.glz_custom_fields', 'installed');
     register_callback('glz_custom_fields_uninstall', 'plugin_lifecycle.glz_custom_fields', 'deleted');
 
