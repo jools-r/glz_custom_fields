@@ -222,6 +222,9 @@ function glz_url_input($name, $val)
     global $use_minified;
     $min = ($use_minified === true) ? '.min' : '';
 
+    // Output regular-width text_input for url
+    $out  = fInput('text', $name, $val, '', '', '', INPUT_REGULAR, '', $name);
+
     // Array of possible expected url inputs and corresponding files and error-msg-stubs
     // 'pref_name' => array('/targetfilename.ext', 'gTxt_folder (inserted into error msg)')
     // paths do not require a target filename, urls do.
@@ -246,8 +249,6 @@ function glz_url_input($name, $val)
         $url_error = (@fopen($glz_cf_url_to_test, "r")) ? '' : gTxt('glz_cf_folder_error', array('{folder}' => gTxt($glz_cf_url_input_error_stub) ));
     }
 
-    // Output regular-width text_input for url
-    $out  = fInput('text', $name, $val, '', '', '', INPUT_REGULAR, '', $name);
     // Output error notice if one exists
     $out .= (!empty($url_error)) ? '<br><span class="error"><span class="ui-icon ui-icon-alert"></span> '.$url_error.'</span>' : '';
 
