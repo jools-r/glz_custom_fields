@@ -151,7 +151,7 @@ function glz_custom_fields_inject_css_js()
             foreach (array('date'.$min.'.js', 'datePicker'.$min.'.js') as $file) {
                 $js .= '<script src="'.glz_relative_url($prefs['glz_cf_datepicker_url'])."/".$file.'"></script>'.n;
             }
-            $js_datepicker_msg = '<span class="messageflash error" role="alert" aria-live="assertive"><span class="ui-icon ui-icon-alert"></span> <a href="'.ahu.'index.php?event=prefs#prefs_group_glz_custom_f">'.gTxt('glz_cf_public_error_datepicker').'</a> <a class="close" role="button" title="Close" href="#close"><span class="ui-icon ui-icon-close">Close</span></a></span>';
+            $js_datepicker_msg = '<span class="messageflash error" role="alert" aria-live="assertive"><span class="ui-icon ui-icon-alert"></span> <a href="'.ahu.'index.php?event=prefs&check_url=1#prefs_group_glz_custom_f">'.gTxt('glz_cf_public_error_datepicker').'</a> <a class="close" role="button" title="Close" href="#close"><span class="ui-icon ui-icon-close">Close</span></a></span>';
             $js .= <<<JS
 <script>
 $(document).ready(function () {
@@ -181,7 +181,7 @@ JS;
         if ($time_picker) {
             $css .= '<link rel="stylesheet" type="text/css" media="all" href="'.glz_relative_url($prefs['glz_cf_timepicker_url']).'/timePicker'.$min.'.css" />'.n;
             $js  .= '<script src="'.glz_relative_url($prefs['glz_cf_timepicker_url']).'/timePicker'.$min.'.js"></script>'.n;
-            $js_timepicker_msg = '<span class="messageflash error" role="alert" aria-live="assertive"><span class="ui-icon ui-icon-alert"></span> <a href="'.ahu.'index.php?event=prefs#prefs_group_glz_custom_f">'.gTxt('glz_cf_public_error_timepicker').'</a> <a class="close" role="button" title="Close" href="#close"><span class="ui-icon ui-icon-close">Close</span></a></span>';
+            $js_timepicker_msg = '<span class="messageflash error" role="alert" aria-live="assertive"><span class="ui-icon ui-icon-alert"></span> <a href="'.ahu.'index.php?event=prefs&check_url=1#prefs_group_glz_custom_f">'.gTxt('glz_cf_public_error_timepicker').'</a> <a class="close" role="button" title="Close" href="#close"><span class="ui-icon ui-icon-close">Close</span></a></span>';
             $js  .= <<<JS
 <script>
 $(document).ready(function () {
