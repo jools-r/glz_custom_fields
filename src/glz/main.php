@@ -47,7 +47,6 @@ if(@txpinterface == 'admin') {
     if (in_array($event, $glz_admin_events)) {
 
         // Add CSS & JS to admin head area
-        add_privs('glz_custom_fields_inject_css_js', '1,2,3,4,5,6');
         register_callback('glz_custom_fields_inject_css_js', 'admin_side', 'head_end');
 
         // Use jqueryui.sortable to set the custom field position value
@@ -58,7 +57,6 @@ if(@txpinterface == 'admin') {
 
         // Write tab: multiple value array -> string conversion on save/create
         if (($step === 'edit') || ($step === 'create')) {
-            add_privs('glz_custom_fields_before_save', '1,2,3,4,5,6');
             register_callback('glz_custom_fields_before_save', 'article', '', 1);
         }
     }
@@ -69,7 +67,6 @@ if(@txpinterface == 'admin') {
     register_callback('glz_cf_dispatcher', 'glz_custom_fields');
 
     // Write tab: replace regular custom fields with glz custom fields
-    add_privs('glz_custom_fields_replace', '1,2,3,4,5,6');
     // -> custom fields
     register_callback('glz_custom_fields_replace', 'article_ui', 'custom_fields');
     // -> textareas
