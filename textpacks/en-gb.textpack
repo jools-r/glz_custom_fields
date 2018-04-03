@@ -1,4 +1,5 @@
 #@glz_cf
+#@language en, en-gb, en-us, en-ca
 glz_cf_tab_name => Custom Fields
 glz_cf_title => Custom Field
 glz_cf_no_name => A <strong>custom field</strong> must have a name
@@ -103,7 +104,7 @@ glz_cf_timepicker_step => Step
 glz_cf_timepicker_show_24 => Time format
 glz_cf_prefs_24_hours => 24 hours
 glz_cf_prefs_12_hours => 12 hours
-glz_cf_sort_success => New custom field order saved OK
+glz_cf_sort_success => Custom field order changed
 glz_cf_sort_error => Custom field order save failed
 #@prefs
 custom_x_set => Custom field {number} name
