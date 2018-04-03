@@ -63,7 +63,7 @@ glz_cf_edit_position => Position:
 glz_cf_edit_value => Value(s):
 glz_cf_confirm_reset => This will RESET ALL data for custom field {custom}. Are you sure?
 glz_cf_confirm_delete => This will DELETE ALL data for custom field {custom}. Are you sure?
-glz_custom_f => Custom fields preferences
+glz_custom_f => Custom fields preferences <a class="jquery-ui-button ui-button ui-corner-all ui-widget check-paths" href="?event=prefs&check_paths=1">Check paths</a>
 glz_cf_values_ordering => Order for custom field values
 glz_cf_prefs_value_asc => Ascending
 glz_cf_prefs_value_desc => Descending
@@ -77,6 +77,7 @@ glz_cf_permit_full_deinstall => Delete all data when deinstalling
 glz_cf_datepicker_folder => Date picker folder
 glz_cf_timepicker_folder => Time picker folder
 glz_cf_folder_error => {folder} does not exist, please create it.
+glz_cf_folder_success => URL / path is correct
 glz_cf_css_asset_url => CSS folder URL
 glz_cf_js_asset_url => JS folder URL
 glz_cf_custom_scripts_path => Custom scripts path

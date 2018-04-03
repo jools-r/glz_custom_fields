@@ -23,7 +23,6 @@ function glz_cf_prefs_install()
     $base_url = (empty($txpcfg['admin_url'])) ? hu : ahu;
     $base_path = (empty($txpcfg['admin_url'])) ? $prefs['path_to_site'] : str_replace("public", "admin", $prefs['path_to_site']);
 
-
     // array: old_prefname => array('pref.subevent', 'html', 'default-value')
     $plugin_prefs = array(
         'values_ordering'        => array('', 'glz_prefs_orderby', 'custom'),
@@ -221,6 +220,7 @@ function glz_url_input($name, $val)
 {
     global $use_minified;
     $min = ($use_minified === true) ? '.min' : '';
+    $check_paths = (gps('check_paths') == "1") ? true : false;
 
     // Output regular-width text_input for url
     $out  = fInput('text', $name, $val, '', '', '', INPUT_REGULAR, '', $name);
@@ -241,16 +241,18 @@ function glz_url_input($name, $val)
     $glz_cf_url_input_error_stub = $glz_cf_url_inputs[$name][1];
 
     // See if url / path is readable. If not, produce error message
-    if ($glz_cf_url_to_test) {
+    if ($glz_cf_url_to_test && $check_paths == true) {
         // permit relative URLs but conduct url test with hostname
         if (strstr($name, 'url')) {
             $glz_cf_url_to_test = glz_relative_url($glz_cf_url_to_test, $addhost = true);
         }
         $url_error = (@fopen($glz_cf_url_to_test, "r")) ? '' : gTxt('glz_cf_folder_error', array('{folder}' => gTxt($glz_cf_url_input_error_stub) ));
-    }
 
-    // Output error notice if one exists
-    $out .= (!empty($url_error)) ? '<br><span class="error"><span class="ui-icon ui-icon-alert"></span> '.$url_error.'</span>' : '';
+        // Output error notice if one exists, else success notice
+        $out .= (!empty($url_error)) ?
+            '<br><span class="error"><span class="ui-icon ui-icon-alert"></span> '.$url_error.'</span>' :
+            '<br><span class="success"><span class="ui-icon ui-icon-check"></span> '.gTxt('glz_cf_folder_success').'</span>';
+    }
 
     return $out;
 }

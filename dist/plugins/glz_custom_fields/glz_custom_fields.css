@@ -5,7 +5,7 @@
 Title : glz_custom_fields stylesheet
 Author : Gerhard Lazu + many contributors
 
-Last modified: 15 March 2018
+Last modified: 3 April 2018
 
 - - - - - - - - - - - - - - - - - - - - - */
 
@@ -94,7 +94,17 @@ Last modified: 15 March 2018
         padding-left: 50%; /* range right beneath fields */
     }
 }
-
+/* "Check paths" button */
+.ui-tabs-nav .ui-button {
+    display: none; /* hide in panel chooser */
+}
+.ui-button.check-paths {
+    font-weight: normal;
+    margin-left: 2em;
+    font-size: 11px;
+    padding-top: .125em;
+    vertical-align: text-top;
+}
 
 /* ARTICLE / WRITE PANE
 -------------------------------------------------------------- */
