@@ -160,8 +160,8 @@ function glz_prefs_datepicker_firstday($name, $val)
 function glz_prefs_timepicker_format($name, $val)
 {
     $vals = array(
-        'true'        => '24 hours',
-        'false'       => '12 hours'
+        'true'        => gTxt('glz_cf_prefs_24_hours'),
+        'false'       => gTxt('glz_cf_prefs_12_hours')
     );
     return selectInput($name, $vals, $val, '', '', $name);
 }
