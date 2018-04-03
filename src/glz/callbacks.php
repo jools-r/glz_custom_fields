@@ -440,7 +440,6 @@ function glz_custom_fields_uninstall()
 // Re-route 'Options' link on Plugins panel to Admin › Preferences
 function glz_custom_fields_prefs_redirect()
 {
-    require_privs('plugin_prefs.glz_custom_fields');
     header("Location: index.php?event=prefs#prefs_group_glz_custom_f");
 }
 
