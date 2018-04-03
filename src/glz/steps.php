@@ -86,7 +86,7 @@ function glz_cf_list($msg='', $debug = false)
     // Table start
     $out[] =
         tag_start('div', array('class' => 'txp-listtables')).
-        n.tag_start('table', array('class' => 'txp-list')).
+        n.tag_start('table', array('class' => 'txp-list--no-options')).
         n.tag_start('thead').
             tr($head_row).
         n.tag_end('thead').
