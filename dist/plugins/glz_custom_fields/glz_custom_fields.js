@@ -191,7 +191,7 @@ textpattern.Relay.register('txpAsyncForm.success', glzResetRadio);
     // Custom field type dropdown: show/hide 'see settings' messages based on type
     function glzToggleTypeLink() {
         if ( $.inArray($("select#custom_set_type :selected").attr("value"), [].concat(GLZ_CF.special_custom_types, ["multi-select", "custom-script"])) != -1 ) {
-            $glz_select_instructions.html("<a href=\"http://"+window.location.host+window.location.pathname+"?event=prefs#prefs_group_glz_custom_f\">" + GLZ_CF.messages['configure'] + "</a>");
+            $glz_select_instructions.html("<a href=\"//"+window.location.host+window.location.pathname+"?event=prefs#prefs_group_glz_custom_f\">" + GLZ_CF.messages['configure'] + "</a>");
         } else {
             $glz_select_instructions.html('');
         }
