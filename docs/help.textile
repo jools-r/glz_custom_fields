@@ -20,7 +20,7 @@ h2(#installation). Installation
 # Open the plugin text file, copy its entire contents to the clipboard and paste into the 'Install plugin' textarea of the "Plugins panel":https://docs.textpattern.io/administration/plugins-panel#uploading-plugins. Click 'Upload' and then 'Install'.
 # Upload the "plugins/glz_custom_fields":https://github.com/jools-r/glz_custom_fields/tree/master/dist/ folder to your Textpattern installation directory.
 # Activate the plugin.
-# Verify that the corresponding paths in the plugin preferences are correct. The plugin will indicate if there are potential problems.
+# Switch to 'Admin › Preferences › Custom fields preferences' and click 'Check paths' at the top right to verify that the corresponding paths in the plugin preferences are correct. The plugin will indicate if there are potential problems. Correct as necessary to match your server setup.
 
 h3(#upgrading). Upgrading
 
@@ -104,7 +104,28 @@ v2.0 – March 2018
 
 h2(#credits). Help and Credits
 
+h3. Troubleshooting
+
+Things to check if the plugin does not seem to work as described:
+
+* Have you copied the "plugins folder":https://github.com/jools-r/glz_custom_fields/tree/master/dist to your textpattern installation? Without the corresponding css and js files, the plugin cannot work.
+* Check you have copied _all_ the necessary files. If you have updated from an earlier version, make sure you have the most recent versions. The plugin repository has a "plugins.glz_custom_fields.zip file":https://github.com/jools-r/glz_custom_fields/tree/master/dist with all the necessary files included.
+* Switch to 'Admin › Preferences › Custom fields preferences' and click 'Check paths' at the top right to verify that the corresponding paths in the plugin preferences are correct. The plugin will indicate if there are potential problems. Correct as necessary to match your server setup.
+* If you are using your own custom locations, check the paths are set correctly. Note that the css and js files of the Datepicker should be kept in the same folder. The same applies for the TimePicker.
+* If you are on a windows server avoid a mix of backslashes and forward slashes in your paths. Use just forward slashes and php will understand and convert them automatically.
+* If you see a message in the Write pane indicating a problem with the DatePicker or TimePicker, click the error message to check the paths in the settings pane. See above.
+* If you see a message in the Write pane that a custom script could not be found or could not be read:
+** Check the custom scripts path is correct as described above. Use the 'Check paths' link at the top right to verify the path can be found.
+** Check you have a .php file named in the folder you specified above. Check that the file has read permissions ("0644":http://www.filepermissions.com/file-permission/0644). Write permissions are _not_ necessary.
+** Check that the name of the .php file matches the name you have specified in the corresponding custom field.
+
+h3. Help
+
 Help is always available from the friendly people at the "Textpattern forum":https://forum.textpattern.io/viewtopic.php?id=48511.
+
+Improvements and problem notifications are always welcome. Please "raise an issue":https://github.com/jools-r/glz_custom_fields/issues or "submit a pull request":https://github.com/jools-r/glz_custom_fields/pulls on GitHub.
+
+h3. Credits
 
 This plugin was originally written by "Gerhard Lazu":https://github.com/gerhard and dates back to "2007":https://forum.textpattern.io/viewtopic.php?pid=157983#p157983. It has been repaired, expanded and adopted by numerous forum members over the years (credited in the code), most recently by "Bloke":https://github.com/Bloke/glz_custom_fields. This significantly refactored version adds compatibility with Textpattern v4.7 and is currently looked after by "jools-r":https://github.com/jools-r/glz_custom_fields. Its concept and core workings are still those of Gerhard's original plugin. The Textpattern core will ultimately support unlimited custom fields, making this plugin obsolete at some point in the future.
 
