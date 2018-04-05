@@ -95,15 +95,14 @@ Last modified: 3 April 2018
     }
 }
 /* "Check paths" button */
-.ui-tabs-nav .ui-button {
-    display: none; /* hide in panel chooser */
+.check-path {
+  float: right;
+  font-size: .7em; /* match normal font-size */
+  font-weight: 400;
 }
-.ui-button.check-paths {
-    font-weight: normal;
-    margin-left: 2em;
-    font-size: 11px;
-    padding-top: .125em;
-    vertical-align: text-top;
+[dir=rtl] .check-path { float: left; }
+.ui-tabs-nav .check-path {
+    display: none; /* hide in panel chooser */
 }
 
 /* ARTICLE / WRITE PANE

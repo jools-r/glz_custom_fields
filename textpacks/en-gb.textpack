@@ -63,7 +63,7 @@ glz_cf_edit_position => Position:
 glz_cf_edit_value => Value(s):
 glz_cf_confirm_reset => This will RESET ALL data for custom field {custom}. Are you sure?
 glz_cf_confirm_delete => This will DELETE ALL data for custom field {custom}. Are you sure?
-glz_custom_f => Custom fields preferences <a class="jquery-ui-button ui-button ui-corner-all ui-widget check-paths" href="?event=prefs&check_paths=1">Check paths</a>
+glz_custom_f => Custom fields preferences <a class="check-path" href="?event=prefs&check_paths=1">Check paths</a>
 glz_cf_values_ordering => Order for custom field values
 glz_cf_prefs_value_asc => Ascending
 glz_cf_prefs_value_desc => Descending
