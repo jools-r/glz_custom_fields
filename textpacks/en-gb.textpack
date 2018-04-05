@@ -11,10 +11,10 @@ glz_cf_created => <strong>{custom_set_name}</strong> was created
 glz_cf_updated => <strong>{custom_set_name}</strong> was updated
 glz_cf_exists => <strong>{custom_set_name}</strong> already exists
 glz_cf_doesnt_exist => <strong>{custom_set_name}</strong> is not set
-glz_cf_name_renamed_notice => Invalid name: <strong>{custom_name_input}</strong> has been created as <strong>{custom_name_output}</strong>. <a href="?event=plugin&step=plugin_help&name=glz_custom_fields#plugin_help_section_special_custom_fields">» See why</a>.
-glz_cf_name_invalid_chars => <strong>{custom_name_input}</strong> was updated, but consider renaming it. Names should contain <strong>only lowercase letters, numbers, underscores</strong> and <strong>no spaces</strong>. <a href="?event=plugin&step=plugin_help&name=glz_custom_fields#plugin_help_section_special_custom_fields">» See plugin help</a>.
-glz_cf_name_invalid_starts_with_number => <strong>{custom_name_input}</strong> was updated, but consider renaming it. Names should not start with a number. <a href="?event=plugin&step=plugin_help&name=glz_custom_fields#plugin_help_section_special_custom_fields">» See plugin help</a>.
-glz_cf_name_invalid_double_underscores => <strong>{custom_name_input}</strong> was updated, but consider renaming it. Names should not have double underscores. <a href="?event=plugin&step=plugin_help&name=glz_custom_fields#plugin_help_section_special_custom_fields">» See plugin help</a>.
+glz_cf_name_renamed_notice => Invalid name: <strong>{custom_name_input}</strong> has been created as <strong>{custom_name_output}</strong>. <a href="?event=plugin&step=plugin_help&name=glz_custom_fields#plugin_help_section_custom_field_names">» See why</a>.
+glz_cf_name_invalid_chars => <strong>{custom_name_input}</strong> was updated, but consider renaming it. Names should contain <strong>only lowercase letters, numbers, underscores</strong> and <strong>no spaces</strong>. <a href="?event=plugin&step=plugin_help&name=glz_custom_fields#plugin_help_section_custom_field_names">» See plugin help</a>.
+glz_cf_name_invalid_starts_with_number => <strong>{custom_name_input}</strong> was updated, but consider renaming it. Names should not start with a number. <a href="?event=plugin&step=plugin_help&name=glz_custom_fields#plugin_help_section_custom_field_names">» See plugin help</a>.
+glz_cf_name_invalid_double_underscores => <strong>{custom_name_input}</strong> was updated, but consider renaming it. Names should not have double underscores. <a href="?event=plugin&step=plugin_help&name=glz_custom_fields#plugin_help_section_custom_field_names">» See plugin help</a>.
 glz_cf_field_problems => <strong>{custom_set_name}</strong> has some problems. <a href="?event=glz_custom_fields">Go fix it</a>.
 glz_cf_types_normal => Normal
 glz_cf_types_special => Special
