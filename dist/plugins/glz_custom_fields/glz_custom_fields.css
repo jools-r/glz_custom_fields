@@ -47,6 +47,7 @@ is set at the top of the plugin. Use these settings to debug.
 /* instructions on 'undefined' entries: reverse effect of double opacity */
 #glz_custom_fields_container .txp-list-col-title.disabled .cf-instructions {
     opacity: 1 !important;
+    pointer-events: auto;
 }
 #glz_custom_fields_container .txp-list-col-options {
     text-align: center;
