@@ -38,7 +38,8 @@ if(@txpinterface == 'admin') {
     // Disable regular customs preferences (remove privs)
     $txp_permissions['prefs.custom'] = '';
 
-    // Redirect 'Options' link on plugins panel to prefrences
+    // Redirect 'Options' link on plugins panel to preferences
+    add_privs('plugin_prefs.glz_custom_fields', '1');
     register_callback('glz_custom_fields_prefs_redirect', 'plugin_prefs.glz_custom_fields');
 
     // Install plugin
