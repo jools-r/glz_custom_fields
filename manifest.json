@@ -18,6 +18,7 @@
                           "./src/glz/public-tags.php",
                           "./src/glz/prefspane.php",
                           "./src/glz/field-types.php",
+                          "./src/glz/css-js.php",
                           "./src/glz/callbacks.php",
                           "./src/glz/steps.php",
                           "./src/glz/main.php"

@@ -14,9 +14,11 @@
 #
 ##################
 
-global  $event, $step, $use_minified, $txp_permissions;
+global  $event, $step, $txp_permissions, $use_minified, $debug;
 
-// DEBUG: set to false to load regular (non-minified) js and css files
+// DEBUG: Set $debug to true to load css and js from files instead of injecting into head
+$debug = false;
+// DEBUG: Set $use_minified to false to load regular (non-minified) js and css files
 $use_minified = true;
 
 if(@txpinterface == 'admin') {

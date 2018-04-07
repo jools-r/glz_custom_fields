@@ -128,9 +128,9 @@ function glz_custom_fields_before_save()
 
 // -------------------------------------------------------------
 // Inject css & js into admin head
-function glz_custom_fields_inject_css_js()
+function glz_custom_fields_inject_css_js($debug = false)
 {
-    global $event, $prefs, $use_minified;
+    global $event, $prefs, $use_minified, $debug;
 
     $msg = array();
     $min = ($use_minified) ? '.min' : '';
@@ -139,8 +139,14 @@ function glz_custom_fields_inject_css_js()
     $date_picker = glz_check_custom_set_exists("date-picker");
     $time_picker = glz_check_custom_set_exists("time-picker");
 
-    // glz_cf stylesheets
-    $css = '<link rel="stylesheet" type="text/css" media="all" href="'.glz_relative_url($prefs['glz_cf_css_asset_url']).'/glz_custom_fields'.$min.'.css">'.n;
+    // glz_cf stylesheets (load from file when $debug is set to true)
+    if ($debug) {
+        $css = '<link rel="stylesheet" type="text/css" media="all" href="'.glz_relative_url($prefs['glz_cf_css_asset_url']).'/glz_custom_fields'.$min.'.css">'.n;
+        // Show hidden fields
+        $css .= '<style>#prefs-glz_cf_css_asset_url,#prefs-glz_cf_js_asset_url{display:flex}</style>';
+    } else {
+        $css = glz_custom_fields_head_css();
+    }
     // glz_cf javascript
     $js = '';
 
@@ -215,8 +221,14 @@ JS;
         $js .= '<script src="'.glz_relative_url($prefs['glz_cf_js_asset_url']).'/glz_jqueryui.sortable'.$min.'.js"></script>';
     }
 
+    // glz_cf javascript (load from file when $debug is set to true)
     if ($event != 'prefs') {
-        $js .= '<script src="'.glz_relative_url($prefs['glz_cf_js_asset_url']).'/glz_custom_fields'.$min.'.js"></script>';
+        if ($debug) {
+            $js .= '<script src="'.glz_relative_url($prefs['glz_cf_js_asset_url']).'/glz_custom_fields'.$min.'.js"></script>';
+        } else {
+            $js .= glz_custom_fields_head_js();
+        }
+
     }
 
     echo $js.n.t.

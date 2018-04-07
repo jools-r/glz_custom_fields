@@ -5,7 +5,15 @@
 Title : glz_custom_fields stylesheet
 Author : Gerhard Lazu + many contributors
 
-Last modified: 3 April 2018
+Last modified: 7 April 2018
+
+This file serves as a basis for glz_custom_fields_head_css()
+and is not loaded by the plugin unless:
+
+    $debug = true;
+    $use_minified = false;
+
+is set at the top of the plugin. Use these settings to debug.
 
 - - - - - - - - - - - - - - - - - - - - - */
 
@@ -104,6 +112,7 @@ Last modified: 3 April 2018
 .ui-tabs-nav .check-path {
     display: none; /* hide in panel chooser */
 }
+#prefs-glz_cf_css_asset_url, #prefs-glz_cf_js_asset_url { display: none; }
 
 /* ARTICLE / WRITE PANE
 -------------------------------------------------------------- */

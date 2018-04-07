@@ -1,3 +1,22 @@
+/* - - - - - - - - - - - - - - - - - - - - -
+
+### TEXTPATTERN CUSTOM FIELDS ###
+
+Title : glz_custom_fields javascript
+Author : Gerhard Lazu, jcr + many contributors
+
+Last modified: 7 April 2018
+
+This file serves as a basis for glz_custom_fields_head_js()
+and is not loaded by the plugin unless:
+
+    $debug = true;
+    $use_minified = false;
+
+is set at the top of the plugin. Use these settings to debug.
+
+- - - - - - - - - - - - - - - - - - - - - */
+
 $(function() {
 // Ensure glzResetRadio() function persists after article asynchronous save
 textpattern.Relay.register('txpAsyncForm.success', glzResetRadio);
