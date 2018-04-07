@@ -119,11 +119,11 @@ function glz_prefs_orderby($name, $val)
 function glz_prefs_datepicker_format($name, $val)
 {
     $vals = array(
-        "dd/mm/yyyy"  => "dd/mm/yyyy",
-        "mm/dd/yyyy"  => "mm/dd/yyyy",
-        "yyyy-mm-dd"  => "yyyy-mm-dd",
-        "dd mm yy"    => "dd mm yy",
-        "dd.mm.yyyy"  => "dd.mm.yyyy"
+        "dd/mm/yyyy"  => gTxt('glz_cf_prefs_slash_dmyy'),
+        "mm/dd/yyyy"  => gTxt('glz_cf_prefs_slash_mdyy'),
+        "yyyy-mm-dd"  => gTxt('glz_cf_prefs_dash_yymd'),
+        "dd mm yy"    => gTxt('glz_cf_prefs_space_dmy'),
+        "dd.mm.yyyy"  => gTxt('glz_cf_prefs_dot_dmyy')
     );
     return selectInput($name, $vals, $val, '', '', $name);
 }
