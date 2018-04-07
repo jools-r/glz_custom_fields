@@ -15,6 +15,8 @@ glz_cf_name_renamed_notice => Invalid name: <strong>{custom_name_input}</strong>
 glz_cf_name_invalid_chars => <strong>{custom_name_input}</strong> was updated, but consider renaming it. Names should contain <strong>only lowercase letters, numbers, underscores</strong> and <strong>no spaces</strong>. <a href="?event=plugin&step=plugin_help&name=glz_custom_fields#plugin_help_section_custom_field_names">» See plugin help</a>.
 glz_cf_name_invalid_starts_with_number => <strong>{custom_name_input}</strong> was updated, but consider renaming it. Names should not start with a number. <a href="?event=plugin&step=plugin_help&name=glz_custom_fields#plugin_help_section_custom_field_names">» See plugin help</a>.
 glz_cf_name_invalid_double_underscores => <strong>{custom_name_input}</strong> was updated, but consider renaming it. Names should not have double underscores. <a href="?event=plugin&step=plugin_help&name=glz_custom_fields#plugin_help_section_custom_field_names">» See plugin help</a>.
+glz_cf_no_values => A checkbox custom field must have at least one value
+glz_cf_not_enough_values => A {cf_type} custom field must have at least two values
 glz_cf_field_problems => <strong>{custom_set_name}</strong> has some problems. <a href="?event=glz_custom_fields">Go fix it</a>.
 glz_cf_types_normal => Normal
 glz_cf_types_special => Special

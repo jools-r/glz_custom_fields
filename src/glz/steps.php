@@ -422,7 +422,7 @@ function glz_cf_save($msg='', $debug = false)
         return;
     }
 
-    // Same name given as another existing custom field-> error + return to list
+    // Same name given as another existing custom field -> error + return to list
     if (glz_check_custom_set_name($custom_set_name, $custom_set)) {
         if ($debug) {
             dmp('Same name as other custom field specified');
@@ -431,6 +431,21 @@ function glz_cf_save($msg='', $debug = false)
         $name_sanitized = glz_sanitize_for_cf($custom_set_name);
         $name_exists_msg = ($custom_set_name <> $name_sanitized) ? $custom_set_name.' ('.$name_sanitized.')' : $custom_set_name;
         $msg = array(gTxt('glz_cf_exists', array('{custom_set_name}' => $name_exists_msg)), E_ERROR);
+        glz_cf_list($msg);
+        return;
+    }
+
+    // No values specified for checkbox type -> error + return to list
+    if ($custom_set_type == 'checkbox' && empty($value)) {
+        $msg = array(gTxt('glz_cf_no_values'), E_ERROR);
+        glz_cf_list($msg);
+        return;
+    }
+
+    // At lest two values must specified for radiobutton/multiselect type -> error + return to list
+    $cf_values = array_unique(array_filter(explode("\r\n", $value), 'glz_array_empty_values'));
+    if ( ($custom_set_type == 'radio' || $custom_set_type == 'multi-select') && (count($cf_values) < 2) ) {
+        $msg = array(gTxt('glz_cf_not_enough_values', array('{cf_type}' => gTxt('glz_cf_'.$custom_set_type))), E_ERROR);
         glz_cf_list($msg);
         return;
     }
