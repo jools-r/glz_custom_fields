@@ -55,7 +55,7 @@ function glz_custom_fields_replace($event, $step, $data, $rs)
             $custom = glz_custom_number($custom);
 
             // If current article holds no value for this custom field and we have no default value, make it empty
-            $custom_value = (!empty($$custom) ? $$custom : '');
+            $custom_value = (trim($$custom) <> '' ? $$custom : '');
             // DEBUG
             // dmp("custom_value: {$custom_value}");
 
