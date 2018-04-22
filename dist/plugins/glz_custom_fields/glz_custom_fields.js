@@ -86,11 +86,13 @@ textpattern.Relay.register('txpAsyncForm.success', glzResetRadio);
 
         // Reset radio input(s)
         $("input[name=" + custom_field_to_reset + "]").prop("checked", false);
+        // If default exists, reset to default value
+        $("input[name=" + custom_field_to_reset + "].default").prop("checked", true);
         // Set "reset" button to disabled
         $(this).addClass("disabled");
 
-        // Add hidden input with empty value and same ID to save as empty to the db (only if not already there)
-        if($(this).siblings(".txp-form-radio-reset").length === 0) {
+        // If none checked, add hidden input with empty value and same ID to save as empty to the db (only if not already there)
+        if ( ($(this).siblings(".txp-form-radio-reset").length === 0) && ($("input[name=" + custom_field_to_reset + "]:checked").length === 0) ) {
             $(this).after("<input type=\"hidden\" class=\"txp-form-radio-reset\" value=\"\" name=\""+ custom_field_to_reset +"\" />");
         }
         return false;
