@@ -164,8 +164,9 @@ function glz_radio($name = '', $id = '', $arr_values = '', $custom_value = '', $
 
         foreach ($arr_values as $key => $value) {
             $checked = glz_selected_checked('checked', $key, $custom_value);
+            $default = ($default_value == $key) ? ' '.'default' : '';
 
-            $out[] = "<div class=\"txp-form-radio glz-cf-".str_replace("_", "-", glz_cf_idname($key))."\"><input type=\"radio\" name=\"$name\" value=\"$key\" class=\"radio\" id=\"{$id}_".glz_cf_idname($key)."\"{$checked} /> <label for=\"{$id}_".glz_cf_idname($key)."\">$value</label></div>";
+            $out[] = "<div class=\"txp-form-radio glz-cf-".str_replace("_", "-", glz_cf_idname($key))."\"><input type=\"radio\" name=\"$name\" value=\"$key\" class=\"radio{$default}\" id=\"{$id}_".glz_cf_idname($key)."\"{$checked} /> <label for=\"{$id}_".glz_cf_idname($key)."\">$value</label></div>";
         }
 
         return join('', $out);
