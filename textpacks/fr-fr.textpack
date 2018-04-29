@@ -11,48 +11,48 @@ glz_cf_created => <strong>{custom_set_name}</strong> correctement créé
 glz_cf_updated => <strong>{custom_set_name}</strong> correctement mis à jour
 glz_cf_exists => <strong>{custom_set_name}</strong> est déjà présent
 glz_cf_doesnt_exist => <strong>{custom_set_name}</strong> n’existe pas
-glz_cf_name_renamed_notice => Nom du champ personnalisé invalide: <strong>{custom_name_input}</strong> a été créé comme <strong>{custom_name_output}</strong>. » <a href="?event=plugin&step=plugin_help&name=glz_custom_fields#plugin_help_section_special_custom_fields">Voyez pourquoi</a>.
-glz_cf_name_invalid_chars => <strong>{custom_name_input}</strong> mis à jour, mais envisager de le renommer. Le nom du champ personnalisé ne doit contenir uniquement que des <strong>lettres minuscules, nombres, sous-tirets</strong> et aucun <strong>espaces</strong>. » <a href="?event=plugin&step=plugin_help&name=glz_custom_fields#plugin_help_section_special_custom_fields">Voyez l’aide du plugin</a>.
+glz_cf_name_renamed_notice => Nom du champ personnalisé invalide : <strong>{custom_name_input}</strong> a été créé comme <strong>{custom_name_output}</strong>. » <a href="?event=plugin&step=plugin_help&name=glz_custom_fields#plugin_help_section_special_custom_fields">Voyez pourquoi</a>.
+glz_cf_name_invalid_chars => <strong>{custom_name_input}</strong> mis à jour, mais envisager de le renommer. Le nom du champ personnalisé doit contenir uniquement des <strong>lettres minuscules, des nombres, des sous-tirets</strong> mais aucun <strong>espaces</strong>. » <a href="?event=plugin&step=plugin_help&name=glz_custom_fields#plugin_help_section_special_custom_fields">Voyez l’aide du plugin</a>.
 glz_cf_name_invalid_starts_with_number => <strong>{custom_name_input}</strong> mis à jour, mais envisagez de le renommer. Le nom du champ personnalisé ne peut pas commencer par un nombre. » <a href="?event=plugin&step=plugin_help&name=glz_custom_fields#plugin_help_section_special_custom_fields">Voyez l’aide du plugin</a>.
 glz_cf_name_invalid_double_underscores => <strong>{custom_name_input}</strong mis à jour, mais envisager de le renommer. Le nom du champ personnalisé ne peut pas contenir de double sous-tirets. » <a href="?event=plugin&step=plugin_help&name=glz_custom_fields#plugin_help_section_special_custom_fields">Voyez l’aide du plugin</a>.
 glz_cf_no_values => Un champ personnalisé du type case à cocher doit avoir au moins une valeur
 glz_cf_not_enough_values => Un champ personnalisé du type {cf_type} doit avoir au moins deux valeurs
-glz_cf_field_problems => <strong>{custom_set_name}</strong> a quelques problèmes. <a href="?event=glz_custom_fields">Corrigez-les</a>.
+glz_cf_field_problems => <strong>{custom_set_name}</strong> comporte des problèmes. <a href="?event=glz_custom_fields">Corrigez-les</a>.
 glz_cf_types_normal => Normal
 glz_cf_types_special => Spécial
-glz_cf_text_input => saisie de texte
-glz_cf_select => select
-glz_cf_multi-select => multi-select
+glz_cf_text_input => Saisie de texte
+glz_cf_select => Select
+glz_cf_multi-select => Multi-select
 glz_cf_textarea => textarea
-glz_cf_checkbox => case à cocher
-glz_cf_radio => bouton radio
+glz_cf_checkbox => Case à cocher
+glz_cf_radio => Bouton radio
 glz_cf_date-picker => Sélecteur de dates
-glz_cf_time-picker => Sélecteur de temps
+glz_cf_time-picker => Sélecteur d’heures
 glz_cf_custom-script => Script personnalisé
-glz_cf_type_not_supported => Type non prise en charge
+glz_cf_type_not_supported => Type non pris en charge
 glz_cf_action_add => Ajouter
 glz_cf_action_edit => Éditer
 glz_cf_action_delete => Supprimer
 glz_cf_action_reset => Réinitialisation
 glz_cf_not_specified => {what} n’est pas spécifié
-glz_cf_migration_success => La mise à jour des champs personnalisés a réussi correctement
-glz_cf_migration_skip => La table <strong>custom_fields</strong> contient deja des données, la mise à jour a été ignorée
+glz_cf_migration_success => La mise à jour des champs personnalisés a été correctement effectuée
+glz_cf_migration_skip => La table <strong>custom_fields</strong> contient déjà des données : la mise à jour a été ignorée
 glz_cf_search_section_created => <strong>recherche</strong> créée
-glz_cf_not_found => <strong>{file}</strong> n’a pu être chargé correctement, vérifiez le chemin d’accès
-glz_cf_not_callable => <strong>{function}()</strong> ne peut pas être utilisé. Vérifiez que <strong>{file}</strong> est exécutable.
-glz_cf_no_such_custom_field => Ce champ personnalisé n’existe pas!
+glz_cf_not_found => <strong>{file}</strong> n’a pu être chargé correctement, vérifiez son chemin d’accès
+glz_cf_not_callable => La fonction <strong>{function}()</strong> ne peut pas être utilisée. Vérifiez que <strong>{file}</strong> est exécutable.
+glz_cf_no_such_custom_field => Ce champ personnalisé n’existe pas !
 glz_cf_prefpane_title => Saisie personnalisée
-glz_cf_js_textarea_msg => Chaque valeur sur une ligne distincte<br>Une valeur par {défaut} permise
+glz_cf_js_textarea_msg => Chaque valeur sur une ligne distincte<br>Une valeur par {défaut} autorisée
 glz_cf_js_script_msg => Nom du fichier php dans votre chemin des scripts personnalisés
-glz_cf_js_configure_msg => Pour les paramètres, voyez les préférences de champ personnalisé
-glz_cf_public_error_datepicker => Réparez le DatePicker jQuery plugin » <u>Vérifiez le chemin d’accès</u>
-glz_cf_public_error_timepicker => Réparez le TimePicker jQuery plugin » <u>Vérifiez le chemin d’accès</u>
+glz_cf_js_configure_msg => Pour les paramètres, voyez les préférences des champs personnalisés
+glz_cf_public_error_datepicker => Corrigez le plugin jQuery DatePicker » <u>Vérifiez son chemin d’accès</u>
+glz_cf_public_error_timepicker => Corrigez le plugin jQuery  TimePicker » <u>Vérifiez son chemin d’accès</u>
 position => Position
 glz_cf_col_sort => Trier
 glz_cf_action_new_title => Nouveau champ personnalisé
 glz_cf_action_edit_title => Édition du {custom_set_name}
 glz_cf_add_new_cf => Nouveau champ personnalisé
-glz_cf_multiple_values_instructions => Chaque valeur sur une ligne distincte<br>Une valeur par {défaut} permise
+glz_cf_multiple_values_instructions => Chaque valeur sur une ligne distincte<br>Une valeur par {défaut} autorisé
 glz_cf_edit_name_hint => Caractères alphanumériques et sous-tirets
 glz_cf_edit_position_hint => Attribué automatiquement si vide
 glz_cf_edit_name => Nom du champ personnalisé
@@ -60,24 +60,24 @@ glz_cf_edit_title => Titre du champ personnalisé
 glz_cf_edit_title_hint => Étiquette descriptive
 glz_cf_edit_instructions => Instructions
 glz_cf_edit_instructions_hint => Texte d’aide facultatif (apparaît à côté de l’étiquette)
-glz_cf_edit_type => Type de champ personnalisé:
+glz_cf_edit_type => Type de champ personnalisé :
 glz_cf_edit_position => Position du champ personnalisé
 glz_cf_edit_value => Valeur(s) du champ personnalisé
 glz_cf_confirm_reset => Cette action va RÉINITIALISER toutes les données du champ personnalisé {custom}. Êtes-vous certain ?
 glz_cf_confirm_delete => Cette action va SUPPRIMER toutes les données du champ personnalisé  {custom}. Êtes-vous certain ?
 glz_custom_f => Saisie personnalisée <a class="check-path" href="?event=prefs&check_paths=1">Vérifiez les chemins d’accès</a>
-glz_cf_values_ordering => Ordre de triage des champs personnalisés
+glz_cf_values_ordering => Ordre de tri des champs personnalisés
 glz_cf_prefs_value_asc => Ordre ascendant
 glz_cf_prefs_value_desc => Ordre descendant
-glz_cf_prefs_value_custom => Telle qu’enregistré
+glz_cf_prefs_value_custom => Tel qu’enregistré
 glz_cf_multiselect_size => Taille du champ multi-select
 glz_cf_css_folder => Répertoire CSS Glz custom fields
 glz_cf_js_folder => Répertoire JS Glz custom fields
 glz_cf_custom_folder => Chemin des scripts personnalisés
-glz_cf_use_sortable => Trier les champs personnalisés par glissage
+glz_cf_use_sortable => Trier les champs personnalisés par glisser/déposer
 glz_cf_permit_full_deinstall => Supprimer toutes les données lors de la désinstallation
 glz_cf_datepicker_folder => Répertoire du sélecteur de dates
-glz_cf_timepicker_folder => Répertoire du sélecteur de temps
+glz_cf_timepicker_folder => Répertoire du sélecteur d’heures
 glz_cf_folder_error => {folder} n’existe pas, veuillez le créer.
 glz_cf_folder_success => URL / chemin est correct
 glz_cf_css_asset_url => URL du répertoire CSS
@@ -104,18 +104,18 @@ glz_cf_prefs_dash_yymd => aaaa-mm-jj
 glz_cf_prefs_space_dmy => jj mm aa
 glz_cf_prefs_dot_dmyy => jj.mm.aaaa
 glz_cf_timepicker => Sélecteur de temps
-glz_cf_timepicker_url => URL du répertoire du plugin sélecteur de temps
-glz_cf_timepicker_url_error => Le répertoire du sélecteur de temps n’existe pas, veuillez le créer.
-glz_cf_timepicker_start_time => Premier horaire
-glz_cf_timepicker_end_time => Dernier horaire
-glz_cf_timepicker_step => Temps de décalage (en minutes)
-glz_cf_timepicker_show_24 => Format du temps
+glz_cf_timepicker_url => URL du répertoire du plugin sélecteur d’heures
+glz_cf_timepicker_url_error => Le répertoire du sélecteur d’heures n’existe pas, veuillez le créer.
+glz_cf_timepicker_start_time => Heure de début
+glz_cf_timepicker_end_time => Heure de fin
+glz_cf_timepicker_step => Décalage horaire (en minutes)
+glz_cf_timepicker_show_24 => Format horaire
 glz_cf_prefs_24_hours => 24 heures
 glz_cf_prefs_12_hours => 12 heures
-glz_cf_sort_success => L’ordre de triage du champ personnalisé a changé
-glz_cf_sort_error => L’enregistrement de l’ordre de triage des champs personnalisés a échoué
+glz_cf_sort_success => L’ordre de tri du champ personnalisé a été modifié
+glz_cf_sort_error => L’enregistrement de l’ordre de tri des champs personnalisés a échoué
 #@prefs
 custom_x_set => Nom du champ personnalisé {number}
 instructions_glz_cf_datepicker_start_date => Le format DOIT correspondre au format de la date
-instructions_glz_cf_custom_scripts_path => Chemin a partir du répertoire root
-instructions_glz_cf_permit_full_deinstall => Attention: "Oui" = La désinstallation supprime TOUTES les données définies par l’utilisateur dans les champs personnalisés
+instructions_glz_cf_custom_scripts_path => Chemin depuis le répertoire racine (root)
+instructions_glz_cf_permit_full_deinstall => Attention : "Oui" = La désinstallation supprime TOUTES les données définies par l’utilisateur dans les champs personnalisés
