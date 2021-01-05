@@ -199,25 +199,6 @@ function glz_selected_checked($range_unit, $value, $custom_value = '')
 
 
 //-------------------------------------------------------------
-// Button gets more consistent styling across browsers rather than input type="submit"
-// included in this plugin until in makes it into TXP - if that ever happens...
-function glz_fButton($type, $name, $contents='Submit', $value, $class='', $id='', $title='', $onClick='', $disabled = false)
-{
-    $o  = '<button type="'.$type.'" name="'.$name.'"';
-    $o .= ' value="'.htmlspecialchars($value).'"';
-    $o .= ($class)    ? ' class="'.$class.'"' : '';
-    $o .= ($id)       ? ' id="'.$id.'"' : '';
-    $o .= ($title)    ? ' title="'.$title.'"' : '';
-    $o .= ($onClick)  ? ' onclick="'.$onClick.'"' : '';
-    $o .= ($disabled) ? ' disabled="disabled"' : '';
-    $o .= '>';
-    $o .= $contents;
-    $o .= '</button>';
-    return $o;
-}
-
-
-//-------------------------------------------------------------
 // Evals a PHP script and displays output right under the custom field label
 function glz_custom_script($script, $custom, $custom_id, $custom_value)
 {
