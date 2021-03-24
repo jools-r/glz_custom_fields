@@ -116,7 +116,7 @@ function glz_custom_fields_before_save()
         // Extract custom_{} keys with multiple values as arrays
         if (strstr($key, 'custom_') && is_array($value)) {
             // Convert to delimited string …
-            $value = implode($value, '|');
+            $value = implode('|', $value);
             // and feed back into $_POST
             $_POST[$key] = $value;
         }
