@@ -1,6 +1,6 @@
 ## GLZ CUSTOM FIELDS for Textpattern CMS
 
-### Update for Textpattern 4.7 – v2.0 beta
+### Update for Textpattern 4.7 – v2.0.1
 
 **IMPORTANT: Backup your database before experimenting with this version!**
 
@@ -24,6 +24,10 @@ This plugin sits under the **Extensions** tab in the back-end and gives your cus
 
 
 ### Changelog
+
+v2.0.1 – March 2021
+
+- PHP 7.4 deprecation notice / PHP 8 error patched
 
 v2.0 – March 2018
 
