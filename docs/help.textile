@@ -87,6 +87,10 @@ On installation, the plugin upgrades your settings and preferences to avoid pote
 
 h3(#changelog). Changelog
 
+v2.0.1 – March 2021
+
+* PHP 7.4 deprecation notice / PHP 8 error patched
+
 v2.0 – March 2018
 
 * Refactored for Textpattern v4.7
