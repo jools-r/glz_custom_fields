@@ -180,12 +180,14 @@ function glz_radio($name = '', $id = '', $arr_values = '', $custom_value = '', $
 // Checking if this custom field has selected or checked values
 function glz_selected_checked($range_unit, $value, $custom_value = '')
 {
-    // We're comparing against a key which is a "clean" value
-    $custom_value = htmlspecialchars($custom_value);
+    if (!empty($custom_value)) {
+        // We're comparing against a key which is a "clean" value
+        $custom_value = htmlspecialchars($custom_value);
 
-    // Make an array if $custom_value contains multiple values
-    if (strpos($custom_value, '|')) {
-        $arr_custom_value = explode('|', $custom_value);
+        // Make an array if $custom_value contains multiple values
+        if (strpos($custom_value, '|')) {
+            $arr_custom_value = explode('|', $custom_value);
+        }
     }
 
     if (isset($arr_custom_value)) {

@@ -195,8 +195,10 @@ function glz_array_stripslashes($value)
 // Removes { } from values which are marked as default
 function glz_clean_default($value)
 {
-    $pattern = "/^.*\{(.*)\}.*/";
-    return preg_replace($pattern, "$1", $value);
+    if(!empty($value)) {
+        $pattern = "/^.*\{(.*)\}.*/";
+        return preg_replace($pattern, "$1", $value);
+    }
 }
 
 
