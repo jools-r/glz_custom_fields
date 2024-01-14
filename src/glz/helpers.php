@@ -184,14 +184,6 @@ function glz_array_empty_values($value)
 
 
 // -------------------------------------------------------------
-// Strips slashes in arrays, used in conjuction with e.g. array_map
-function glz_array_stripslashes($value)
-{
-    return stripslashes($value);
-}
-
-
-// -------------------------------------------------------------
 // Removes { } from values which are marked as default
 function glz_clean_default($value)
 {

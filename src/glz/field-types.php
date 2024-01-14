@@ -20,7 +20,7 @@
 function glz_format_custom_set_by_type($custom, $custom_id, $custom_set_type, $arr_custom_field_values, $custom_value = "", $default_value = "")
 {
     if (is_array($arr_custom_field_values)) {
-        $arr_custom_field_values = array_map('glz_array_stripslashes', $arr_custom_field_values);
+        $arr_custom_field_values = doStrip($arr_custom_field_values);
     }
 
     switch ($custom_set_type) {

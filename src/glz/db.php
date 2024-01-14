@@ -682,8 +682,8 @@ function glz_db_get_all_existing_cf_values($name, $extra)
                 $out = array_combine($arr_values, $arr_values);
             }
 
-            // Calling stripslashes on all array values
-            array_map('glz_array_stripslashes', $out);
+            // stripslashes on all array values
+            doStrip($out);
 
             return $out;
         }
