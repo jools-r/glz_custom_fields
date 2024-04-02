@@ -314,7 +314,7 @@ function glz_cf_edit($msg='', $id='', $debug = false)
     $out[] =
         inputLabel(
                 'custom_set_name',
-                fInput('text', 'custom_set_name', htmlspecialchars($custom_field['name']), '', '', '', 28, '', 'custom_set_name'),
+                fInput('text', 'custom_set_name', (isset($custom_field['name']) ? htmlspecialchars($custom_field['name']) : ''), '', '', '', 28, '', 'custom_set_name'),
                 'glz_cf_edit_name',
                 array(
                     0 => '',
@@ -323,7 +323,7 @@ function glz_cf_edit($msg='', $id='', $debug = false)
             ).
         inputLabel(
                 'custom_set_title',
-                fInput('text', 'custom_set_title', htmlspecialchars($custom_field['title']), '', '', '', INPUT_REGULAR, '', 'custom_set_title'),
+                fInput('text', 'custom_set_title', (isset($custom_field['title']) ? htmlspecialchars($custom_field['title']) : ''), '', '', '', INPUT_REGULAR, '', 'custom_set_title'),
                 'glz_cf_edit_title',
                 array(
                     0 => '',
@@ -332,7 +332,7 @@ function glz_cf_edit($msg='', $id='', $debug = false)
             ).
         inputLabel(
                 'custom_set_instructions',
-                fInput('text', 'custom_set_instructions', htmlspecialchars($custom_field['instructions']), '', '', '', INPUT_REGULAR, '', 'custom_set_instructions'),
+                fInput('text', 'custom_set_instructions', (isset($custom_field['instructions']) ? htmlspecialchars($custom_field['instructions']) : ''), '', '', '', INPUT_REGULAR, '', 'custom_set_instructions'),
                 'glz_cf_edit_instructions',
                 array(
                     0 => '',
@@ -351,7 +351,7 @@ function glz_cf_edit($msg='', $id='', $debug = false)
         ($prefs['glz_cf_use_sortable'] == '0' ?
             inputLabel(
                     'custom_set_position',
-                    fInput('text', 'custom_set_position', htmlspecialchars($custom_field['position']), '', '', '', INPUT_MEDIUM, '', 'custom_set_position'),
+                    fInput('text', 'custom_set_position', (isset($custom_field['position']) ? htmlspecialchars($custom_field['position']) : ''), '', '', '', INPUT_MEDIUM, '', 'custom_set_position'),
                     'glz_cf_edit_position',
                     array(
                         0 => '',
