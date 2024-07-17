@@ -142,9 +142,10 @@ function glz_custom_fields_inject_css_js($debug = false)
 
     // glz_cf stylesheets (load from file when $debug is set to true)
     if ($debug) {
-        $css = '<link rel="stylesheet" type="text/css" media="all" href="'.glz_relative_url($prefs['glz_cf_css_asset_url']).'/glz_custom_fields'.$min.'.css">'.n;
+        $css_url = glz_relative_url($prefs['glz_cf_css_asset_url']).'/glz_custom_fields'.$min.'.css';
+        $css = glz_inject_css($css_url, 1, array('media' => 'screen'));
         // Show hidden fields
-        $css .= '<style>#prefs-glz_cf_css_asset_url,#prefs-glz_cf_js_asset_url{display:flex}</style>';
+        $css .= glz_inject_css('#prefs-glz_cf_css_asset_url,#prefs-glz_cf_js_asset_url{display:flex}');
     } else {
         $css = glz_custom_fields_head_css();
     }
@@ -154,13 +155,13 @@ function glz_custom_fields_inject_css_js($debug = false)
     if ($event == 'article') {
         // If a date picker field exists
         if ($date_picker) {
-            $css .= '<link rel="stylesheet" type="text/css" media="all" href="'.glz_relative_url($prefs['glz_cf_datepicker_url']).'/datePicker'.$min.'.css" />'.n;
+            $css_datepicker_url = glz_relative_url($prefs['glz_cf_datepicker_url']).'/datePicker'.$min.'.css';
+            $css .= glz_inject_css($css_datepicker_url, 1, array('media' => 'screen'));
             foreach (array('date'.$min.'.js', 'datePicker'.$min.'.js') as $file) {
-                $js .= '<script src="'.glz_relative_url($prefs['glz_cf_datepicker_url'])."/".$file.'"></script>'.n;
+                $js .= glz_inject_js(glz_relative_url($prefs['glz_cf_datepicker_url'])."/".$file, 1);
             }
             $js_datepicker_msg = '<span class="messageflash error" role="alert" aria-live="assertive"><span class="ui-icon ui-icon-alert"></span> <a href="'.ahu.'index.php?event=prefs&check_url=1#prefs_group_glz_custom_f">'.gTxt('glz_cf_public_error_datepicker').'</a> <a class="close" role="button" title="Close" href="#close"><span class="ui-icon ui-icon-close">Close</span></a></span>';
-            $js .= <<<JS
-<script>
+            $js_datepicker = <<<JS
 $(document).ready(function () {
     textpattern.Relay.register('txpAsyncForm.success', glzDatePicker);
 
@@ -180,17 +181,18 @@ $(document).ready(function () {
 
     glzDatePicker();
 });
-</script>
 JS;
+            $js .= glz_inject_js($js_datepicker);
         }
 
         // If a time picker field exists
         if ($time_picker) {
-            $css .= '<link rel="stylesheet" type="text/css" media="all" href="'.glz_relative_url($prefs['glz_cf_timepicker_url']).'/timePicker'.$min.'.css" />'.n;
-            $js  .= '<script src="'.glz_relative_url($prefs['glz_cf_timepicker_url']).'/timePicker'.$min.'.js"></script>'.n;
+            $css_timepicker_url = glz_relative_url($prefs['glz_cf_timepicker_url']).'/timePicker'.$min.'.css';
+            $css .= glz_inject_css($css_timepicker_url, 1, array('media' => 'screen'));
+            $js_timepicker_url = glz_relative_url($prefs['glz_cf_timepicker_url']).'/timePicker'.$min.'.js';
+            $js .= glz_inject_js($js_timepicker_url, 1);
             $js_timepicker_msg = '<span class="messageflash error" role="alert" aria-live="assertive"><span class="ui-icon ui-icon-alert"></span> <a href="'.ahu.'index.php?event=prefs&check_url=1#prefs_group_glz_custom_f">'.gTxt('glz_cf_public_error_timepicker').'</a> <a class="close" role="button" title="Close" href="#close"><span class="ui-icon ui-icon-close">Close</span></a></span>';
-            $js  .= <<<JS
-<script>
+            $js_timepicker = <<<JS
 $(document).ready(function () {
     textpattern.Relay.register('txpAsyncForm.success', glzTimePicker);
 
@@ -214,18 +216,20 @@ $(document).ready(function () {
 
     glzTimePicker();
 });
-</script>
 JS;
+            $js .= glz_inject_js($js_timepicker);
         }
     }
     if ($event == 'glz_custom_fields') {
-        $js .= '<script src="'.glz_relative_url($prefs['glz_cf_js_asset_url']).'/glz_jqueryui.sortable'.$min.'.js"></script>';
+        $js_sortable_url = glz_relative_url($prefs['glz_cf_js_asset_url']).'/glz_jqueryui.sortable'.$min.'.js';
+        $js .= glz_inject_js($js_sortable_url, 1);
     }
 
     // glz_cf javascript (load from file when $debug is set to true)
     if ($event != 'prefs') {
         if ($debug) {
-            $js .= '<script src="'.glz_relative_url($prefs['glz_cf_js_asset_url']).'/glz_custom_fields'.$min.'.js"></script>';
+            $js_core_url = glz_relative_url($prefs['glz_cf_js_asset_url']).'/glz_custom_fields'.$min.'.js';
+            $js .= glz_inject_js($js_core_url, 1);
         } else {
             $js .= glz_custom_fields_head_js();
         }
@@ -476,8 +480,9 @@ function glz_cf_positionsort_steps($event='', $step='', $msg='')
 // Custom field sortable position inject js
 function glz_cf_positionsort_js()
 {
+    $js_positionsort = glz_inject_js('"index.php?event=glz_custom_fields&step=get_js', 1);
     echo <<<HTML
-<script src="index.php?event=glz_custom_fields&step=get_js"></script>
+        $js_positionsort
 HTML;
 }
 
