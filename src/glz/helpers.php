@@ -295,13 +295,15 @@ function glz_form_buttons($action, $value, $custom_set, $custom_set_name, $custo
         $ui_icon = "circlesmall-plus";
     }
 
+    $tagend = get_pref('doctype') === 'html5' ? ">" : " />";
+
     return
     '<form class="action-button" method="post" action="index.php" '.$onsubmit.'>
-        <input name="custom_set" value="'.$custom_set.'" type="hidden" />
-        <input name="custom_set_name" value="'.$custom_set_name.'" type="hidden" />
-        <input name="custom_set_type" value="'.$custom_set_type.'" type="hidden" />
-        <input name="custom_set_position" value="'.$custom_set_position.'" type="hidden" />
-        <input name="event" value="glz_custom_fields" type="hidden" />
+        <input name="custom_set" value="'.$custom_set.'" type="hidden"'.$tagend.'
+        <input name="custom_set_name" value="'.$custom_set_name.'" type="hidden"'.$tagend.'
+        <input name="custom_set_type" value="'.$custom_set_type.'" type="hidden"'.$tagend.'>
+        <input name="custom_set_position" value="'.$custom_set_position.'" type="hidden"'.$tagend.'
+        <input name="event" value="glz_custom_fields" type="hidden"'.$tagend.'
         <button name="'.$action.'" type="submit" value="'.$value.'"
                 class="jquery-ui-button-icon-left ui-button ui-corner-all ui-widget">
             <span class="ui-button-icon ui-icon ui-icon-'.$ui_icon.'"></span>
