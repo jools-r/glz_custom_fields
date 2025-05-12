@@ -1,5 +1,10 @@
 ## GLZ CUSTOM FIELDS for Textpattern CMS
 
+### v2.0.6
+
+Compatible with PHP8 and Textpattern 4.9
+
+
 ### Update for Textpattern 4.7 – v2.0.1
 
 **IMPORTANT: Backup your database before experimenting with this version!**
@@ -24,6 +29,17 @@ This plugin sits under the **Extensions** tab in the back-end and gives your cus
 
 
 ### Changelog
+
+v2.0.6 – May 2025
+
+- Prevent `{`default`}` braces from showing in radio/checkbox/select choices
+- HTML5-compliant void tag endings for radios and checkboxes
+
+v2.0.5 – July 2024
+
+- PHP 8+ patches / deprecation notices
+- CSP nonce support for script and style blocks
+- CSS tweaks
 
 v2.0.1 – March 2021
 
