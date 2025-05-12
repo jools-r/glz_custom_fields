@@ -141,7 +141,7 @@ function glz_checkbox($name = '', $arr_values = '', $custom_value = '', $default
         foreach ($arr_values as $key => $value) {
             $checked = glz_selected_checked('checked', $key, $custom_value);
             $value = trim($value, '{}');
-            $out[] = "<div class=\"txp-form-checkbox glz-cf-".str_replace("_", "-", glz_cf_idname($key))."\"><input type=\"checkbox\" name=\"{$name}[]\" value=\"$key\" class=\"checkbox\" id=\"".glz_cf_idname($key)."\"{$checked} /> <label for=\"".glz_cf_idname($key)."\">$value</label></div>";
+            $out[] = "<div class=\"txp-form-checkbox glz-cf-".str_replace("_", "-", glz_cf_idname($key))."\"><input type=\"checkbox\" name=\"{$name}[]\" value=\"$key\" class=\"checkbox\" id=\"".glz_cf_idname($key)."\"".$checked.(get_pref('doctype') === 'html5' ? ">" : " />")." <label for=\"".glz_cf_idname($key)."\">$value</label></div>";
         }
 
         return join('', $out);
@@ -167,7 +167,7 @@ function glz_radio($name = '', $id = '', $arr_values = '', $custom_value = '', $
             $checked = glz_selected_checked('checked', $key, $custom_value);
             $default = ($default_value == $key) ? ' '.'default' : '';
             $value = trim($value, '{}');
-            $out[] = "<div class=\"txp-form-radio glz-cf-".str_replace("_", "-", glz_cf_idname($key))."\"><input type=\"radio\" name=\"$name\" value=\"$key\" class=\"radio{$default}\" id=\"{$id}_".glz_cf_idname($key)."\"{$checked} /> <label for=\"{$id}_".glz_cf_idname($key)."\">$value</label></div>";
+            $out[] = "<div class=\"txp-form-radio glz-cf-".str_replace("_", "-", glz_cf_idname($key))."\"><input type=\"radio\" name=\"$name\" value=\"$key\" class=\"radio{$default}\" id=\"{$id}_".glz_cf_idname($key)."\"".$checked.(get_pref('doctype') === 'html5' ? ">" : " />")." <label for=\"{$id}_".glz_cf_idname($key)."\">$value</label></div>";
         }
 
         return join('', $out);
