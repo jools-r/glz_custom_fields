@@ -1,7 +1,7 @@
 {
     "name"          : "glz_custom_fields",
     "description"   : "Unlimited special custom fields",
-    "version"       : "2.0.5",
+    "version"       : "2.0.6",
     "type"          : 5,
     "author"        : "Gerhard Lazu",
     "author_uri"    : "http://github.com/jools-r/glz_custom_fields",
