@@ -21,7 +21,7 @@
 function glz_custom_fields_head_css()
 {
     $css = <<<'CSS'
-.glz-cf-setup-switch{float:right}[dir=rtl] .glz-cf-setup-switch{float:left}#glz_custom_fields_container .txp-list-col-id{width:3em;text-align:center}#glz_custom_fields_container .txp-list-col-options,#glz_custom_fields_container .txp-list-col-position{width:5em}#glz_custom_fields_container .txp-list-col-title .cf-instructions.ui-icon{width:2em;height:17px;float:right;background-repeat:no-repeat;background-position:center 2px;opacity:.33;cursor:pointer}#glz_custom_fields_container .txp-list-col-title.disabled .cf-instructions{opacity:1!important;pointer-events:auto}#glz_custom_fields_container .txp-list-col-options{text-align:center}#glz_custom_fields_container .txp-list-col-options .ui-icon{width:4em;background-repeat:no-repeat;background-position:50%}#glz_custom_fields_container .txp-list-col-options .ui-icon:hover{-webkit-filter:brightness(0) saturate(100%) invert(17%) sepia(51%) saturate(5958%) hue-rotate(211deg) brightness(89%) contrast(101%);filter:brightness(0) saturate(100%) invert(17%) sepia(51%) saturate(5958%) hue-rotate(211deg) brightness(89%) contrast(101%)}#glz_custom_fields_container table.fixed-width{table-layout:fixed}#glz_custom_fields_container table.sortable .txp-list-col-sort{width:3em;text-align:center}#glz_custom_fields_container table.sortable .ui-sortable-handle{cursor:row-resize;text-align:center;opacity:.66}#glz_custom_fields_container table.sortable .txp-list-col-position{display:none}#glz_custom_fields_container .ui-sortable-helper,#glz_custom_fields_container .ui-sortable-placeholder{display:table}#add_edit_custom_field .hidden{display:none}@media screen and (min-width:47em){.txp-edit .txp-form-field .txp-form-field-instructions,.txp-tabs-vertical-group .txp-form-field-instructions{padding-left:50%}}.check-path{float:right;font-size:.7em;font-weight:400}[dir=rtl] .check-path{float:left}.ui-tabs-nav .check-path{display:none}#prefs-glz_cf_css_asset_url,#prefs-glz_cf_js_asset_url{display:none}.glz-custom-field-reset.disabled:hover{text-decoration:none}.glz-custom-field-reset.disabled{cursor:default}.glz-custom-checkbox .txp-form-field-value label,.glz-custom-radio .txp-form-field-value label{cursor:pointer}
+.glz-cf-setup-switch{float:inline-end}[dir=rtl] .glz-cf-setup-switch{float:inline-start}#glz_custom_fields_container .txp-list-col-id{width:3em;text-align:center}#glz_custom_fields_container .txp-list-col-options,#glz_custom_fields_container .txp-list-col-position{width:5em}#glz_custom_fields_container .txp-list-col-title .cf-instructions.ui-icon{width:2em;height:17px;float:inline-end;background-repeat:no-repeat;background-position:center 2px;opacity:.33;cursor:pointer}#glz_custom_fields_container .txp-list-col-title.disabled .cf-instructions{opacity:1!important;pointer-events:auto}#glz_custom_fields_container .txp-list-col-options{text-align:center}#glz_custom_fields_container .txp-list-col-options .ui-icon{width:4em;background-repeat:no-repeat;background-position:50%}#glz_custom_fields_container .txp-list-col-options .ui-icon:hover{-webkit-filter:brightness(0) saturate(100%) invert(17%) sepia(51%) saturate(5958%) hue-rotate(211deg) brightness(89%) contrast(101%);filter:brightness(0) saturate(100%) invert(17%) sepia(51%) saturate(5958%) hue-rotate(211deg) brightness(89%) contrast(101%)}#glz_custom_fields_container table.fixed-width{table-layout:fixed}#glz_custom_fields_container table.sortable .txp-list-col-sort{width:3em;text-align:center}#glz_custom_fields_container table.sortable .ui-sortable-handle{cursor:row-resize;text-align:center;opacity:.66}#glz_custom_fields_container table.sortable .txp-list-col-position{display:none}#glz_custom_fields_container .ui-sortable-helper,#glz_custom_fields_container .ui-sortable-placeholder{display:table}#add_edit_custom_field .hidden{display:none}@media screen and (min-width:47em){.txp-edit .txp-form-field .txp-form-field-instructions,.txp-tabs-vertical-group .txp-form-field-instructions{padding-left:50%}}.check-path{float:inline-end;font-size:.7em;font-weight:400}[dir=rtl] .check-path{float:inline-start}.ui-tabs-nav .check-path{display:none}#prefs-glz_cf_css_asset_url,#prefs-glz_cf_js_asset_url{display:none}.glz-custom-field-reset.disabled:hover{text-decoration:none}.glz-custom-field-reset.disabled{cursor:default}
 CSS;
     $css = glz_inject_css($css);
     return $css;
@@ -53,7 +53,7 @@ function glz_inject_js($js, $src = 0, $atts = '')
             $js_out->setContent($js);
         }
         if (is_array($atts)) {
-            foreach($atts as $key => $value) {
+            foreach ($atts as $key => $value) {
                 $js_out->setAtt($key, $value);
             }
         }
@@ -73,7 +73,8 @@ function glz_inject_js($js, $src = 0, $atts = '')
 
 // -------------------------------------------------------------
 // Helper function: nonced style or link tags if CSP headers set
-function glz_inject_css($css, $src = 0, $atts = '') {
+function glz_inject_css($css, $src = 0, $atts = '')
+{
     if (class_exists('\Textpattern\UI\Style')) {
         $css_out = new \Textpattern\UI\Style();
         if ($src) {
@@ -82,7 +83,7 @@ function glz_inject_css($css, $src = 0, $atts = '') {
             $css_out->setContent($css);
         }
         if (is_array($atts)) {
-            foreach($atts as $key => $value) {
+            foreach ($atts as $key => $value) {
                 $css_out->setAtt($key, $value);
             }
         }
