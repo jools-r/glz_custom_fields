@@ -480,7 +480,7 @@ function glz_cf_positionsort_steps($event='', $step='', $msg='')
 // Custom field sortable position inject js
 function glz_cf_positionsort_js()
 {
-    $js_positionsort = glz_inject_js('"index.php?event=glz_custom_fields&step=get_js', 1);
+    $js_positionsort = glz_inject_js('index.php?event=glz_custom_fields&step=get_js', 1);
     echo <<<HTML
         $js_positionsort
 HTML;
