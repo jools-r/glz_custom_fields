@@ -332,7 +332,7 @@ function glz_cf_edit($msg='', $id='', $debug = false)
             ).
         inputLabel(
                 'custom_set_instructions',
-                fInput('text', 'custom_set_instructions', (isset($custom_field['instructions']) ? htmlspecialchars($custom_field['instructions']) : ''), '', '', '', INPUT_REGULAR, '', 'custom_set_instructions'),
+                fInput('text', 'custom_set_instructions', (isset($custom_field['instructions']) ? $custom_field['instructions'] : ''), '', '', '', INPUT_REGULAR, '', 'custom_set_instructions'),
                 'glz_cf_edit_instructions',
                 array(
                     0 => '',

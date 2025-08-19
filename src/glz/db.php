@@ -366,7 +366,7 @@ function glz_db_cf_save($in, $debug = false)
              array('name' => $custom_set_instr_name, 'lang' => $current_lang),
             $debug
         );
-        $set_gTxt[$custom_set_instr_name] = $custom_set_instr_data;
+        $set_gTxt[$custom_set_instr_name] = $custom_set_instructions;
 
     // B) If instructions string is empty but previously existed, remove old entry
     } elseif (glz_cf_gtxt('', $custom_field_number) != '') {
